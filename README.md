@@ -9,7 +9,8 @@ $ cd ~/frc
 $ git clone https://github.com/{your_username}/2014-Robot fork-2014-Robot
 $ cd fork-2014-Robot
 $ git remote add upstream https://github.com/frc-4931/2014-Robot.git
-$ git fetch upstream
+$ git branch --set-upstream-to=upstream/master master
+$ git pull upstream master
 ```
 
 Your local Git repository is now connected to both your fork (e.g., `origin`) and the team's shared repository (e.g., `upstream`).
