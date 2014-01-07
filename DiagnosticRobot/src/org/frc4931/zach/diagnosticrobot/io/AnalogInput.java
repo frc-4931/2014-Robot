@@ -13,6 +13,10 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 	private boolean calibrated;
 	private String type;
 	
+	/**
+	 * Creates a new AnalogInput class that can access analog inputs and display them on the SmartDashboard.
+	 * @param channel - the channel of the input to be read.
+	 */
 	public AnalogInput(int channel) {
 		super(channel);
 		this.channel = channel;
@@ -20,6 +24,11 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 		type = "Generic Analog Input";
 	}
 	
+	/**
+	 * Creates a new AnalogInput class that can access analog inputs and display them on the SmartDashboard.
+	 * @param channel - the channel of the input to be read.
+	 * @param inputType - the name of the input on the SmartDashboard.
+	 */
 	public AnalogInput(int port, String inputType) {
 		super(port);
 		channel = port;
@@ -27,6 +36,9 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 		type = inputType;
 	}
 	
+	/**
+	 * Calculates the an offset based on the minimum sensor value, then calculates an adjusted maximum.
+	 */
 	public void calibrate(){
 		//TODO Use a button to control calibration.
 		System.out.println("Minimize Sensor");
