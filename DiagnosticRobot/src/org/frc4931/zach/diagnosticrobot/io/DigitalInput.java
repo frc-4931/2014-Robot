@@ -1,5 +1,5 @@
 package org.frc4931.zach.diagnosticrobot.io;
 
-public class DigitalInput {
-
+public class DigitalInput{
+	//get()
 }

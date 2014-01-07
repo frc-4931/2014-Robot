@@ -7,22 +7,22 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 public class AnalogInput extends AnalogChannel implements Sendable{
-	private int portNumber;
+	private int channel;
 	private int offset;
 	private int offsetMax;
 	private boolean calibrated;
 	private String type;
 	
-	public AnalogInput(int port) {
-		super(port);
-		portNumber = port;
+	public AnalogInput(int channel) {
+		super(channel);
+		this.channel = channel;
 		calibrated = false;
 		type = "Generic Analog Input";
 	}
 	
 	public AnalogInput(int port, String inputType) {
 		super(port);
-		portNumber = port;
+		channel = port;
 		calibrated = false;
 		type = inputType;
 	}
@@ -71,7 +71,7 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 	public void initTable(ITable table) {
 		 this.table = table;
 		 if (table != null) {
-			 table.putNumber("Port", portNumber);
+			 table.putNumber("Channel", channel);
 			 table.putNumber("Normalized Value", getNormalized());
 		 }
 	}
