@@ -26,7 +26,7 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 	
 	/**
 	 * Creates a new AnalogInput class that can access analog inputs and display them on the SmartDashboard.
-	 * @param channel - the channel of the input to be read.
+	 * @param port - the channel of the input to be read.
 	 * @param inputType - the name of the input on the SmartDashboard.
 	 */
 	public AnalogInput(int port, String inputType) {
