@@ -2,13 +2,11 @@ package org.frc4931.zach.diagnosticrobot;
 
 import org.frc4931.zach.diagnosticrobot.drive.DriveTrain;
 import org.frc4931.zach.diagnosticrobot.io.AnalogInput;
-import org.frc4931.zach.diagnosticrobot.io.AnalogOutput;
 import org.frc4931.zach.diagnosticrobot.io.FlightStick;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DiagnosticRobot extends IterativeRobot{
@@ -32,6 +30,10 @@ public class DiagnosticRobot extends IterativeRobot{
 	public void teleopPeriodic(){
 		SmartDashboard.putData("Joystick", joystick);
 		System.out.println("Im a robot");
-		drive.arcadeDrive(joystick.getAxis(FlightStick.PITCH_AXIS),joystick.getAxis(FlightStick.ROLL_AXIS)*-1);
+		double rawDriveSpeed = joystick.getAxis(FlightStick.PITCH_AXIS);
+		double rawTurnSpeed = joystick.getAxis(FlightStick.YAW_AXIS)*-1;
+		double scaledDriveSpeed = rawDriveSpeed*(1-joystick.getNormalizedAxis(FlightStick.THROTTLE_AXIS));
+		double scaledTurnSpeed = rawTurnSpeed*(1-joystick.getNormalizedAxis(FlightStick.THROTTLE_AXIS));
+		drive.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
 	}
 }

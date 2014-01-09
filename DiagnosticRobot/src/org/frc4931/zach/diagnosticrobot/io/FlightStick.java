@@ -11,6 +11,9 @@ public class FlightStick extends Joystick implements Sendable{
 	public static final int YAW_AXIS = 3;
 	public static final int THROTTLE_AXIS = 4;
 	
+	public static final float AXIS_MAXIMUM = 1;
+	public static final float AXIS_MINIMUM = -1;
+	
 	/*Button definitions*/
 	//TODO Define buttons
 	
@@ -31,6 +34,10 @@ public class FlightStick extends Joystick implements Sendable{
 	
 	public double getAxis(int axis){
 		return getRawAxis(axis);
+	}
+	
+	public double getNormalizedAxis(int axis){
+		return (getAxis(axis)+1)/2;
 	}
 	
 	public boolean getButton(int button){
@@ -56,7 +63,7 @@ public class FlightStick extends Joystick implements Sendable{
 			 table.putNumber("Roll Axis", getAxis(ROLL_AXIS));
 			 table.putNumber("Yaw Axis", getAxis(YAW_AXIS));
 			 table.putNumber("Throttle Axis", getAxis(THROTTLE_AXIS));
+			 table.putNumber("Throttle", getNormalizedAxis(THROTTLE_AXIS));
 		 }
 	}
-
 }
