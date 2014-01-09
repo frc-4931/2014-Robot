@@ -19,18 +19,19 @@ public class DiagnosticRobot extends IterativeRobot{
 	//@Override
 	public void robotInit(){
 		SmartDashboard.putData("Fader", new AnalogInput(1));
-		SmartDashboard.putData("Motor", new AnalogOutput(1));
+		//SmartDashboard.putData("Motor", new AnalogOutput(1));
 		joystick = new FlightStick(1);
 		SmartDashboard.putData("Joystick", joystick);
-		leftMotor = new Talon(0);
-		rightMotor = new Talon(1);
+		leftMotor = new Talon(1);
+		rightMotor = new Talon(2);
 		drive = new DriveTrain(leftMotor, rightMotor);
-		drive.setInvertedMotor(MotorType.kRearLeft, false);
-		drive.setInvertedMotor(MotorType.kRearRight, false);
+		//drive.setInvertedMotor(MotorType.kRearLeft, false);
+		//drive.setInvertedMotor(MotorType.kRearRight, false);
 	}
 	//@Override
 	public void teleopPeriodic(){
+		SmartDashboard.putData("Joystick", joystick);
 		System.out.println("Im a robot");
-		drive.arcadeDrive(joystick, FlightStick.PITCH_AXIS, joystick, FlightStick.ROLL_AXIS, true);
+		drive.arcadeDrive(joystick.getAxis(FlightStick.PITCH_AXIS),joystick.getAxis(FlightStick.ROLL_AXIS)*-1);
 	}
 }

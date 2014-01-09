@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.tables.ITable;
 
 public class FlightStick extends Joystick implements Sendable{
 	/*Axes definitions*/
-	public static final int PITCH_AXIS = 0;
+	public static final int PITCH_AXIS = 2;
 	public static final int ROLL_AXIS = 1;
-	public static final int YAW_AXIS = 2;
-	public static final int THROTTLE_AXIS = 3;
+	public static final int YAW_AXIS = 3;
+	public static final int THROTTLE_AXIS = 4;
 	
 	/*Button definitions*/
 	//TODO Define buttons
@@ -53,9 +53,9 @@ public class FlightStick extends Joystick implements Sendable{
 		 if (table != null) {
 			 table.putNumber("Channel", port);
 			 table.putNumber("Pitch Axis", getAxis(PITCH_AXIS));
-			 table.putNumber("Roll Axis", ROLL_AXIS);
-			 table.putNumber("Yaw Axis", YAW_AXIS);
-			 table.putNumber("Throttle Axis", THROTTLE_AXIS);
+			 table.putNumber("Roll Axis", getAxis(ROLL_AXIS));
+			 table.putNumber("Yaw Axis", getAxis(YAW_AXIS));
+			 table.putNumber("Throttle Axis", getAxis(THROTTLE_AXIS));
 		 }
 	}
 
