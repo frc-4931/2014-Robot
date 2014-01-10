@@ -1,6 +1,7 @@
 package org.frc4931.zach.diagnosticrobot;
 
 import org.frc4931.zach.diagnosticrobot.control.FlightStick;
+import org.frc4931.zach.diagnosticrobot.control.LogitechAttack;
 import org.frc4931.zach.diagnosticrobot.control.LogitechPro;
 import org.frc4931.zach.diagnosticrobot.drive.DriveTrain;
 import org.frc4931.zach.diagnosticrobot.io.AnalogInput;
@@ -19,7 +20,7 @@ public class DiagnosticRobot extends IterativeRobot{
 	public void robotInit(){
 		SmartDashboard.putData("Fader", new AnalogInput(1));
 		//SmartDashboard.putData("Motor", new AnalogOutput(1));
-		joystick = new LogitechPro(1);
+		joystick = new LogitechAttack(1);
 		SmartDashboard.putData("Joystick", joystick);
 		leftMotor = new Talon(1);
 		rightMotor = new Talon(2);
@@ -29,7 +30,7 @@ public class DiagnosticRobot extends IterativeRobot{
 	public void teleopPeriodic(){
 		SmartDashboard.putData("Joystick", joystick);
 		double rawDriveSpeed = joystick.getPitch();
-		double rawTurnSpeed = joystick.getYaw();
+		double rawTurnSpeed = joystick.getRoll()*-1;
 		double scaledDriveSpeed = rawDriveSpeed*joystick.getNormalThrottle();
 		double scaledTurnSpeed = rawTurnSpeed*joystick.getNormalThrottle();
 		drive.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
