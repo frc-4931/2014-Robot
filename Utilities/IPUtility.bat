@@ -2,16 +2,7 @@
 setlocal EnableDelayedExpansion
 echo -------------------------------------------------------------------------------
 echo                     FRC Team 4931 IP Configuration Utility
-echo ------------------------------------------------------------------------------
-::Test If script has Admin Priviledges/is elevated
-AT > NUL
-IF %ERRORLEVEL% EQU 0 (
-    goto START
-) ELSE (
-    ECHO Administrator privileges required. Please run as an administrator.
-    pause
-    EXIT /B 1
-)
+echo -------------------------------------------------------------------------------
 
 :START
 echo [1] Set IP address to interface with 2014 bridge.
@@ -21,7 +12,7 @@ SET /P choice=?
 cls
 echo -------------------------------------------------------------------------------
 echo                     FRC Team 4931 IP Configuration Utility
-echo ------------------------------------------------------------------------------
+echo -------------------------------------------------------------------------------
 IF %choice%== 1 goto NEW
 IF %choice%== 2 goto OLD
 IF %choice%== 3 goto REVERT
@@ -29,21 +20,20 @@ IF %choice%== 3 goto REVERT
 :NEW
 echo Please enter assigned IP address.
 set /p address=10.49.31.
-IF%address%
 echo Setting IP Information...
-netsh interface ip set address "Wireless" static 10.49.31.%address% 255.0.0.0
+netsh interface ip set address "Wi-Fi" static 10.49.31.%address% 255.0.0.0
 goto WAIT
 
 :OLD
 echo Please enter assigned IP address.
 set /p address=10.99.31.
 echo Setting IP Information...
-netsh interface ip set address "Wireless" static 10.49.31.%address% 255.0.0.0
+netsh interface ip set address "Wi-Fi" static 10.49.31.%address% 255.0.0.0
 goto WAIT
 
 :REVERT
 echo Resetting IP configuration to automatic...
-netsh interface ip set address "Wireless" DHCP
+netsh interface ip set address "Wi-Fi" DHCP
 ipconfig /renew
 goto WAIT
 
@@ -60,5 +50,5 @@ echo ---------------------------------------------------------------------------
 echo                     FRC Team 4931 IP Configuration Utility
 echo -------------------------------------------------------------------------------
 echo Configuration successful.
-netsh interface ip show address "Wireless"
+netsh interface ip show address "Wi-Fi"
 pause
