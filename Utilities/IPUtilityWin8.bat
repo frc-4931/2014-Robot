@@ -5,6 +5,7 @@ echo                     FRC Team 4931 IP Configuration Utility
 echo -------------------------------------------------------------------------------
 
 :START
+return a given range for each axis:
 echo [1] Set IP address to interface with 2014 bridge.
 echo [2] Set IP address to interface with 2013 bridge.
 echo [3] Reset IP settings to automatic.
