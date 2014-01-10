@@ -1,0 +1,1 @@
+IPUtlity will update your ip settings to interface with the robot.  Run the file that pertains to your operating system as an administrator (right click > run as administrator) and follow the on screen prompts.
