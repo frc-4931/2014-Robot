@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." name="2014-Robot">
+
+	<!-- This calls "ant compile" in each of the directories (under this direcotry) with a name that ends in "Robot" -->
+	<target name="all">
+		<subant target="compile">
+	        <dirset dir="." includes="*Robot"/>
+	    </subant>
+	</target>
+
+</project>
