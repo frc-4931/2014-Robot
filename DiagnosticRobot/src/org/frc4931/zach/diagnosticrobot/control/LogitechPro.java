@@ -1,6 +1,10 @@
 package org.frc4931.zach.diagnosticrobot.control;
 
-
+/**
+ * A FlightStick specifically calibrated for the Logitech Extreme 3D Pro joystick. 
+ * @author zach
+ *
+ */
 public class LogitechPro extends FlightStick{
 	/*Axes Definitions*/
 	public static final int PITCH_AXIS = 2;
@@ -8,14 +12,13 @@ public class LogitechPro extends FlightStick{
 	public static final int YAW_AXIS = 3;
 	public static final int THROTTLE_AXIS = 4;
 	
-	/*Button Definitions*/
-	//TODO Define Buttons
-	
+	/**
+	 * Creates a new Logitech Extreme 3D Pro on the given port.
+	 * @param port the port the Logitech Extreme 3D Pro is assigned in the driver station.
+	 */
 	public LogitechPro(int port){
 		super(port, "Logitech Extreme 3D Pro");
 	}
-	
-	//TODO Tune methods to return correct values.
 
 	//@Override
 	public double getPitch() {

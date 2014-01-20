@@ -1,20 +1,24 @@
 package org.frc4931.zach.diagnosticrobot.control;
 
-
+/**
+ * A FlightStick specifically calibrated for the Logitech Attack 3 joystick. 
+ * @author zach
+ *
+ */
 public class LogitechAttack extends FlightStick{
 	/*Axes Definitions*/
 	public static final int PITCH_AXIS = 2;
 	public static final int ROLL_AXIS = 1;
 	public static final int THROTTLE_AXIS = 3;
 	
-	/*Button Definitions*/
-	//TODO Define Buttons
-	
+	/**
+	 * Creates a new Logitech Attack 3 on the given port.
+	 * @param port the port the Logitech Attack 3 is assigned in the driver station.
+	 */
 	public LogitechAttack(int port) {
 		super(port, "Logitech Attack 3");
 	}
 
-	//TODO Tune methods to return correct values.
 	//@Override
 	public double getPitch() {
 		return -1*getAxis(PITCH_AXIS);
