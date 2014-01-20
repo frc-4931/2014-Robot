@@ -8,7 +8,7 @@ public class DriveTrain extends RobotDrive implements Sendable{
 	private Motor rightMotor;
 	private Motor leftMotor;
 	public DriveTrain(Motor leftMotor, Motor rightMotor){
-		super(leftMotor.controller, rightMotor.controller);
+		super(leftMotor.getController(), rightMotor.getController());
 		this.rightMotor=rightMotor;
 		this.leftMotor=leftMotor;
 	}

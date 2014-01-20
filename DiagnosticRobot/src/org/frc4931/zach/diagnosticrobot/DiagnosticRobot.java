@@ -18,6 +18,7 @@ public class DiagnosticRobot extends IterativeRobot{
 	public DriveTrain drive;
 	
 	public int buttonCooldown = 0;
+	public int driveMode = 0;
 	public boolean strafe = false;
 	public boolean modified = false;
 	public boolean arcadeDrive = false;
@@ -38,43 +39,64 @@ public class DiagnosticRobot extends IterativeRobot{
 		SmartDashboard.putData("Drive Train", drive);
 		buttonCooldown--;
 		buttonCooldown=Math.max(0, buttonCooldown);
-		if(joystick.getRawButton(1)&&buttonCooldown==0){
-			arcadeDrive=!arcadeDrive;
+		if(joystick.getRawButton(7)&&buttonCooldown==0){
+			driveMode = 0;
 			buttonCooldown = 10;
 		}
-		if(joystick.getRawButton(2)&&buttonCooldown==0){
-			strafe=!strafe;
+		if(joystick.getRawButton(8)&&buttonCooldown==0){
+			driveMode = 1;
 			buttonCooldown = 10;
 		}
-		if(joystick.getRawButton(3)&&buttonCooldown==0){
-			modified = !modified;
+		if(joystick.getRawButton(9)&&buttonCooldown==0){
+			driveMode = 2;
+			buttonCooldown = 10;
+		}
+		if(joystick.getRawButton(11)&&buttonCooldown==0){
+			driveMode = 3;
 			buttonCooldown = 10;
 		}
 		drive();
 	}
 	
 	private void drive(){
-		if(arcadeDrive){
-			double rawDriveSpeed = 0;
-			double rawTurnSpeed = 0;
-			if(strafe){
-				rawDriveSpeed = joystick.getRoll();
-				rawTurnSpeed = joystick.getYaw()*-1;
-			}else if(!strafe){
-				rawDriveSpeed = joystick.getPitch();
-				if(!modified){
-					rawTurnSpeed = joystick.getRoll()*-1;
-				}else if(modified){
-					rawTurnSpeed = joystick.getYaw()*-1;
-				}
-			}
-			double scaledDriveSpeed = rawDriveSpeed*joystick.getNormalThrottle();
-			double scaledTurnSpeed = rawTurnSpeed*joystick.getNormalThrottle();
+		double rawDriveSpeed;
+		double rawTurnSpeed;
+		double scaledDriveSpeed;
+		double scaledTurnSpeed;
+		switch (driveMode) {
+		case 0:	//Regular Arcade
+			rawDriveSpeed = joystick.getPitch();
+			rawTurnSpeed = joystick.getRoll()*-1;
+			scaledDriveSpeed = rawDriveSpeed*joystick.getNormalThrottle();
+			scaledTurnSpeed = rawTurnSpeed*joystick.getNormalThrottle();
 			drive.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
-		}else if(!arcadeDrive){
+			break;
+			
+		case 1:	//Twist to turn
+			rawDriveSpeed = joystick.getPitch();
+			rawTurnSpeed = joystick.getYaw()*-1;
+			scaledDriveSpeed = rawDriveSpeed*joystick.getNormalThrottle();
+			scaledTurnSpeed = rawTurnSpeed*joystick.getNormalThrottle();
+			drive.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
+			break;
+			
+		case 2: //Strafe
+			rawDriveSpeed = joystick.getRoll();
+			rawTurnSpeed = joystick.getYaw()*-1;
+			scaledDriveSpeed = rawDriveSpeed*joystick.getNormalThrottle();
+			scaledTurnSpeed = rawTurnSpeed*joystick.getNormalThrottle();
+			drive.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
+			break;
+			
+		case 3:	//Tank Drive
 			double scaledRightSpeed = joystick.getPitch()*joystick.getNormalThrottle();
 			double scaledLeftSpeed = attack.getPitch()*joystick.getNormalThrottle();
 			drive.tankDrive(scaledLeftSpeed, scaledRightSpeed);
+			break;
+			
+		default:	//Invalid case
+			break;
+			
 		}
 	}
 }
