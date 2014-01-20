@@ -6,12 +6,19 @@ import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
+/**
+ * A class that represents a physical analog sensor plugged into a specified analog input.
+ * @author zach
+ *
+ */
 public class AnalogInput extends AnalogChannel implements Sendable{
-	private int channel;
 	private int offset;
 	private int offsetMax;
 	private boolean calibrated;
-	private String type;
+	
+	private final int channel;
+	private final String type;
+	private ITable table;
 	
 	/**
 	 * Creates a new AnalogInput class that can access analog inputs and display them on the SmartDashboard.
@@ -70,7 +77,6 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 	}
 	
 	/*SmartDashboard Information*/
-	private ITable table;
 	//@Override
 	public String getSmartDashboardType() {
 		return type;
