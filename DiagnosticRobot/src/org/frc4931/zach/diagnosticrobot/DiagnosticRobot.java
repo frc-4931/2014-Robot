@@ -5,7 +5,6 @@ import org.frc4931.zach.diagnosticrobot.control.LogitechAttack;
 import org.frc4931.zach.diagnosticrobot.control.LogitechPro;
 import org.frc4931.zach.diagnosticrobot.drive.DriveTrain;
 import org.frc4931.zach.diagnosticrobot.drive.Motor;
-import org.frc4931.zach.diagnosticrobot.io.AnalogInput;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,19 +18,13 @@ public class DiagnosticRobot extends IterativeRobot{
 	
 	public int buttonCooldown = 0;
 	public int driveMode = 0;
-	public boolean strafe = false;
-	public boolean modified = false;
-	public boolean arcadeDrive = false;
 	//@Override
 	public void robotInit(){
-		SmartDashboard.putData("Fader", new AnalogInput(1));
 		joystick = new LogitechPro(1);
 		attack = new LogitechAttack(2);
-		SmartDashboard.putData("Joystick", joystick);
 		leftMotor = new Motor(1,"Talon Speed Controller");
 		rightMotor = new Motor(2, "Talon Speed Controller");
 		drive = new DriveTrain(leftMotor, rightMotor);
-		SmartDashboard.putData("Drive Train", drive);
 	}
 	//@Override
 	public void teleopPeriodic(){
