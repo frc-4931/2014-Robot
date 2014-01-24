@@ -22,8 +22,8 @@ public class DiagnosticRobot extends IterativeRobot{
 	public void robotInit(){
 		joystick = new LogitechPro(1);
 		attack = new LogitechAttack(2);
-		leftMotor = new Motor(1,"Talon Speed Controller");
-		rightMotor = new Motor(2, "Talon Speed Controller");
+		leftMotor = new Motor(1,"Jaguar Speed Controller");
+		rightMotor = new Motor(2, "Jaguar Speed Controller");
 		drive = new DriveTrain(leftMotor, rightMotor);
 	}
 	//@Override
