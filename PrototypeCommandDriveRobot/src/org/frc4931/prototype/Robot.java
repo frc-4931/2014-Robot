@@ -11,7 +11,8 @@ import org.frc4931.prototype.command.DriveForwardAndBackward;
 import org.frc4931.prototype.command.RunTests;
 import org.frc4931.prototype.device.Throttle;
 import org.frc4931.prototype.subsystem.DriveTrain;
-import org.frc4931.prototype.subsystem.TalonDriveTrain;
+import org.frc4931.prototype.subsystem.JaguarDriveTrain;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.command.Command;
@@ -77,8 +78,8 @@ public class Robot extends IterativeRobot {
     protected static DriveTrain createDriveTrain() {
         Throttle throttle = new Throttle("Throttle", DriveMotors.THROTTLE_CHANNEL, DriveMotors.THROTTLE_VOLTAGE_RANGE,
                                          DriveMotors.PERCENT_CHANGE_DETECTED);
-        // return new JaguarDriveTrain(throttle);
-        return new TalonDriveTrain(throttle);
+         return new JaguarDriveTrain(throttle);
+        //return new TalonDriveTrain(throttle);
     }
 
     /**
