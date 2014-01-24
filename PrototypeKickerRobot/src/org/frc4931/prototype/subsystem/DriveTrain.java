@@ -10,8 +10,9 @@ import org.frc4931.prototype.Robot;
 import org.frc4931.prototype.Robot.KickMotors;
 import org.frc4931.prototype.command.StartKick;
 import org.frc4931.prototype.command.StopKick;
+
+import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.tables.ITable;
@@ -27,8 +28,8 @@ public class DriveTrain extends Subsystem {
     private static final double MAX_KICK_DURATION_IN_SECONDS = 2.0d;
     private static final double MIN_KICK_DURATION_IN_SECONDS = 0.0d;
 
-    protected final Talon leftMotor;
-    protected final Talon rightMotor;
+    protected final Jaguar leftMotor;
+    protected final Jaguar rightMotor;
     private final RobotDrive drive;
 
     private volatile double speedFactor = MAX_SPEED_FACTOR;
@@ -37,8 +38,8 @@ public class DriveTrain extends Subsystem {
 
     public DriveTrain() {
         // Set up the motors ...
-        this.leftMotor = new Talon(Robot.KickMotors.LEFT_PORT);
-        this.rightMotor = new Talon(Robot.KickMotors.RIGHT_PORT);
+        this.leftMotor = new Jaguar(Robot.KickMotors.LEFT_PORT);
+        this.rightMotor = new Jaguar(Robot.KickMotors.RIGHT_PORT);
 
         // And the drive controller ...
         drive = new RobotDrive(leftMotor, rightMotor);
