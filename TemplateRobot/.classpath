@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/sunspotfrcsdk/lib/squawk.jar"/>
 	<classpathentry kind="lib" path="/sunspotfrcsdk/lib/wpilibj.jar"/>
+	<classpathentry kind="lib" path="/sunspotfrcsdk/lib/networktables-crio.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
