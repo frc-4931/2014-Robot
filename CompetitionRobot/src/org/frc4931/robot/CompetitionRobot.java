@@ -17,6 +17,6 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	public void teleopPeriodic(){
 		Scheduler.getInstance().run();
-		new ArcadeDriveWithJoystick();
+		Scheduler.getInstance().add(new ArcadeDriveWithJoystick());
 	}
 }
