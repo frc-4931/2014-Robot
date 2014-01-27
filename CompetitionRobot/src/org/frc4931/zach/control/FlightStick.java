@@ -2,6 +2,7 @@ package org.frc4931.zach.control;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 /**
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
 public abstract class FlightStick extends Joystick implements Sendable{
 	private final String type;
 	protected final int port;
+	public JoystickButton[] buttons;
 	
 	protected ITable table;
 	

@@ -1,5 +1,6 @@
 package org.frc4931.robot.command;
 
+import org.frc4931.robot.OperatorInterface;
 import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -14,10 +15,10 @@ public class StrafeDriveWithJoystick extends Command{
 	}
 
 	protected void execute() {
-		double rawDriveSpeed = Subsystems.joystick.getRoll();
-		double rawTurnSpeed = Subsystems.joystick.getYaw()*-1;
-		double scaledDriveSpeed = rawDriveSpeed*Subsystems.joystick.getNormalThrottle();
-		double scaledTurnSpeed = rawTurnSpeed*Subsystems.joystick.getNormalThrottle();
+		double rawDriveSpeed = OperatorInterface.joysticks[0].getRoll();
+		double rawTurnSpeed = OperatorInterface.joysticks[0].getYaw()*-1;
+		double scaledDriveSpeed = rawDriveSpeed*OperatorInterface.joysticks[0].getNormalThrottle();
+		double scaledTurnSpeed = rawTurnSpeed*OperatorInterface.joysticks[0].getNormalThrottle();
 		Subsystems.driveTrain.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
 	}
 

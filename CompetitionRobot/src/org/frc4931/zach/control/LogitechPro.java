@@ -1,11 +1,15 @@
 package org.frc4931.zach.control;
 
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 /**
  * A FlightStick specifically calibrated for the Logitech Extreme 3D Pro joystick. 
  * @author zach
  *
  */
 public class LogitechPro extends FlightStick{
+	private static final int NUM_BUTTONS = 12;
+	
 	/*Axes Definitions*/
 	public static final int PITCH_AXIS = 2;
 	public static final int ROLL_AXIS = 1;
@@ -18,6 +22,10 @@ public class LogitechPro extends FlightStick{
 	 */
 	public LogitechPro(int port){
 		super(port, "Logitech Extreme 3D Pro");
+		buttons = new JoystickButton[NUM_BUTTONS];
+		for(int i=0; i<NUM_BUTTONS;i++){
+			buttons[i] = new JoystickButton(this, i+1);
+		}
 	}
 
 	//@Override
