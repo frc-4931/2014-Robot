@@ -22,9 +22,9 @@ public class LogitechPro extends FlightStick{
 	 */
 	public LogitechPro(int port){
 		super(port, "Logitech Extreme 3D Pro");
-		buttons = new JoystickButton[NUM_BUTTONS];
-		for(int i=0; i<NUM_BUTTONS;i++){
-			buttons[i] = new JoystickButton(this, i+1);
+		buttons = new JoystickButton[NUM_BUTTONS+1];
+		for(int i=1; i<NUM_BUTTONS+1;i++){
+			buttons[i] = new JoystickButton(this, i);
 		}
 	}
 

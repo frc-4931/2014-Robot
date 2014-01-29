@@ -1,5 +1,7 @@
 package org.frc4931.zach.control;
 
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 /**
  * A FlightStick specifically calibrated for the Logitech Attack 3 joystick. 
  * @author zach
@@ -10,6 +12,7 @@ public class LogitechAttack extends FlightStick{
 	public static final int PITCH_AXIS = 2;
 	public static final int ROLL_AXIS = 1;
 	public static final int THROTTLE_AXIS = 3;
+	public static final int NUM_BUTTONS = 11;
 	
 	/**
 	 * Creates a new Logitech Attack 3 on the given port.
@@ -17,6 +20,10 @@ public class LogitechAttack extends FlightStick{
 	 */
 	public LogitechAttack(int port) {
 		super(port, "Logitech Attack 3");
+		buttons = new JoystickButton[NUM_BUTTONS+1];
+		for(int i=1; i<NUM_BUTTONS+1;i++){
+			buttons[i] = new JoystickButton(this, i);
+		}
 	}
 
 	//@Override
