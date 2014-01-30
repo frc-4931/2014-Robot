@@ -25,10 +25,20 @@ public class DriveTrain extends Subsystem{
 		this.leftMotor=leftMotor;
 	}
 	
+	/**
+	 * Drive this drive train in tank mode.
+	 * @param leftSpeed the speed of the left motor from -1.0 to 1.0.
+	 * @param rightSpeed the speed of the right motor from -1.0 to 1.0.
+	 */
 	public void tankDrive(double leftSpeed, double rightSpeed){
 		drive.tankDrive(leftSpeed, rightSpeed);
 	}
 	
+	/**
+	 * Drive this drive train in arcade mode.
+	 * @param driveSpeed the forward speed from -1.0 to 1.0.
+	 * @param turnSpeed the turn rate from -1.0 to 1.0.
+	 */
 	public void arcadeDrive(double driveSpeed, double turnSpeed){
 		drive.arcadeDrive(driveSpeed, turnSpeed);
 	}

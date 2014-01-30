@@ -5,6 +5,11 @@ import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Drives the robot in arcade mode using pitch for speed and yaw for turn.
+ * @author zach
+ *
+ */
 public class ModifiedDriveWithJoystick extends Command{
 	
 	public ModifiedDriveWithJoystick(){

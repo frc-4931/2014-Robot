@@ -5,6 +5,11 @@ import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Drives the robot in tank mode using joystick 1 for left speed and joystick 2 for right speed.
+ * @author zach
+ *
+ */
 public class TankDriveWithJoysticks extends Command{
 
 	public TankDriveWithJoysticks() {
