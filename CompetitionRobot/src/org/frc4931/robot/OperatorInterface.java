@@ -6,7 +6,7 @@ import org.frc4931.zach.control.LogitechAttack;
 import org.frc4931.zach.control.LogitechPro;
 
 public class OperatorInterface {
-	static public FlightStick[] joysticks;
+	public static FlightStick[] joysticks;
 	/**
 	 * Sets up the operator interface
 	 */
