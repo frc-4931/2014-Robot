@@ -11,21 +11,18 @@ public class OperatorInterface {
 	 * Sets up the operator interface
 	 */
 	public static void init(){
-		initJoysticks();
-		initButtonCommands();
-	}
-	/**
-	 * Creates new joystick objects
-	 */
-	public static void initJoysticks(){
+		//Initialize Joysticks
 		joysticks = new FlightStick[2];
 		joysticks[0] = new LogitechPro(1);
 		joysticks[1] = new LogitechAttack(2);
+		
+		//Initialize Commands
+		initButtonCommands();
 	}
 	/**
 	 * Initializes commands on joystick buttons.
 	 */
-	public static void initButtonCommands(){
+	private static void initButtonCommands(){
 		joysticks[0].buttons[7].whenPressed(new ChangeDriveMode(0));
 		joysticks[0].buttons[8].whenPressed(new ChangeDriveMode(1));
 		joysticks[0].buttons[9].whenPressed(new ChangeDriveMode(2));
