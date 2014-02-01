@@ -8,10 +8,15 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class CompetitionRobot extends IterativeRobot{
+	public static final int LEFT_FRONT_PORT = 1;
+	public static final int RIGHT_FRONT_PORT = 3;
+	public static final int LEFT_REAR_PORT = 2;
+	public static final int RIGHT_REAR_PORT = 4;
+	
 	public int driveMode = 0;
 	public void robotInit(){
 		Subsystems.robot = this;
-		Subsystems.driveTrain = new DriveTrain(new Motor(1, "Jaguar Speed Controller"), new Motor(2, "Jaguar Speed Controller"));
+		Subsystems.driveTrain = new DriveTrain(new Motor(LEFT_FRONT_PORT, "Talon Speed Controller"), new Motor(LEFT_REAR_PORT, "Talon Speed Controller"), new Motor(RIGHT_FRONT_PORT, "Talon Speed Controller"), new Motor(RIGHT_REAR_PORT, "Talon Speed Controller"));
 		OperatorInterface.init();
 	}
 	public void teleopPeriodic(){
