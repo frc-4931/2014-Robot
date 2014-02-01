@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author zach
  */
 public class DriveTrain extends Subsystem{
-	private final Motor rightMotor;
-	private final Motor leftMotor;
+	private final Motor rightFrontMotor;
+	private final Motor leftFrontMotor;
+	private final Motor rightRearMotor;
+	private final Motor leftRearMotor;
 	private final RobotDrive drive;
 	
 	/**
@@ -21,9 +23,20 @@ public class DriveTrain extends Subsystem{
 	 */
 	public DriveTrain(Motor leftMotor, Motor rightMotor){
 		drive = new RobotDrive(leftMotor.getController(), rightMotor.getController());
-		this.rightMotor=rightMotor;
-		this.leftMotor=leftMotor;
+		this.rightFrontMotor=rightMotor;
+		this.leftFrontMotor=leftMotor;
+		this.rightRearMotor=null;
+		this.leftRearMotor=null;
 	}
+	
+	public DriveTrain(Motor leftFrontMotor, Motor leftRearMotor, Motor rightFrontMotor, Motor rightRearMotor){
+		drive = new RobotDrive(leftFrontMotor.getController(),leftRearMotor.getController(),rightFrontMotor.getController(),rightRearMotor.getController());
+		this.rightFrontMotor=rightFrontMotor;
+		this.leftFrontMotor=leftFrontMotor;
+		this.rightRearMotor=rightRearMotor;
+		this.leftRearMotor=leftRearMotor;
+	}
+	
 	
 	/**
 	 * Drive this drive train in tank mode.
@@ -44,19 +57,35 @@ public class DriveTrain extends Subsystem{
 	}
 	
 	public Motor getLeftMotor(){
-		return leftMotor;
+		return leftFrontMotor;
+	}
+	
+	public Motor getLeftRearMotor(){
+		return leftRearMotor;
 	}
 	
 	public Motor getRightMotor(){
-		return rightMotor;
+		return rightFrontMotor;
+	}
+	
+	public Motor getRightRearMotor(){
+		return rightRearMotor;
 	}
 	
 	public double getLeftSpeed(){
-		return leftMotor.getSpeed();
+		return leftFrontMotor.getSpeed();
+	}
+	
+	public double getLeftRearSpeed(){
+		return leftRearMotor.getSpeed();
 	}
 	
 	public double getRightSpeed(){
-		return rightMotor.getSpeed();
+		return rightFrontMotor.getSpeed();
+	}
+	
+	public double getRightRearSpeed(){
+		return rightRearMotor.getSpeed();
 	}
 
 	protected void initDefaultCommand() {
