@@ -1,6 +1,6 @@
 package org.frc4931.robot;
 
-import org.frc4931.robot.command.ChangeDriveMode;
+import org.frc4931.robot.command.*;
 import org.frc4931.zach.control.FlightStick;
 import org.frc4931.zach.control.LogitechAttack;
 import org.frc4931.zach.control.LogitechPro;
@@ -27,5 +27,7 @@ public class OperatorInterface {
 		joysticks[0].buttons[8].whenPressed(new ChangeDriveMode(1));
 		joysticks[0].buttons[9].whenPressed(new ChangeDriveMode(2));
 		joysticks[0].buttons[11].whenPressed(new ChangeDriveMode(3));
+		joysticks[0].buttons[3].whenPressed(new CloseNet());
+		joysticks[0].buttons[4].whenPressed(new OpenNet());
 	}
 }

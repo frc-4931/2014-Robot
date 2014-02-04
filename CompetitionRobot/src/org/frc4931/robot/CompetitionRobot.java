@@ -3,6 +3,8 @@ package org.frc4931.robot;
 import org.frc4931.robot.command.*;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
+import org.frc4931.robot.subsystems.Net;
+import org.frc4931.zach.drive.LimitedMotor;
 import org.frc4931.zach.drive.Motor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -36,6 +38,12 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.robot = this;
 		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY,COMPRESSOR_PRESSURESWITCH);
+		//TODO Fix This
+		Subsystems.net = new Net(
+				new LimitedMotor(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT_MAX, NET_SWITCH_LEFT_MIN),
+				new LimitedMotor(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT_MAX, NET_SWITCH_RIGHT_MIN)
+				);
+		
 		OperatorInterface.init();
 	}
 	public void teleopPeriodic(){
