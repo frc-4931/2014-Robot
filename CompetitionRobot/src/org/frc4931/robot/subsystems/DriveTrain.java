@@ -37,6 +37,14 @@ public class DriveTrain extends Subsystem{
 		this.leftRearMotor=leftRearMotor;
 	}
 	
+	public DriveTrain(int leftFrontMotor, int leftRearMotor, int rightFrontMotor, int rightRearMotor, int controller){
+		this.leftFrontMotor = new Motor(leftFrontMotor,controller);
+		this.leftRearMotor = new Motor(leftRearMotor,controller);
+		this.rightFrontMotor = new Motor(rightFrontMotor,controller);
+		this.rightRearMotor = new Motor(rightRearMotor,controller);
+		drive = new RobotDrive(this.leftFrontMotor.getController(),this.leftRearMotor.getController(),this.rightFrontMotor.getController(),this.rightRearMotor.getController());
+	}
+	
 	
 	/**
 	 * Drive this drive train in tank mode.

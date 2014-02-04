@@ -1,13 +1,13 @@
 package org.frc4931.robot.command;
 
-import org.frc4931.zach.drive.Motor;
+import org.frc4931.zach.drive.LimitedMotor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MinimizeMotor extends Command{
-	private final Motor motor;
+	private final LimitedMotor motor;
 	private final double speed;
-	public MinimizeMotor(Motor motor, double speed){
+	public MinimizeMotor(LimitedMotor motor, double speed){
 		this.motor = motor;
 		this.speed = Math.abs(speed);
 	}
@@ -27,7 +27,7 @@ public class MinimizeMotor extends Command{
 	}
 
 	protected boolean isFinished() {
-		return motor.isMin();
+		return motor.isLow();
 	}
 
 }
