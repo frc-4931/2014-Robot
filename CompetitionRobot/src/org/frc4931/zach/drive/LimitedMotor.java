@@ -16,5 +16,13 @@ public class LimitedMotor extends Motor{
 	public boolean isLow(){
 		return lowLimit.get();
 	}
+	//@Override
+	public void setSpeed(double speed){
+		if(!isHigh()&&!isLow()){
+			controller.set(speed);
+		}else{
+			stop();
+		}
+	}
 
 }

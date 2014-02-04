@@ -15,7 +15,7 @@ public class Motor implements Sendable{
 	public static final int VICTOR_SPEED_CONTROLLER = 2;
 	public static final int JAGUAR_SPEED_CONTROLLER = 3;
 	
-	private final SpeedController controller;
+	protected final SpeedController controller;
 	private final int channel;
 	
 	private final String type;
