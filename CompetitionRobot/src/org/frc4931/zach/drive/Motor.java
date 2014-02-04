@@ -1,4 +1,5 @@
 package org.frc4931.zach.drive;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -16,6 +17,9 @@ public class Motor implements Sendable{
 	
 	private final String type;
 	private ITable table;
+	
+	private final DigitalInput upperLim;
+	private final DigitalInput lowerLim;
 	
 	/**
 	 * Creates a motor class of the specified type on the given channel.
@@ -39,6 +43,27 @@ public class Motor implements Sendable{
 		}else{
 			controller = null;
 		}
+		upperLim = null;
+		lowerLim = null;
+	}
+	
+	public Motor(int channel, String type, DigitalInput upperLimitSwitch, DigitalInput lowerLimitSwitch){
+		this.type = type;
+		this.channel = channel;
+		if(type.toLowerCase().indexOf("talon")!=-1){
+			System.out.println("Created Talon on channel "+channel);
+			controller = new Talon(channel);
+		}else if(type.toLowerCase().indexOf("jaguar")!=-1){
+			System.out.println("Created Jaguar on channel "+channel);
+			controller = new Jaguar(channel);
+		}else if(type.toLowerCase().indexOf("victor")!=-1){
+			System.out.println("Created Victor on channel "+channel);
+			controller = new Victor(channel);
+		}else{
+			controller = null;
+		}
+		upperLim = upperLimitSwitch;
+		lowerLim = lowerLimitSwitch;
 	}
 	
 	/**Set the speed of the motor as a double between -1.0 and 1.0.
@@ -63,6 +88,18 @@ public class Motor implements Sendable{
 	 */
 	public SpeedController getController(){
 		return controller;
+	}
+	
+	public boolean isMax(){
+		return upperLim.get();
+	}
+	
+	public boolean isMin(){
+		return lowerLim.get();
+	}
+	
+	public void stop(){
+		setSpeed(0);
 	}
 	
 	/*SmartDashboard Information*/
