@@ -28,23 +28,6 @@ public class Motor implements Sendable{
 	 * It must contain the case insensitive string "talon", "jaguar", 
 	 * or "victor" depending on the type of the motor controller.
 	 */
-	public Motor(int channel, String type){
-		this.type = type;
-		this.channel = channel;
-		if(type.toLowerCase().indexOf("talon")!=-1){
-			System.out.println("Created Talon on channel "+channel);
-			controller = new Talon(channel);
-		}else if(type.toLowerCase().indexOf("jaguar")!=-1){
-			System.out.println("Created Jaguar on channel "+channel);
-			controller = new Jaguar(channel);
-		}else if(type.toLowerCase().indexOf("victor")!=-1){
-			System.out.println("Created Victor on channel "+channel);
-			controller = new Victor(channel);
-		}else{
-			controller = null;
-		}
-	}
-	
 	public Motor(int channel, int type){
 		this.type = ""+type;
 		this.channel = channel;
