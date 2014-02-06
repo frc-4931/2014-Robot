@@ -1,12 +1,15 @@
 package org.frc4931.robot.command.net;
 
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.subsystems.Net;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CloseNet extends Command{
 	public CloseNet() {
-		requires(Subsystems.net);
+		requires(Subsystems.RightNet);
+		requires(Subsystems.LeftNet);
 	}
 
 	protected void end() {
@@ -14,7 +17,9 @@ public class CloseNet extends Command{
 	}
 
 	protected void execute() {
-		Subsystems.net.close(0.5);
+		Subsystems.RightNet.close(0.5);
+		Timer.delay(Net.DELAY);
+		Subsystems.LeftNet.close(0.5);
 	}
 
 	protected void initialize() {
@@ -26,7 +31,7 @@ public class CloseNet extends Command{
 	}
 
 	protected boolean isFinished() {
-		return Subsystems.net.isClosed();
+		return Subsystems.RightNet.isClosed()&&Subsystems.LeftNet.isClosed();
 	}
 
 }

@@ -1,22 +1,24 @@
 package org.frc4931.robot.command.net;
 
+import org.frc4931.robot.subsystems.Net;
 import org.frc4931.zach.drive.SingleLimitMotor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ToggleMotor extends Command{
+public class ToggleNet extends Command{
 	private final double speed;
 	private final SingleLimitMotor motor;
 	private final long maxTime;
 	private final long startTime;
-	public ToggleMotor(SingleLimitMotor motor, double speed) {
+	public ToggleNet(Net net, double speed) {
+		requires(net);
 		this.speed = Math.abs(speed);
-		this.motor = motor;
+		this.motor = net.motor;
 		startTime = System.currentTimeMillis();
 		maxTime = 5000;
 	}
 
-	public ToggleMotor(SingleLimitMotor motor, double speed, long time) {
+	public ToggleNet(SingleLimitMotor motor, double speed, long time) {
 		this.speed = Math.abs(speed);
 		this.motor = motor;
 		startTime = System.currentTimeMillis();

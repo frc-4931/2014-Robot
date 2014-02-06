@@ -1,6 +1,5 @@
 package org.frc4931.robot;
 
-import org.frc4931.robot.command.*;
 import org.frc4931.robot.command.drive.ChangeDriveMode;
 import org.frc4931.robot.command.net.CloseNet;
 import org.frc4931.robot.command.net.OpenNet;

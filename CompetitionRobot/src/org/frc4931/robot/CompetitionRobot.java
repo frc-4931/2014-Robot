@@ -1,9 +1,13 @@
 package org.frc4931.robot;
 
-import org.frc4931.robot.command.drive.*;
-import org.frc4931.robot.subsystems.*;
+import org.frc4931.robot.command.drive.ArcadeDriveWithJoystick;
+import org.frc4931.robot.command.drive.ModifiedDriveWithJoystick;
+import org.frc4931.robot.command.drive.StrafeDriveWithJoystick;
+import org.frc4931.robot.command.drive.TankDriveWithJoysticks;
+import org.frc4931.robot.subsystems.Compressor;
+import org.frc4931.robot.subsystems.DriveTrain;
+import org.frc4931.robot.subsystems.Net;
 import org.frc4931.zach.drive.Motor;
-import org.frc4931.zach.drive.SingleLimitMotor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,10 +42,8 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.robot = this;
 		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
-		//TODO Fix This
-		Subsystems.net = new Net(
-			new SingleLimitMotor(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT),
-			new SingleLimitMotor(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT));
+		Subsystems.LeftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, Net.LEFT);
+		Subsystems.RightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, Net.RIGHT);
 		OperatorInterface.init();
 	}
 	public void teleopPeriodic(){
