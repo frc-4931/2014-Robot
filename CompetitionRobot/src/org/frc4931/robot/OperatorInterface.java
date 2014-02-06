@@ -1,6 +1,9 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.command.*;
+import org.frc4931.robot.command.drive.ChangeDriveMode;
+import org.frc4931.robot.command.net.CloseNet;
+import org.frc4931.robot.command.net.OpenNet;
 import org.frc4931.zach.control.FlightStick;
 import org.frc4931.zach.control.LogitechAttack;
 import org.frc4931.zach.control.LogitechPro;

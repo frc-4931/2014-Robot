@@ -1,4 +1,4 @@
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.net;
 
 import org.frc4931.zach.drive.SingleLimitMotor;
 

@@ -1,18 +1,18 @@
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.drive;
 
-import org.frc4931.robot.Subsystems;
 import org.frc4931.robot.OperatorInterface;
+import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Drives the robot in arcade mode using pitch for speed and rolls for turn.
+ * Drives the robot in arcade mode using roll for speed and yaw for turn.
  * @author zach
  *
  */
-public class ArcadeDriveWithJoystick extends Command{
-	
-	public ArcadeDriveWithJoystick(){
+public class StrafeDriveWithJoystick extends Command{
+
+	public StrafeDriveWithJoystick() {
 		requires(Subsystems.driveTrain);
 	}
 
@@ -20,8 +20,8 @@ public class ArcadeDriveWithJoystick extends Command{
 	}
 
 	protected void execute() {
-		double rawDriveSpeed = OperatorInterface.joysticks[0].getPitch();
-		double rawTurnSpeed = OperatorInterface.joysticks[0].getRoll()*-1;
+		double rawDriveSpeed = OperatorInterface.joysticks[0].getRoll();
+		double rawTurnSpeed = OperatorInterface.joysticks[0].getYaw()*-1;
 		double scaledDriveSpeed = rawDriveSpeed*OperatorInterface.joysticks[0].getNormalThrottle();
 		double scaledTurnSpeed = rawTurnSpeed*OperatorInterface.joysticks[0].getNormalThrottle();
 		Subsystems.driveTrain.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
@@ -37,5 +37,7 @@ public class ArcadeDriveWithJoystick extends Command{
 	protected void interrupted() {
 		end();
 	}
+	
+	
 
 }

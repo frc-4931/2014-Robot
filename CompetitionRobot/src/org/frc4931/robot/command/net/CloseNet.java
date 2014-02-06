@@ -1,32 +1,32 @@
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.net;
 
 import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class OpenNet extends Command{
-	public OpenNet() {
+public class CloseNet extends Command{
+	public CloseNet() {
 		requires(Subsystems.net);
 	}
 
 	protected void end() {
-		System.out.println("Net Opened");
+		System.out.println("Net Closed");
 	}
 
 	protected void execute() {
-		Subsystems.net.open(0.5);
+		Subsystems.net.close(0.5);
 	}
 
 	protected void initialize() {
 	}
 
 	protected void interrupted() {
-		System.out.println("Net Opening Interupted");
+		System.out.println("Net Closing Interupted");
 		end();
 	}
 
 	protected boolean isFinished() {
-		return Subsystems.net.isOpen();
+		return Subsystems.net.isClosed();
 	}
 
 }

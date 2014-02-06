@@ -1,6 +1,6 @@
 package org.frc4931.robot.subsystems;
 
-import org.frc4931.robot.command.ToggleMotor;
+import org.frc4931.robot.command.net.ToggleMotor;
 import org.frc4931.zach.drive.SingleLimitMotor;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
