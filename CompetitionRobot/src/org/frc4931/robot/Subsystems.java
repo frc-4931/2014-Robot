@@ -11,6 +11,6 @@ public class Subsystems {
 	public static DriveTrain driveTrain;
 	public static CollectionMechanism collectionMechanism;
 	public static Compressor compressor;
-	public static Net LeftNet;
-	public static Net RightNet;
+	public static Net leftNet;
+	public static Net rightNet;
 }

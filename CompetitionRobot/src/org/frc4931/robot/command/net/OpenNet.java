@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class OpenNet extends Command{
 	public OpenNet() {
-		requires(Subsystems.LeftNet);
-		requires(Subsystems.RightNet);
+		requires(Subsystems.leftNet);
+		requires(Subsystems.rightNet);
 	}
 
 	protected void end() {
@@ -17,9 +17,9 @@ public class OpenNet extends Command{
 	}
 
 	protected void execute() {
-		Subsystems.RightNet.open(0.5);
+		Subsystems.rightNet.open(0.5);
 		Timer.delay(Net.DELAY);
-		Subsystems.LeftNet.open(0.5);
+		Subsystems.leftNet.open(0.5);
 	}
 
 	protected void initialize() {
@@ -31,7 +31,7 @@ public class OpenNet extends Command{
 	}
 
 	protected boolean isFinished() {
-		return Subsystems.RightNet.isOpen()&&Subsystems.LeftNet.isOpen();
+		return Subsystems.rightNet.isOpen()&&Subsystems.leftNet.isOpen();
 	}
 
 }

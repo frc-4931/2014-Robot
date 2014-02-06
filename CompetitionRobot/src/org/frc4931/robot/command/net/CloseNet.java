@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class CloseNet extends Command{
 	public CloseNet() {
-		requires(Subsystems.RightNet);
-		requires(Subsystems.LeftNet);
+		requires(Subsystems.rightNet);
+		requires(Subsystems.leftNet);
 	}
 
 	protected void end() {
@@ -17,9 +17,9 @@ public class CloseNet extends Command{
 	}
 
 	protected void execute() {
-		Subsystems.RightNet.close(0.5);
+		Subsystems.rightNet.close(0.5);
 		Timer.delay(Net.DELAY);
-		Subsystems.LeftNet.close(0.5);
+		Subsystems.leftNet.close(0.5);
 	}
 
 	protected void initialize() {
@@ -31,7 +31,7 @@ public class CloseNet extends Command{
 	}
 
 	protected boolean isFinished() {
-		return Subsystems.RightNet.isClosed()&&Subsystems.LeftNet.isClosed();
+		return Subsystems.rightNet.isClosed()&&Subsystems.leftNet.isClosed();
 	}
 
 }
