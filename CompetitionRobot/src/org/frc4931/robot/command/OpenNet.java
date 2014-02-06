@@ -14,7 +14,7 @@ public class OpenNet extends Command{
 	}
 
 	protected void execute() {
-		Subsystems.net.open(1.0);
+		Subsystems.net.open(0.5);
 	}
 
 	protected void initialize() {

@@ -14,7 +14,7 @@ public class CloseNet extends Command{
 	}
 
 	protected void execute() {
-		Subsystems.net.close(1.0);
+		Subsystems.net.close(0.5);
 	}
 
 	protected void initialize() {

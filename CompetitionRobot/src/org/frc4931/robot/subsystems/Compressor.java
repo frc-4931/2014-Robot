@@ -32,7 +32,7 @@ public class Compressor extends Subsystem{
 	}
 	
 	public boolean testPressure(){
-		return pressureSwitch.get();
+		return !pressureSwitch.get();
 	}
 	protected void initDefaultCommand() {
 		

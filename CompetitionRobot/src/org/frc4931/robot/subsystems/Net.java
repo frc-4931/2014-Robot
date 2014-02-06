@@ -1,33 +1,39 @@
 package org.frc4931.robot.subsystems;
 
-import org.frc4931.zach.drive.LimitedMotor;
+import org.frc4931.robot.command.ToggleMotor;
+import org.frc4931.zach.drive.SingleLimitMotor;
 
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Net extends Subsystem{
-	private final LimitedMotor leftMotor;
-	private final LimitedMotor rightMotor;
-	public Net(LimitedMotor left, LimitedMotor right) {
+	private final SingleLimitMotor leftMotor;
+	private final SingleLimitMotor rightMotor;
+	public Net(SingleLimitMotor left, SingleLimitMotor right) {
 		leftMotor = left;
 		rightMotor = right;
 	}
 	
 	public void open(double speed){
-		speed = Math.abs(speed);
-		leftMotor.setSpeed(speed);
-		rightMotor.setSpeed(speed);
+		if(isClosed()){
+			Scheduler.getInstance().add(new ToggleMotor(leftMotor, speed));
+			Scheduler.getInstance().add(new ToggleMotor(rightMotor, speed));
+		}
 	}
+	
 	public void close(double speed){
-		speed = Math.abs(speed)*-1;
-		leftMotor.setSpeed(speed);
-		rightMotor.setSpeed(speed);
+		if(isOpen()){
+			Scheduler.getInstance().add(new ToggleMotor(leftMotor, speed));
+			Scheduler.getInstance().add(new ToggleMotor(rightMotor, speed));
+		}
 	}
 	
 	public boolean isOpen(){
-		return leftMotor.isHigh()&&rightMotor.isHigh();
+		return (leftMotor.currentPosition==1||rightMotor.currentPosition==1);
 	}
+	
 	public boolean isClosed(){
-		return leftMotor.isLow()&&rightMotor.isLow();
+		return (leftMotor.currentPosition==-1||rightMotor.currentPosition==-1);
 	}
 	
 	protected void initDefaultCommand() {

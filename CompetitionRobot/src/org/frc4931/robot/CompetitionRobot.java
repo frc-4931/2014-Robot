@@ -1,11 +1,9 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.command.*;
-import org.frc4931.robot.subsystems.Compressor;
-import org.frc4931.robot.subsystems.DriveTrain;
-import org.frc4931.robot.subsystems.Net;
-import org.frc4931.zach.drive.LimitedMotor;
+import org.frc4931.robot.subsystems.*;
 import org.frc4931.zach.drive.Motor;
+import org.frc4931.zach.drive.SingleLimitMotor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -23,27 +21,27 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	/*Compressor Constants*/
 	public static final int COMPRESSOR_RELAY = 1;
-	public static final int COMPRESSOR_PRESSURESWITCH = 1;
+	public static final int COMPRESSOR_PRESSURESWITCH = 5;
 	
 	/*Net Constants*/
-	public static final int NET_MOTOR_LEFT = 5;
-	public static final int NET_SWITCH_LEFT_MAX = 2;
-	public static final int NET_SWITCH_LEFT_MIN = 3;
-	public static final int NET_MOTOR_RIGHT = 6;
-	public static final int NET_SWITCH_RIGHT_MAX = 4;
-	public static final int NET_SWITCH_RIGHT_MIN = 5;
+	public static final int NET_MOTOR_LEFT = 6;
+	public static final int NET_SWITCH_LEFT = 2;
+	public static final int NET_MOTOR_RIGHT = 7;
+	public static final int NET_SWITCH_RIGHT = 3;
+	
+	/*Roller Constants*/
+	public static final int ROLLER_MOTOR = 5;
+	
 	
 	public int driveMode = 0;
 	public void robotInit(){
 		Subsystems.robot = this;
 		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
-		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY,COMPRESSOR_PRESSURESWITCH);
+		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
 		//TODO Fix This
 		Subsystems.net = new Net(
-				new LimitedMotor(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT_MAX, NET_SWITCH_LEFT_MIN),
-				new LimitedMotor(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT_MAX, NET_SWITCH_RIGHT_MIN)
-				);
-		
+			new SingleLimitMotor(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT),
+			new SingleLimitMotor(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT));
 		OperatorInterface.init();
 	}
 	public void teleopPeriodic(){
