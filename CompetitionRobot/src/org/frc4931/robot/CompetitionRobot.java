@@ -9,6 +9,7 @@ import org.frc4931.robot.subsystems.DriveTrain;
 import org.frc4931.robot.subsystems.Net;
 import org.frc4931.zach.drive.Motor;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -36,7 +37,13 @@ public class CompetitionRobot extends IterativeRobot{
 	/*Roller Constants*/
 	public static final int ROLLER_MOTOR = 5;
 	
+	/*Solenoid Constants*/
+	public static final int SOLENOID_LEFT_EXTEND = 2;
+	public static final int SOLENOID_LEFT_RETRACT = 3;
+	public static final int SOLENOID_RIGHT_EXTEND = 4;
+	public static final int SOLENOID_RIGHT_RETRACT = 5;
 	
+	public DoubleSolenoid solenoid;
 	public int driveMode = 0;
 	public void robotInit(){
 		Subsystems.robot = this;
@@ -44,6 +51,8 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
 		Subsystems.leftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, Net.LEFT);
 		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, Net.RIGHT);
+		solenoid = new DoubleSolenoid(SOLENOID_LEFT_EXTEND, SOLENOID_LEFT_RETRACT);
+		
 		OperatorInterface.init();
 	}
 	public void teleopPeriodic(){
