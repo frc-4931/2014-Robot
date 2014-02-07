@@ -1,9 +1,10 @@
 package org.frc4931.robot;
 
-import org.frc4931.robot.command.ExtendSolenoid;
 import org.frc4931.robot.command.drive.ChangeDriveMode;
 import org.frc4931.robot.command.net.CloseNets;
 import org.frc4931.robot.command.net.OpenNets;
+import org.frc4931.robot.command.pneumatics.LowerArm;
+import org.frc4931.robot.command.pneumatics.RaiseArm;
 import org.frc4931.zach.control.FlightStick;
 import org.frc4931.zach.control.LogitechAttack;
 import org.frc4931.zach.control.LogitechPro;
@@ -32,6 +33,7 @@ public class OperatorInterface {
 		joysticks[0].buttons[11].whenPressed(new ChangeDriveMode(3));
 		joysticks[0].buttons[3].whenPressed(new CloseNets(0.5d));
 		joysticks[0].buttons[4].whenPressed(new OpenNets(0.5d));
-		joysticks[0].buttons[1].whenPressed(new ExtendSolenoid(Subsystems.solenoid));
+		joysticks[0].buttons[1].whenPressed(new LowerArm());
+		joysticks[0].buttons[2].whenPressed(new RaiseArm());
 	}
 }
