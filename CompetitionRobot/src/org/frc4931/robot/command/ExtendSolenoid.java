@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ExtendSolenoid extends Command{
 	private final Solenoid solenoid;
+	private boolean done = false;
 	public ExtendSolenoid(Solenoid solenoid) {
 		this.solenoid = solenoid;
 	}
@@ -16,10 +17,11 @@ public class ExtendSolenoid extends Command{
 	protected void execute() {
 		if(solenoid.isExtended()){
 			solenoid.retract();
+			done = true;
 		}else{
 			solenoid.extend();
+			done = true;
 		}
-		System.out.println("Extended");
 	}
 
 	protected void initialize() {
@@ -30,7 +32,7 @@ public class ExtendSolenoid extends Command{
 	}
 
 	protected boolean isFinished() {
-		return false;
+		return done;
 	}
 
 }
