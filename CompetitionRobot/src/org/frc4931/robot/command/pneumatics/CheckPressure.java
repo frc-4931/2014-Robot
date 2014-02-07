@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CheckPressure extends Command{
 
 	public CheckPressure() {
-//		requires(Subsystems.compressor);
+		requires(Subsystems.compressor);
 	}
 
 	protected void end() {
