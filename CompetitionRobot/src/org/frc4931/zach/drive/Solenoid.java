@@ -1,5 +1,7 @@
 package org.frc4931.zach.drive;
 
+import org.frc4931.robot.Subsystems;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -19,10 +21,12 @@ public class Solenoid {
 	}
 	public void extend(){
 		System.out.println("Solenoid Extended");
+		Subsystems.compressor.triggerCount++;
 		solenoid.set(DoubleSolenoid.Value.kForward);
 	}
 	public void retract(){
 		System.out.println("Solenoid Retracted");
+		Subsystems.compressor.triggerCount++;
 		solenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 	public boolean isExtended(){

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Compressor extends Subsystem{
 	private final Relay relay;
 	private final DigitalInput pressureSwitch;
+	public int triggerCount = 0;
 	
 	public Compressor(Relay relay, DigitalInput pressureSwitch) {
 		this.relay = relay;
@@ -34,7 +35,8 @@ public class Compressor extends Subsystem{
 	}
 	
 	public boolean testPressure(){
-		return !pressureSwitch.get();
+		return (!pressureSwitch.get()&&triggerCount>=10);
+//		return !pressureSwitch.get();
 	}
 	protected void initDefaultCommand() {
 		
