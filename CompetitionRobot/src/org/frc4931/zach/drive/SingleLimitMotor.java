@@ -23,7 +23,7 @@ public class SingleLimitMotor extends Motor{
 	
 	public boolean update(double speed){
 		if(moveDirection!=0){
-			if(!limit.get()){
+			if(limit.get()){
 				waitingForSwitch = true;
 			}
 			if(waitingForSwitch&&limit.get()){
