@@ -27,7 +27,7 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	/*Compressor Constants*/
 	public static final int COMPRESSOR_RELAY = 1;
-	public static final int COMPRESSOR_PRESSURESWITCH = 5;
+	public static final int COMPRESSOR_PRESSURESWITCH = 1;
 	
 	/*Net Constants*/
 	public static final int NET_MOTOR_LEFT = 6;
