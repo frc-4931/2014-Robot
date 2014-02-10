@@ -31,9 +31,9 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	/*Net Constants*/
 	public static final int NET_MOTOR_LEFT = 6;
-	public static final int NET_SWITCH_LEFT = 2;
+	public static final int NET_SWITCH_LEFT = 3;
 	public static final int NET_MOTOR_RIGHT = 7;
-	public static final int NET_SWITCH_RIGHT = 3;
+	public static final int NET_SWITCH_RIGHT = 2;
 	
 	/*Roller Constants*/
 	public static final int ROLLER_MOTOR = 5;
@@ -49,8 +49,8 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.robot = this;
 		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
-		Subsystems.leftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, Net.LEFT);
-		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, Net.RIGHT);
+		Subsystems.leftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT);
+		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT);
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
 		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
 

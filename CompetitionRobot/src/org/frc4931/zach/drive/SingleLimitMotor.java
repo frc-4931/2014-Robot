@@ -32,7 +32,7 @@ public class SingleLimitMotor extends Motor{
 				waitingForSwitch = false;
 				return true;
 			}else{
-				controller.set(1.0*moveDirection);
+				controller.set(speed*moveDirection);
 				return false;
 			}
 		}

@@ -34,8 +34,8 @@ public class OperatorInterface {
 		joysticks[0].buttons[8].whenPressed(new ChangeDriveMode(1));
 		joysticks[0].buttons[9].whenPressed(new ChangeDriveMode(2));
 		joysticks[0].buttons[11].whenPressed(new ChangeDriveMode(3));
-		joysticks[0].buttons[5].whenPressed(new CloseNets(0.5d));
-		joysticks[0].buttons[6].whenPressed(new OpenNets(0.5d));
+		joysticks[0].buttons[5].whenPressed(new CloseNets(0.25d));
+		joysticks[0].buttons[6].whenPressed(new OpenNets(0.25d));
 		joysticks[0].buttons[1].whenPressed(new LowerArm());
 		joysticks[0].buttons[2].whenPressed(new RaiseArm());
 		joysticks[0].buttons[3].whenPressed(new RollIn());

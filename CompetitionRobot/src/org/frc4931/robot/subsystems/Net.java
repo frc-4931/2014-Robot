@@ -7,19 +7,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Net extends Subsystem{
-	public static final int LEFT = 1;
-	public static final int RIGHT = -1;
 	public static final double DELAY = 0.1;
 	public final SingleLimitMotor motor;
-	private final int netSide;
-	public Net(SingleLimitMotor motor, int netSide) {
+	public Net(SingleLimitMotor motor) {
 		this.motor = motor;
-		this.netSide = netSide;
 	}
 	
-	public Net(int motorChannel, int motorType, int switchChannel, int netSide) {
+	public Net(int motorChannel, int motorType, int switchChannel) {
 		this.motor = new SingleLimitMotor(motorChannel,motorType,switchChannel);
-		this.netSide = netSide;
 	}
 	
 	public void open(double speed){
@@ -35,11 +30,11 @@ public class Net extends Subsystem{
 	}
 	
 	public boolean isOpen(){
-		return (motor.currentPosition==1*netSide);
+		return (motor.currentPosition==1);
 	}
 	
 	public boolean isClosed(){
-		return (motor.currentPosition==-1*netSide);
+		return (motor.currentPosition==-1);
 	}
 	
 	protected void initDefaultCommand() {
