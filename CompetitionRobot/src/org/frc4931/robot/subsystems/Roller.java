@@ -8,7 +8,7 @@ public class Roller extends Subsystem{
 	public static final int INWARD_DIRECTION = 1;
 	public static final int OUTWARD_DIRECTION = -1;
 	
-	public static final double SPEED = 1.0d;
+	public static final double SPEED = 0.1d;
 	
 	public double currentState = 0;
 	

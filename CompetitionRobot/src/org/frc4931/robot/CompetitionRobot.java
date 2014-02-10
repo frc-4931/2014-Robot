@@ -74,6 +74,7 @@ public class CompetitionRobot extends IterativeRobot{
 			default:
 				break;
 		}
+		Subsystems.roller.roll();
 		Scheduler.getInstance().run();
 	}
 }
