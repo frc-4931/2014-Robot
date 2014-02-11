@@ -1,8 +1,10 @@
 package org.frc4931.robot.command.pneumatics;
 
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.roller.StopRoller;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class RaiseArm extends Command{
 	public RaiseArm() {
@@ -25,7 +27,11 @@ public class RaiseArm extends Command{
 	}
 
 	protected boolean isFinished() {
-		return Subsystems.arm.isUp();
+		if(Subsystems.arm.isUp()){
+			Scheduler.getInstance().add(new StopRoller());
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Solenoid {
 	private final DoubleSolenoid solenoid;
-	private final DigitalInput extendedSwitch;
-	private final DigitalInput retractedSwitch;
+	public final DigitalInput extendedSwitch;
+	public final DigitalInput retractedSwitch;
 	public Solenoid(int extendChannel, int retractChannel) {
 		solenoid = new DoubleSolenoid(extendChannel, retractChannel);
 		extendedSwitch = null;
@@ -33,14 +33,14 @@ public class Solenoid {
 		if(extendedSwitch == null){
 			return (solenoid.get()==DoubleSolenoid.Value.kForward);
 		}else{
-			return extendedSwitch.get();
+			return !extendedSwitch.get();
 		}
 	}
 	public boolean isRetracted(){
 		if(retractedSwitch == null){
 			return (solenoid.get()==DoubleSolenoid.Value.kReverse);
 		}else{
-			return retractedSwitch.get();
+			return !retractedSwitch.get();
 		}
 	}
 

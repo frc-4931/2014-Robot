@@ -29,6 +29,13 @@ public class Net extends Subsystem{
 		}
 	}
 	
+	public void reset(){
+		while(!motor.limit.get()){
+			motor.setSpeed(0.25);
+		}
+		motor.setSpeed(0);
+	}
+	
 	public boolean isOpen(){
 		return (motor.currentPosition==1);
 	}

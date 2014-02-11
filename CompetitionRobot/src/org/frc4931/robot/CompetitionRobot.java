@@ -56,6 +56,9 @@ public class CompetitionRobot extends IterativeRobot{
 
 		Subsystems.compressor.init();
 		OperatorInterface.init();
+		
+		Subsystems.leftNet.reset();
+		Subsystems.rightNet.reset();
 	}
 	public void teleopPeriodic(){
 		switch(driveMode){

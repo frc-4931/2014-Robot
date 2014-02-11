@@ -28,6 +28,7 @@ public class Compressor extends Subsystem{
 	
 	public void activate(){
 		relay.set(Relay.Value.kForward);
+		triggerCount = 0;
 	}
 	
 	public void deactive(){
@@ -35,8 +36,8 @@ public class Compressor extends Subsystem{
 	}
 	
 	public boolean testPressure(){
-		return (!pressureSwitch.get()&&triggerCount>=10);
-//		return !pressureSwitch.get();
+//		return (!pressureSwitch.get()&&(triggerCount>10));
+		return !pressureSwitch.get();
 	}
 	protected void initDefaultCommand() {
 		
