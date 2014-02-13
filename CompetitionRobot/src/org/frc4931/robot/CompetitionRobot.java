@@ -1,5 +1,6 @@
 package org.frc4931.robot;
 
+import org.frc4931.robot.command.autonomous.DriveBox;
 import org.frc4931.robot.command.drive.ArcadeDriveWithJoystick;
 import org.frc4931.robot.command.drive.ModifiedDriveWithJoystick;
 import org.frc4931.robot.command.drive.StrafeDriveWithJoystick;
@@ -78,6 +79,11 @@ public class CompetitionRobot extends IterativeRobot{
 				break;
 		}
 		Subsystems.roller.roll();
+		Scheduler.getInstance().run();
+	}
+	
+	public void autonomousPeriodic(){
+		Scheduler.getInstance().add(new DriveBox());
 		Scheduler.getInstance().run();
 	}
 }
