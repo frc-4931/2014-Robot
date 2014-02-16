@@ -20,6 +20,12 @@ public class CompetitionRobot extends IterativeRobot{
 	 * Constant Convention:
 	 * SUBSYSTEM_COMPONET_POSITION_DESCRIPTOR
 	 */
+	public static boolean DRIVE_ENABLED = true;
+	public static boolean COMPRESSOR_ENABLED = true;
+	public static boolean ROLLER_ENABLED = true;
+	public static boolean ARM_ENABLED = true;
+	public static boolean NETS_ENABLED = true;
+	
 	/*Drive Train Constants*/
 	public static final int DRIVE_MOTOR_FRONTLEFT = 1;
 	public static final int DRIVE_MOTOR_FRONTRIGHT = 3;
@@ -35,6 +41,8 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int NET_SWITCH_LEFT = 3;
 	public static final int NET_MOTOR_RIGHT = 7;
 	public static final int NET_SWITCH_RIGHT = 2;
+	public static final int NET_PROX_LEFT = 8;
+	public static final int NET_PROX_RIGHT = 7;
 	
 	/*Roller Constants*/
 	public static final int ROLLER_MOTOR = 5;
@@ -45,13 +53,14 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int SOLENOID_RIGHT_EXTEND = 3;
 	public static final int SOLENOID_RIGHT_RETRACT = 4;
 	
+//	public AnalogInput analog;
 	public int driveMode = 0;
 	public void robotInit(){
 		Subsystems.robot = this;
 		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
-		Subsystems.leftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT);
-		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT);
+		Subsystems.leftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, NET_PROX_LEFT);
+		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, NET_PROX_RIGHT);
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
 		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
 

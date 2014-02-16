@@ -13,7 +13,7 @@ public class ToggleNet extends Command{
 	public ToggleNet(Net net, double speed) {
 		requires(net);
 		this.speed = Math.abs(speed);
-		this.motor = net.motor;
+		this.motor = null;//net.motor;
 		startTime = System.currentTimeMillis();
 		maxTime = 5000;
 	}

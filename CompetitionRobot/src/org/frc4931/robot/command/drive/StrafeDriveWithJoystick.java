@@ -20,7 +20,7 @@ public class StrafeDriveWithJoystick extends Command{
 	}
 
 	protected void execute() {
-		double rawDriveSpeed = OperatorInterface.joysticks[0].getRoll();
+		double rawDriveSpeed = OperatorInterface.joysticks[0].getRoll()*-1;
 		double rawTurnSpeed = OperatorInterface.joysticks[0].getYaw()*-1;
 		double scaledDriveSpeed = rawDriveSpeed*OperatorInterface.joysticks[0].getNormalThrottle();
 		double scaledTurnSpeed = rawTurnSpeed*OperatorInterface.joysticks[0].getNormalThrottle();

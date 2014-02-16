@@ -10,11 +10,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author zach
  */
 public class DriveTrain extends Subsystem{
+	public static final double DRIVE_ACCEL = 0.1/1000; //Speed Units per milliseconds per milliseconds
+	private static final double ROT_ACCEL = 0.1/1000; //Turn Speed Units per milliseconds per milliseconds
 	private final Motor rightFrontMotor;
 	private final Motor leftFrontMotor;
 	private final Motor rightRearMotor;
 	private final Motor leftRearMotor;
 	private final RobotDrive drive;
+	
+	private double initialDrive = 0;
+	private double initialTurn = 0;
+	private double targetDrive = 0;
+	private double targetTurn = 0;
+	private double currentDrive = 0;
+	private double currentTurn = 0;
+	private long timeDriveSet;
+	private long timeTurnSet;
 	
 	/**
 	 * Creates a new drive train with a given left and right motor.
@@ -53,6 +64,7 @@ public class DriveTrain extends Subsystem{
 	 */
 	public void tankDrive(double leftSpeed, double rightSpeed){
 		drive.tankDrive(leftSpeed, rightSpeed);
+		
 	}
 	
 	/**
@@ -61,7 +73,28 @@ public class DriveTrain extends Subsystem{
 	 * @param turnSpeed the turn rate from -1.0 to 1.0.
 	 */
 	public void arcadeDrive(double driveSpeed, double turnSpeed){
-		drive.arcadeDrive(driveSpeed, turnSpeed);
+		if(driveSpeed!=targetDrive){
+			targetDrive = driveSpeed;
+			initialDrive = currentDrive;
+			timeDriveSet = System.currentTimeMillis();
+		}
+		long timeSinceDriveSet = System.currentTimeMillis()-timeDriveSet;
+		currentDrive = initialDrive+(DRIVE_ACCEL*timeSinceDriveSet);
+		
+		if(turnSpeed!=targetTurn){
+			targetTurn = turnSpeed;
+			initialTurn = currentTurn;
+			timeTurnSet = System.currentTimeMillis();
+		}
+		long timeSinceTurnSet = System.currentTimeMillis()-timeTurnSet;
+		currentTurn = initialTurn +(ROT_ACCEL*timeSinceTurnSet);
+		
+		drive.arcadeDrive(currentDrive,currentTurn);
+	}
+	
+	//Bypasses acceleration curve
+	public void directArcadeDrive(double driveSpeed, double turnSpeed){
+		drive.arcadeDrive(driveSpeed,turnSpeed);
 	}
 	
 	public Motor getLeftMotor(){

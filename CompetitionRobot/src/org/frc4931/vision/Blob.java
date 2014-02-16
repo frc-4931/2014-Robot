@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 public class Blob implements PIDSource{
 	//Placeholder class for Blob
 	private int xCenter;
-	private int yCenter;
+//	private int yCenter;
 	public Blob() {
 	}
 

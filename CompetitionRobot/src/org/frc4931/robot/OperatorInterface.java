@@ -3,8 +3,8 @@ package org.frc4931.robot;
 import org.frc4931.robot.command.drive.ChangeDriveMode;
 import org.frc4931.robot.command.groups.CompleteCapture;
 import org.frc4931.robot.command.groups.PrepareForCapture;
-import org.frc4931.robot.command.net.CloseNets;
-import org.frc4931.robot.command.net.OpenNets;
+import org.frc4931.robot.command.limitednet.CloseNets;
+import org.frc4931.robot.command.limitednet.OpenNets;
 import org.frc4931.robot.command.roller.RollIn;
 import org.frc4931.robot.command.roller.RollOut;
 import org.frc4931.robot.command.roller.StopRoller;
@@ -40,6 +40,9 @@ public class OperatorInterface {
 		joysticks[0].buttons[2].whenPressed(new CompleteCapture());
 		joysticks[0].buttons[3].whenPressed(new RollIn());
 		joysticks[0].buttons[4].whenPressed(new RollOut());
+		joysticks[0].buttons[3].whenReleased(new StopRoller());
+		joysticks[0].buttons[4].whenReleased(new StopRoller());
+		
 		joysticks[0].buttons[12].whenPressed(new StopRoller());
 	}
 }

@@ -3,6 +3,7 @@ package org.frc4931.zach.io;
 import org.frc4931.zach.utils.Countdown;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
  * @author zach
  *
  */
-public class AnalogInput extends AnalogChannel implements Sendable{
+public class AnalogInput extends AnalogChannel implements Sendable, PIDSource{
 	private int offset;
 	private int offsetMax;
 	private boolean calibrated;
@@ -92,5 +93,8 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 			 table.putNumber("Channel", channel);
 			 table.putNumber("Normalized Value", getNormalized());
 		 }
+	}
+	public double pidGet(){
+		return getNormalized();
 	}
 }
