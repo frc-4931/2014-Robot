@@ -24,6 +24,8 @@ public class DriveTrain extends Subsystem{
 	private double targetTurn = 0;
 	private double currentDrive = 0;
 	private double currentTurn = 0;
+	private double driveAccel = 0;
+	private double turnAccel = 0;
 	private long timeDriveSet;
 	private long timeTurnSet;
 	
@@ -77,19 +79,53 @@ public class DriveTrain extends Subsystem{
 			targetDrive = driveSpeed;
 			initialDrive = currentDrive;
 			timeDriveSet = System.currentTimeMillis();
+			if(targetDrive<initialDrive){
+				driveAccel = DRIVE_ACCEL*-1;
+			}else if(targetDrive<initialDrive){
+				driveAccel = DRIVE_ACCEL;
+			}
 		}
 		long timeSinceDriveSet = System.currentTimeMillis()-timeDriveSet;
-		currentDrive = initialDrive+(DRIVE_ACCEL*timeSinceDriveSet);
+		if(driveAccel>0&&currentDrive>=targetDrive){
+			currentDrive = targetDrive;
+		}else if(driveAccel<0&&currentDrive<=targetDrive){
+			currentDrive = initialDrive+(driveAccel*timeSinceDriveSet);
+		}
 		
 		if(turnSpeed!=targetTurn){
 			targetTurn = turnSpeed;
 			initialTurn = currentTurn;
 			timeTurnSet = System.currentTimeMillis();
+			if(targetTurn<initialTurn){
+				turnAccel = ROT_ACCEL*-1;
+			}else if(targetTurn<initialTurn){
+				turnAccel = ROT_ACCEL;
+			}
 		}
 		long timeSinceTurnSet = System.currentTimeMillis()-timeTurnSet;
-		currentTurn = initialTurn +(ROT_ACCEL*timeSinceTurnSet);
+		if(turnAccel>0&&currentTurn>=targetTurn){
+			currentTurn = targetTurn;
+		}else if(turnAccel<0&&currentTurn<=targetTurn){
+			currentTurn = initialTurn+(turnAccel*timeSinceTurnSet);
+		}
 		
 		drive.arcadeDrive(currentDrive,currentTurn);
+	}
+	
+	public void setDriveSpeed(double speed){
+		if(speed!=targetDrive){
+			targetDrive = speed;
+			initialDrive = currentDrive;
+			timeDriveSet = System.currentTimeMillis();
+		}
+	}
+	
+	public void setTurnSpeed(double speed){
+		if(speed!=targetTurn){
+			targetTurn = speed;
+			initialTurn = currentTurn;
+			timeTurnSet = System.currentTimeMillis();
+		}
 	}
 	
 	//Bypasses acceleration curve

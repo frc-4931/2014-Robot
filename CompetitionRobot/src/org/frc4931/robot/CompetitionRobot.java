@@ -1,15 +1,12 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.command.autonomous.DriveBox;
-import org.frc4931.robot.command.drive.ArcadeDriveWithJoystick;
-import org.frc4931.robot.command.drive.ModifiedDriveWithJoystick;
-import org.frc4931.robot.command.drive.StrafeDriveWithJoystick;
-import org.frc4931.robot.command.drive.TankDriveWithJoysticks;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
 import org.frc4931.robot.subsystems.Net;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
+import org.frc4931.robot.test.TestSubsystems;
 import org.frc4931.zach.drive.Motor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -70,29 +67,37 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.leftNet.reset();
 		Subsystems.rightNet.reset();
 	}
-	public void teleopPeriodic(){
-		switch(driveMode){
-			case 0:
-				Scheduler.getInstance().add(new ArcadeDriveWithJoystick());
-				break;
-			case 1:
-				Scheduler.getInstance().add(new ModifiedDriveWithJoystick());
-				break;
-			case 2:
-				Scheduler.getInstance().add(new StrafeDriveWithJoystick());
-				break;
-			case 3:
-				Scheduler.getInstance().add(new TankDriveWithJoysticks());
-				break;
-			default:
-				break;
-		}
-		Subsystems.roller.roll();
-		Scheduler.getInstance().run();
-	}
+//	public void teleopPeriodic(){
+//		switch(driveMode){
+//			case 0:
+//				Scheduler.getInstance().add(new ArcadeDriveWithJoystick());
+//				break;
+//			case 1:
+//				Scheduler.getInstance().add(new ModifiedDriveWithJoystick());
+//				break;
+//			case 2:
+//				Scheduler.getInstance().add(new StrafeDriveWithJoystick());
+//				break;
+//			case 3:
+//				Scheduler.getInstance().add(new TankDriveWithJoysticks());
+//				break;
+//			default:
+//				break;
+//		}
+//		Subsystems.roller.roll();
+//		Scheduler.getInstance().run();
+//	}
 	
 	public void autonomousPeriodic(){
 		Scheduler.getInstance().add(new DriveBox());
+		Scheduler.getInstance().run();
+	}
+	
+	public void teleopInit(){
+		Scheduler.getInstance().add(new TestSubsystems());
+	}
+	
+	public void teleopPeriodic(){
 		Scheduler.getInstance().run();
 	}
 }

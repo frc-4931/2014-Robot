@@ -4,13 +4,11 @@ import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveAtSpeedForTime extends Command{
+public class DriveAtSpeed extends Command{
 	private final double speed;
-	private final double time;
-	public DriveAtSpeedForTime(double speed, double time) {
+	public DriveAtSpeed(double speed) {
 		requires(Subsystems.driveTrain);
 		this.speed = speed;
-		this.time = time;
 	}
 
 	protected void initialize() {
@@ -21,7 +19,7 @@ public class DriveAtSpeedForTime extends Command{
 	}
 
 	protected boolean isFinished() {
-		return timeSinceInitialized()>time;
+		return false;
 	}
 
 	protected void end() {

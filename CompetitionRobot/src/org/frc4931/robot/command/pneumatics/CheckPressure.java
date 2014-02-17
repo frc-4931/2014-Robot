@@ -3,6 +3,7 @@ package org.frc4931.robot.command.pneumatics;
 import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class CheckPressure extends Command{
 
@@ -17,9 +18,7 @@ public class CheckPressure extends Command{
 
 	protected void execute() {
 		if(Subsystems.compressor.testPressure()){
-			Subsystems.compressor.activate();
-		}else{
-			Subsystems.compressor.deactive();
+			Scheduler.getInstance().add(new Pressurize());
 		}
 	}
 

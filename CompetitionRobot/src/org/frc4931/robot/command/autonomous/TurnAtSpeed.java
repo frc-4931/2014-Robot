@@ -4,13 +4,11 @@ import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnAtSpeedForTime extends Command{
+public class TurnAtSpeed extends Command{
 	private final double speed;
-	private final double time;
-	public TurnAtSpeedForTime(double speed, double time) {
+	public TurnAtSpeed(double speed) {
 		requires(Subsystems.driveTrain);
 		this.speed = speed;
-		this.time = time;
 	}
 
 	protected void initialize() {
@@ -21,7 +19,7 @@ public class TurnAtSpeedForTime extends Command{
 	}
 
 	protected boolean isFinished() {
-		return timeSinceInitialized()>time;
+		return false;
 	}
 
 	protected void end() {
