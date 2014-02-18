@@ -3,10 +3,12 @@ package org.frc4931.robot.command.pneumatics;
 import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Pressurize extends Command{
 
 	public Pressurize() {
+		requires(Subsystems.compressor);
 	}
 
 	protected void initialize() {
@@ -22,10 +24,11 @@ public class Pressurize extends Command{
 
 	protected void end() {
 		Subsystems.compressor.deactive();
+		Scheduler.getInstance().add(new CheckPressure());
 	}
 
 	protected void interrupted() {
-		end();
+		Subsystems.compressor.deactive();
 	}
 
 }

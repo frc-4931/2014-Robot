@@ -6,19 +6,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class CheckPressure extends Command{
-
+	private boolean done = false;
 	public CheckPressure() {
 		requires(Subsystems.compressor);
 	}
 
 	protected void end() {
-		System.out.println("Compressor disengaged");
-		Subsystems.compressor.deactive();
 	}
 
 	protected void execute() {
 		if(Subsystems.compressor.testPressure()){
 			Scheduler.getInstance().add(new Pressurize());
+			done = true;
+//			Subsystems.compressor.activate();
 		}
 	}
 
@@ -26,11 +26,11 @@ public class CheckPressure extends Command{
 	}
 
 	protected void interrupted() {
-		end();
+		Subsystems.compressor.deactive();
 	}
 
 	protected boolean isFinished() {
-		return false;
+		return done;
 	}
 
 }

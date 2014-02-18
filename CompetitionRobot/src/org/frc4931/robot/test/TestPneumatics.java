@@ -19,7 +19,7 @@ public class TestPneumatics extends CommandGroup{
 		addSequential(new WaitCommand(3.0d));
 		addSequential(new Pressurize());
 		addSequential(new WaitCommand(1.0d));
-		addSequential(new TestReliefValve(),5.0d);
+		addSequential(new TestReliefValve(),10.0d);
 		addSequential(new Output("Pneumatis Test Complete"));
 	}
 

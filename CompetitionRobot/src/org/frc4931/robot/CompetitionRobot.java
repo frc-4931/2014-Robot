@@ -1,16 +1,25 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.command.autonomous.DriveBox;
+import org.frc4931.robot.command.drive.ArcadeDriveWithJoystick;
+import org.frc4931.robot.command.drive.ModifiedDriveWithJoystick;
+import org.frc4931.robot.command.drive.StrafeDriveWithJoystick;
+import org.frc4931.robot.command.drive.TankDriveWithJoysticks;
+import org.frc4931.robot.command.net.CloseLeftNet;
+import org.frc4931.robot.command.net.CloseRightNet;
+import org.frc4931.robot.command.net.OpenLeftNet;
+import org.frc4931.robot.command.net.OpenRightNet;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
 import org.frc4931.robot.subsystems.Net;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
-import org.frc4931.robot.test.TestSubsystems;
 import org.frc4931.zach.drive.Motor;
+import org.frc4931.zach.io.AnalogInput;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CompetitionRobot extends IterativeRobot{
 	/*
@@ -50,7 +59,7 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int SOLENOID_RIGHT_EXTEND = 3;
 	public static final int SOLENOID_RIGHT_RETRACT = 4;
 	
-//	public AnalogInput analog;
+	public AnalogInput analog;
 	public int driveMode = 0;
 	public void robotInit(){
 		Subsystems.robot = this;
@@ -64,40 +73,57 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.compressor.init();
 		OperatorInterface.init();
 		
-		Subsystems.leftNet.reset();
-		Subsystems.rightNet.reset();
+		analog = new AnalogInput(1);
+		
+		SmartDashboard.putNumber("Range 1", 0.4);
+		SmartDashboard.putNumber("Range 2", 0.8);
+		SmartDashboard.putNumber("Range 3", 1.0);
+		SmartDashboard.putNumber("Max Delta 1", 1.0);
+		SmartDashboard.putNumber("Max Delta 2", 0.1);
+		SmartDashboard.putNumber("Max Delta 3", 0.01);
+		SmartDashboard.putBoolean("Accel", false);
+		SmartDashboard.putNumber("Range Sensor",(analog.getValue()/61.0d));
+		SmartDashboard.putData("Close Left Net",new CloseLeftNet(0.4d));
+		SmartDashboard.putData("Close Right Net",new CloseRightNet(0.4d));
+		SmartDashboard.putData("Open Left Net",new OpenLeftNet(0.4d));
+		SmartDashboard.putData("Open Right Net",new OpenRightNet(0.4d));
 	}
-//	public void teleopPeriodic(){
-//		switch(driveMode){
-//			case 0:
-//				Scheduler.getInstance().add(new ArcadeDriveWithJoystick());
-//				break;
-//			case 1:
-//				Scheduler.getInstance().add(new ModifiedDriveWithJoystick());
-//				break;
-//			case 2:
-//				Scheduler.getInstance().add(new StrafeDriveWithJoystick());
-//				break;
-//			case 3:
-//				Scheduler.getInstance().add(new TankDriveWithJoysticks());
-//				break;
-//			default:
-//				break;
-//		}
-//		Subsystems.roller.roll();
-//		Scheduler.getInstance().run();
-//	}
+	public void teleopPeriodic(){
+		switch(driveMode){
+			case 0:
+				Scheduler.getInstance().add(new ArcadeDriveWithJoystick());
+				break;
+			case 1:
+				Scheduler.getInstance().add(new ModifiedDriveWithJoystick());
+				break;
+			case 2:
+				Scheduler.getInstance().add(new StrafeDriveWithJoystick());
+				break;
+			case 3:
+				Scheduler.getInstance().add(new TankDriveWithJoysticks());
+				break;
+			default:
+				break;
+		}
+		SmartDashboard.putNumber("Range Sensor",(analog.getValue()/61.0d));
+		SmartDashboard.putBoolean("Boolean", true);
+		SmartDashboard.putNumber("Current Speed", Subsystems.driveTrain.currentDrive);
+		SmartDashboard.putData("PID", Subsystems.driveTrain.pidDrive);
+		Subsystems.roller.roll();
+		Subsystems.driveTrain.update();
+		Scheduler.getInstance().run();
+	}
 	
 	public void autonomousPeriodic(){
 		Scheduler.getInstance().add(new DriveBox());
 		Scheduler.getInstance().run();
 	}
 	
-	public void teleopInit(){
-		Scheduler.getInstance().add(new TestSubsystems());
-	}
-	
-	public void teleopPeriodic(){
-		Scheduler.getInstance().run();
-	}
+//	public void teleopInit(){
+//		Scheduler.getInstance().add(new TestSubsystems());
+//	}
+//	
+//	public void teleopPeriodic(){
+//		Scheduler.getInstance().run();
+//	}
 }
