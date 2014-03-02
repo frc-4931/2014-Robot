@@ -6,6 +6,7 @@ import org.frc4931.zach.diagnosticrobot.control.LogitechPro;
 import org.frc4931.zach.diagnosticrobot.drive.DriveTrain;
 import org.frc4931.zach.diagnosticrobot.drive.Motor;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,8 +19,11 @@ public class DiagnosticRobot extends IterativeRobot{
 	
 	public int buttonCooldown = 0;
 	public int driveMode = 0;
+	
+	AnalogChannel analog;
 	//@Override
 	public void robotInit(){
+		analog = new AnalogChannel(4);
 		joystick = new LogitechPro(1);
 		attack = new LogitechAttack(2);
 		leftMotor = new Motor(1,"Jaguar Speed Controller");
@@ -28,6 +32,8 @@ public class DiagnosticRobot extends IterativeRobot{
 	}
 	//@Override
 	public void teleopPeriodic(){
+		System.out.println(analog.getValue());
+		SmartDashboard.putData("Analog", analog);
 		SmartDashboard.putData("Joystick", joystick);
 		SmartDashboard.putData("Drive Train", drive);
 		buttonCooldown--;

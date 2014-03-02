@@ -1,16 +1,19 @@
 package org.frc4931.robot.subsystems;
 
+import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.robot.command.pneumatics.CheckPressure;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Compressor extends Subsystem{
 	private final Relay relay;
 	private final DigitalInput pressureSwitch;
 	public int triggerCount = 0;
+	public boolean isOn = false;
 	
 	public Compressor(Relay relay, DigitalInput pressureSwitch) {
 		this.relay = relay;
@@ -27,20 +30,35 @@ public class Compressor extends Subsystem{
 	}
 	
 	public void activate(){
-		relay.set(Relay.Value.kForward);
-		triggerCount = 0;
+		isOn = true;
+		if(CompetitionRobot.COMPRESSOR_ENABLED){
+			relay.set(Relay.Value.kForward);
+		}
 	}
 	
 	public void deactive(){
+		isOn = false;
 		relay.set(Relay.Value.kOff);
 	}
 	
+	/**
+	 * Returns true if needs pressure
+	 * @return
+	 */
 	public boolean testPressure(){
 //		return (!pressureSwitch.get()&&(triggerCount>10));
-		return !pressureSwitch.get();
+		if(CompetitionRobot.COMPRESSOR_ENABLED){
+			return !pressureSwitch.get();
+		}else{
+			return SmartDashboard.getBoolean("Pressure Switch");
+		}
 	}
 	protected void initDefaultCommand() {
 		
+	}
+	
+	public void putToDashboard(){
+		SmartDashboard.putBoolean("Compressor Status", isOn);
 	}
 
 }

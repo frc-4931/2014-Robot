@@ -30,7 +30,7 @@
 	If you are planning to deploy to the old cRIO, change this value to 10.99.31.2.
 	If you are planning to deploy to the new cRIO, change this value to 10.49.31.2.
 	-->
-    <property name="remoteaddress" value="10.49.31.2"/>
+    <property name="remoteaddress" value="10.99.31.2"/>
     <import file="${sunspot.home}/build.xml"/>
 
     <!--

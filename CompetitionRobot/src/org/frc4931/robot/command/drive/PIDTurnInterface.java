@@ -4,8 +4,8 @@ import org.frc4931.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.PIDOutput;
 
-public class PIDDriveInterface implements PIDOutput{	
+public class PIDTurnInterface implements PIDOutput{
 	public void pidWrite(double output) {
-		Subsystems.driveTrain.setDriveSpeed(output);
+		Subsystems.driveTrain.setTurnSpeed(output);
 	}
 }

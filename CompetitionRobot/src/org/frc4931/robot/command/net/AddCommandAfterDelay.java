@@ -1,4 +1,4 @@
-package org.frc4931.robot.command.limitednet;
+package org.frc4931.robot.command.net;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;

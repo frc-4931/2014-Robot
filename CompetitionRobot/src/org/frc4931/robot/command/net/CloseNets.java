@@ -1,16 +1,15 @@
 package org.frc4931.robot.command.net;
 
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.subsystems.Net;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class CloseNets extends CommandGroup{
-	public CloseNets(double speed) {
-		speed = Math.abs(speed);
+	public CloseNets() {
 		requires(Subsystems.leftNet);
-		requires(Subsystems.rightNet);
-		addParallel(new CloseLeftNet(speed));
-//		addSequential(new WaitCommand(Net.DELAY));
-		addParallel(new CloseRightNet(speed));
+		requires(Subsystems.rightNet);	
+		addParallel(new Close(Subsystems.leftNet));
+		addParallel(new AddCommandAfterDelay(new Close(Subsystems.rightNet), Net.DELAY));
 	}
 }

@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveToRange extends Command{
 	private final PIDController pid;
-	public DriveToRange(AnalogInput blob) {
-		pid = new PIDController(0,0,0,blob,new PIDDriveInterface(PIDDriveInterface.DRIVE_MODE));
-		pid.setInputRange(0, 1);
-		pid.setOutputRange(-1, 1);
+	public DriveToRange(AnalogInput range) {
+		pid = new PIDController(1,0,0,range,new PIDDriveInterface());
+//		pid.setInputRange(0, 1);
+//		pid.setOutputRange(-1, 1);
 	}
 
 	protected void initialize() {

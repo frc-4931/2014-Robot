@@ -1,10 +1,8 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.command.drive.ChangeDriveMode;
-import org.frc4931.robot.command.groups.CompleteCapture;
-import org.frc4931.robot.command.groups.PrepareForCapture;
-import org.frc4931.robot.command.limitednet.CloseNets;
-import org.frc4931.robot.command.limitednet.OpenNets;
+import org.frc4931.robot.command.groups.ToggleNetArms;
+import org.frc4931.robot.command.groups.ToggleRollerArm;
 import org.frc4931.robot.command.roller.RollIn;
 import org.frc4931.robot.command.roller.RollOut;
 import org.frc4931.robot.command.roller.StopRoller;
@@ -29,20 +27,37 @@ public class OperatorInterface {
 	/**
 	 * Initializes commands on joystick buttons.
 	 */
+//	private static void initOldButtonCommands(){
+//		joysticks[0].buttons[7].whenPressed(new ChangeDriveMode(0));
+//		joysticks[0].buttons[8].whenPressed(new ChangeDriveMode(1));
+//		joysticks[0].buttons[9].whenPressed(new ChangeDriveMode(2));
+//		joysticks[0].buttons[11].whenPressed(new ChangeDriveMode(3));
+//		joysticks[0].buttons[5].whenPressed(new CloseNets());
+//		joysticks[0].buttons[6].whenPressed(new OpenNets());
+//		joysticks[0].buttons[1].whenPressed(new PrepareForCapture());
+//		joysticks[0].buttons[2].whenPressed(new CompleteCapture());
+//		joysticks[0].buttons[3].whenPressed(new RollIn());
+//		joysticks[0].buttons[4].whenPressed(new RollOut());
+//		joysticks[0].buttons[3].whenReleased(new StopRoller());
+//		joysticks[0].buttons[4].whenReleased(new StopRoller());
+//		
+//		joysticks[0].buttons[12].whenPressed(new StopRoller());
+//	}
+	
 	private static void initButtonCommands(){
 		joysticks[0].buttons[7].whenPressed(new ChangeDriveMode(0));
 		joysticks[0].buttons[8].whenPressed(new ChangeDriveMode(1));
 		joysticks[0].buttons[9].whenPressed(new ChangeDriveMode(2));
 		joysticks[0].buttons[11].whenPressed(new ChangeDriveMode(3));
-		joysticks[0].buttons[5].whenPressed(new CloseNets());
-		joysticks[0].buttons[6].whenPressed(new OpenNets());
-		joysticks[0].buttons[1].whenPressed(new PrepareForCapture());
-		joysticks[0].buttons[2].whenPressed(new CompleteCapture());
-		joysticks[0].buttons[3].whenPressed(new RollIn());
-		joysticks[0].buttons[4].whenPressed(new RollOut());
-		joysticks[0].buttons[3].whenReleased(new StopRoller());
-		joysticks[0].buttons[4].whenReleased(new StopRoller());
 		
-		joysticks[0].buttons[12].whenPressed(new StopRoller());
+		joysticks[0].buttons[3].whenPressed(new RollIn());
+		joysticks[0].buttons[3].whenReleased(new StopRoller());
+		
+		joysticks[0].buttons[5].whenPressed(new RollOut());
+		joysticks[0].buttons[5].whenReleased(new StopRoller());
+		
+		joysticks[0].buttons[4].whenPressed(new ToggleRollerArm());
+		
+		joysticks[0].buttons[6].whenPressed(new ToggleNetArms());
 	}
 }
