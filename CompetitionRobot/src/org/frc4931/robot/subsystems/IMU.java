@@ -23,6 +23,14 @@ public class IMU extends Subsystem{
 		return accel.getAcceleration(axis);
 	}
 	
+	public Gyro getGyro(){
+		return gyro;
+	}
+	
+	public Accel getAccel(){
+		return accel;
+	}
+	
 	public void resetGyro(){
 		gyro.reset();
 	}

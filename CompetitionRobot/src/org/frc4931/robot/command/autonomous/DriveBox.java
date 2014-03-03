@@ -8,14 +8,14 @@ public class DriveBox extends CommandGroup{
 
 	public DriveBox() {
 		requires(Subsystems.driveTrain);
-//		addSequential(new DriveAtSpeedForTime(0.25d,1.0d));
-//		addSequential(new TurnAtSpeedForTime(0.5d,1.0d));
-//		addSequential(new DriveAtSpeedForTime(-0.25d,1.0d));
-//		addSequential(new TurnAtSpeedForTime(0.5d,1.0d));
-//		addSequential(new DriveAtSpeedForTime(0.25d,1.0d));
-//		addSequential(new TurnAtSpeedForTime(0.5d,1.0d));
-//		addSequential(new DriveAtSpeedForTime(-0.25d,1.0d));
-//		addSequential(new TurnAtSpeedForTime(0.5d,1.0d));
+		addSequential(new DriveAtSpeed(0.7d),1.0d);
+		addSequential(new TurnRelativeAngle(90));
+		addSequential(new DriveAtSpeed(0.7d),1.0d);
+		addSequential(new TurnRelativeAngle(90));
+		addSequential(new DriveAtSpeed(0.7d),1.0d);
+		addSequential(new TurnRelativeAngle(90));
+		addSequential(new DriveAtSpeed(0.7d),1.0d);
+		addSequential(new TurnRelativeAngle(90));
 	}
 
 }

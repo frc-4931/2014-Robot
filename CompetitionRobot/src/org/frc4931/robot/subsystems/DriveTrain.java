@@ -105,6 +105,10 @@ public class DriveTrain extends Subsystem{
 		}
 	}
 	
+	public void stop(){
+		drive.arcadeDrive(0,0);
+	}
+	
 	public void setDriveSpeed(double speed){
 		currentDrive = speed;
 	}
