@@ -1,5 +1,6 @@
 package org.frc4931.robot;
 
+import org.frc4931.robot.command.groups.DriveAndScore;
 import org.frc4931.robot.command.net.Close;
 import org.frc4931.robot.command.net.Open;
 import org.frc4931.robot.command.pneumatics.LowerArm;
@@ -9,12 +10,13 @@ import org.frc4931.robot.command.roller.RollOut;
 import org.frc4931.robot.command.roller.StopRoller;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
+import org.frc4931.robot.subsystems.IMU;
 import org.frc4931.robot.subsystems.Net;
+import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
 import org.frc4931.zach.drive.Motor;
 import org.frc4931.zach.io.Accel;
-import org.frc4931.zach.io.AnalogInput;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -38,9 +40,8 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int DRIVE_MOTOR_BACKLEFT = 2;
 	public static final int DRIVE_MOTOR_BACKRIGHT = 4;
 	
-	/*Compressor Constants*/
-	public static final int COMPRESSOR_RELAY = 1;
-	public static final int COMPRESSOR_PRESSURESWITCH = 1;
+	/*Roller Constants*/
+	public static final int ROLLER_MOTOR = 5;
 	
 	/*Net Constants*/
 	public static final int NET_MOTOR_LEFT = 6;
@@ -50,8 +51,9 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int NET_PROX_LEFT = 8;
 	public static final int NET_PROX_RIGHT = 7;
 	
-	/*Roller Constants*/
-	public static final int ROLLER_MOTOR = 5;
+	/*Compressor Constants*/
+	public static final int COMPRESSOR_RELAY = 1;
+	public static final int COMPRESSOR_PRESSURESWITCH = 1;
 	
 	/*Solenoid Constants*/
 	public static final int SOLENOID_LEFT_EXTEND = 1;
@@ -59,7 +61,9 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int SOLENOID_RIGHT_EXTEND = 3;
 	public static final int SOLENOID_RIGHT_RETRACT = 4;
 	
-	public AnalogInput analog;
+	public static final int GYRO_CHANNEL = 1;
+	public static final int RANGER_CHANNEL = 2;
+	
 	public Gyro gyro;
 	public Accel accel;
 	public int driveMode = 1;
@@ -72,15 +76,12 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, NET_PROX_RIGHT);
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
 		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
+		Subsystems.ranger = new Ranger(RANGER_CHANNEL);
+		Subsystems.imu = new IMU(GYRO_CHANNEL);
 
 		Subsystems.compressor.init();
+		Subsystems.imu.reset();
 		OperatorInterface.init();
-		
-		analog = new AnalogInput(1);
-		gyro = new Gyro(1);
-		gyro.reset();
-		
-		accel = new Accel(Accel.FOURG);
 		
 		smartDashboardInit();
 		
@@ -97,7 +98,7 @@ public class CompetitionRobot extends IterativeRobot{
 	public void smartDashboardInit(){
 		/*Operator Interface Booleans*/
 		SmartDashboard.putBoolean("Pressure Switch", false);
-		SmartDashboard.putBoolean("Verboose", true);
+		SmartDashboard.putBoolean("Verbose", true);
 		
 		/*Net Override Commands*/
 		SmartDashboard.putData("Close Left Net",new Close(Subsystems.leftNet));
@@ -116,20 +117,16 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public void updateSmartDashboard(){
-		/*Put Sensors*/
-		SmartDashboard.putData("Gyroscope",gyro);
-		
 		/*Put Sensor Values*/
-		SmartDashboard.putNumber("Range Sensor",analog.getValue()/61.0d);
-		SmartDashboard.putNumber("Accel X",accel.getAcceleration(Accel.X));
-		SmartDashboard.putNumber("Accel Y",accel.getAcceleration(Accel.Y));
-		SmartDashboard.putNumber("Accel Z",accel.getAcceleration(Accel.Z));
+//		SmartDashboard.putNumber("Range Sensor",analog.getValue()/61.0d);
 		
 		/*Put Subsystems*/
 		Subsystems.driveTrain.putToDashboard();
 		Subsystems.compressor.putToDashboard();
 		Subsystems.roller.putToDashboard();
 		Subsystems.arm.putToDashboard();
+		Subsystems.ranger.putToDashboard();
+		Subsystems.imu.putToDashboard();
 		
 		/*Put Subsystem Values*/
 		SmartDashboard.putBoolean("Left Net Status", Subsystems.leftNet.dashboardOpen);
@@ -144,7 +141,7 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public void autonomousInit(){
-		
+		Scheduler.getInstance().add(new DriveAndScore());
 	}
 	
 	public void autonomousPeriodic(){
@@ -152,7 +149,7 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public static void output(String string){
-		if(SmartDashboard.getBoolean("Verboose")){
+		if(SmartDashboard.getBoolean("Verbose")){
 			System.out.println(string);
 		}
 	}

@@ -3,7 +3,9 @@ package org.frc4931.robot;
 import org.frc4931.robot.subsystems.CollectionMechanism;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
+import org.frc4931.robot.subsystems.IMU;
 import org.frc4931.robot.subsystems.Net;
+import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
 
@@ -17,4 +19,6 @@ public class Subsystems {
 	public static Net rightNet;
 	public static RollerArm arm;
 	public static Roller roller;
+	public static Ranger ranger;
+	public static IMU imu;
 }

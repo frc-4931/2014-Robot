@@ -1,21 +1,25 @@
 package org.frc4931.robot.command.autonomous;
 
 import org.frc4931.robot.command.drive.PIDDriveInterface;
-import org.frc4931.zach.io.AnalogInput;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveToRange extends Command{
 	private final PIDController pid;
-	public DriveToRange(AnalogInput range) {
-		pid = new PIDController(1,0,0,range,new PIDDriveInterface());
-//		pid.setInputRange(0, 1);
-//		pid.setOutputRange(-1, 1);
+	private final double targetRange;
+	public DriveToRange(AnalogChannel sensor, double range) {
+		pid = new PIDController(1,0,0,sensor,new PIDDriveInterface());
+		SmartDashboard.putData("Drive to Range", pid);
+		targetRange = range;
+		pid.setInputRange(0, 5);
+		pid.setOutputRange(-0.75, 0.75);
 	}
 
 	protected void initialize() {
-		pid.setSetpoint(0.2);
+		pid.setSetpoint(targetRange);
 		pid.enable();
 	}
 
