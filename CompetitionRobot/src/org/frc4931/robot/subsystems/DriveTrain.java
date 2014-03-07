@@ -6,6 +6,7 @@ import org.frc4931.robot.command.drive.ModifiedDriveWithJoystick;
 import org.frc4931.robot.command.drive.StrafeDriveWithJoystick;
 import org.frc4931.robot.command.drive.TankDriveWithJoysticks;
 import org.frc4931.zach.drive.Motor;
+import org.frc4931.zach.utils.Transform;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -98,8 +99,23 @@ public class DriveTrain extends Subsystem{
 			default:
 				break;
 		}
+//		update();
+	}
+	public void update(){
 		if(CompetitionRobot.DRIVE_ENABLED==true){
-			drive.arcadeDrive(currentDrive,currentTurn);
+			int direction =1;
+			if(currentDrive>SmartDashboard.getNumber("DriveDeadZone")){
+				direction = 1;
+			}else if(currentDrive<SmartDashboard.getNumber("DriveDeadZone")*-1){
+				direction = -1;
+			}else{
+				direction = 0;
+			}
+			double minDriveSpeed = SmartDashboard.getNumber("MinDriveSpeed");
+			double maxDriveSpeed = SmartDashboard.getNumber("MaxDriveSpeed");
+			double mappedSpeed = Transform.map(0,1,minDriveSpeed,maxDriveSpeed,Math.abs(currentDrive));
+			mappedSpeed = mappedSpeed*direction;
+			drive.arcadeDrive(mappedSpeed,currentTurn);
 		}else{
 			drive.arcadeDrive(0,0);
 		}
@@ -151,7 +167,7 @@ public class DriveTrain extends Subsystem{
 	
 	public void putToDashboard(){
 		SmartDashboard.putNumber("Drive Speed", currentDrive);
-		SmartDashboard.putNumber("Turn Speed", currentTurn);
+		SmartDashboard.putNumber("Turn Speed", currentTurn*-1);
 	}
 
 	protected void initDefaultCommand() {

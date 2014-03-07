@@ -13,14 +13,14 @@ public class Accel {
 	public static final Axes Z = ADXL345_I2C.Axes.kZ;
 	public static final DataFormat_Range FOURG = ADXL345_I2C.DataFormat_Range.k4G;
 	private final ADXL345_I2C accel;
-	private double deadzoneHigh = 0;
-	private double deadzoneLow = 0;
+	private double[] deadzoneHigh = {0,0,0,0,0};
+	private double[] deadzoneLow = {0,0,0,0,0};
 	public Accel(DataFormat_Range range) {
 		accel = new ADXL345_I2C(1, range);
 	}
 	public void zero(Axes axis){
-		double runningHigh = 4.0;
-		double runningLow = -4.0;
+		double runningHigh = 0;
+		double runningLow = 0;
 		for(int i = 0; i < 20; i++){
 			double momentAcceleration = accel.getAcceleration(axis);
 			if(momentAcceleration<runningLow){
@@ -32,17 +32,17 @@ public class Accel {
 			Timer.delay(0.05);
 		}
 		CompetitionRobot.output(axis.value+" axis zeroed, deadzone is ["+runningLow+","+runningHigh+"].");
-		deadzoneHigh = runningHigh;
-		deadzoneLow = runningLow;
+		deadzoneHigh[axis.value] = runningHigh;
+		deadzoneLow[axis.value] = runningLow;
 	}
 	public double getAcceleration(Axes axis){
 		double rawAccel = accel.getAcceleration(axis);
-		if(deadzoneHigh==0&&deadzoneLow==0){
+		if(deadzoneHigh[axis.value]==0&&deadzoneLow[axis.value]==0){
 			return rawAccel;
 		}
-		if(rawAccel <= deadzoneHigh&&rawAccel >= deadzoneLow){
+		if(rawAccel <= deadzoneHigh[axis.value]&&rawAccel >= deadzoneLow[axis.value]){
 			return 0.0d;
-		}else if(rawAccel > deadzoneHigh||rawAccel < deadzoneLow){
+		}else if(rawAccel > deadzoneHigh[axis.value]||rawAccel < deadzoneLow[axis.value]){
 			return rawAccel;
 		}else{
 			return 0.0d;

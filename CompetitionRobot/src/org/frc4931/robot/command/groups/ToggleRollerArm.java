@@ -13,8 +13,6 @@ public class ToggleRollerArm extends Command{
 	}
 
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	protected void execute() {
@@ -30,8 +28,6 @@ public class ToggleRollerArm extends Command{
 	}
 
 	protected void end() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	protected void interrupted() {

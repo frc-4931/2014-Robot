@@ -33,8 +33,7 @@ public class Net extends Subsystem{
 			}
 			return motor.isLow();
 		}else{
-			dashboardOpen = true;
-			return true;
+			return dashboardOpen;
 		}
 	}
 	
@@ -45,8 +44,7 @@ public class Net extends Subsystem{
 			}
 			return motor.isHigh();
 		}else{
-			dashboardOpen = false;
-			return true;
+			return !dashboardOpen;
 		}
 	}
 	
@@ -55,6 +53,12 @@ public class Net extends Subsystem{
 			speed = Math.min(1, speed);
 			speed = Math.max(-1, speed);
 			motor.setSpeed(speed);
+		}else{
+			if(speed>0){
+				dashboardOpen = false;
+			}else if(speed<0){
+				dashboardOpen = true;
+			}
 		}
 	}
 	

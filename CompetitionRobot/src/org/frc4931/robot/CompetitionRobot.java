@@ -1,5 +1,6 @@
 package org.frc4931.robot;
 
+import org.frc4931.robot.command.drive.PIDDriveInterface;
 import org.frc4931.robot.command.groups.DriveAndScore;
 import org.frc4931.robot.command.net.Close;
 import org.frc4931.robot.command.net.Open;
@@ -20,6 +21,7 @@ import org.frc4931.zach.io.Accel;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -32,7 +34,7 @@ public class CompetitionRobot extends IterativeRobot{
 	public static boolean COMPRESSOR_ENABLED = false;
 	public static boolean ROLLER_ENABLED = false;
 	public static boolean ARM_ENABLED = false;
-	public static boolean NETS_ENABLED = true;
+	public static boolean NETS_ENABLED = false;
 	
 	/*Drive Train Constants*/
 	public static final int DRIVE_MOTOR_FRONTLEFT = 1;
@@ -64,6 +66,8 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int GYRO_CHANNEL = 1;
 	public static final int RANGER_CHANNEL = 2;
 	
+	public static final String VISION_RASPI_IP = "10.99.31.3";
+	
 	public Gyro gyro;
 	public Accel accel;
 	public int driveMode = 1;
@@ -78,7 +82,8 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
 		Subsystems.ranger = new Ranger(RANGER_CHANNEL);
 		Subsystems.imu = new IMU(GYRO_CHANNEL);
-
+		Subsystems.pid = new PIDController(1,0,0,Subsystems.ranger,new PIDDriveInterface());
+		
 		Subsystems.compressor.init();
 		Subsystems.imu.reset();
 		OperatorInterface.init();
@@ -99,6 +104,10 @@ public class CompetitionRobot extends IterativeRobot{
 		/*Operator Interface Booleans*/
 		SmartDashboard.putBoolean("Pressure Switch", false);
 		SmartDashboard.putBoolean("Verbose", true);
+		SmartDashboard.putNumber("MinDriveSpeed", 0.35);
+		SmartDashboard.putNumber("MaxDriveSpeed", 1.0);
+		SmartDashboard.putNumber("DriveDeadZone", 0.06);
+		SmartDashboard.putData("PID", Subsystems.pid);
 		
 		/*Net Override Commands*/
 		SmartDashboard.putData("Close Left Net",new Close(Subsystems.leftNet));
@@ -135,22 +144,33 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	public void teleopPeriodic(){
 		Subsystems.driveTrain.drive(driveMode);
+		Subsystems.driveTrain.update();
 		Subsystems.roller.roll();
+		updateSmartDashboard();
 
 		Scheduler.getInstance().run();
 	}
 	
 	public void autonomousInit(){
 		Scheduler.getInstance().add(new DriveAndScore());
+		//MIN TURN SPEED 0.350
+//		Scheduler.getInstance().add(new DriveBox());
+//		Scheduler.getInstance().add(new DriveToRange(Subsystems.ranger,0.12d));
 	}
 	
 	public void autonomousPeriodic(){
 		Scheduler.getInstance().run();
+		Subsystems.driveTrain.update();
+		updateSmartDashboard();
 	}
 	
 	public static void output(String string){
-		if(SmartDashboard.getBoolean("Verbose")){
+//		if(SmartDashboard.getBoolean("Verbose")){
 			System.out.println(string);
-		}
+//		}
+	}
+	
+	public static void printToUserConsole(String string){
+		
 	}
 }

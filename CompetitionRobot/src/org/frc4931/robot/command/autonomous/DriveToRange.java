@@ -1,21 +1,22 @@
 package org.frc4931.robot.command.autonomous;
 
-import org.frc4931.robot.command.drive.PIDDriveInterface;
+import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.subsystems.Ranger;
 
-import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveToRange extends Command{
 	private final PIDController pid;
 	private final double targetRange;
-	public DriveToRange(AnalogChannel sensor, double range) {
-		pid = new PIDController(1,0,0,sensor,new PIDDriveInterface());
-		SmartDashboard.putData("Drive to Range", pid);
+	public DriveToRange(Ranger sensor, double range) {
+		pid = Subsystems.pid;//new PIDController(01d,0,0,sensor,new PIDDriveInterface());
 		targetRange = range;
-		pid.setInputRange(0, 5);
-		pid.setOutputRange(-0.75, 0.75);
+		pid.setOutputRange(-0.25, 0.25);
+		pid.setInputRange(0, 2.5);
+		pid.setPercentTolerance(1.0d);
+		pid.setContinuous(false);
+//		SmartDashboard.putData("DRIVEPID", pid);
 	}
 
 	protected void initialize() {
@@ -32,6 +33,8 @@ public class DriveToRange extends Command{
 
 	protected void end() {
 		pid.disable();
+		System.out.println("Target Reached");
+		Subsystems.driveTrain.stop();
 	}
 
 	protected void interrupted() {
