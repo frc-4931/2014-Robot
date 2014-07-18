@@ -23,7 +23,7 @@ public class DriveAtSpeed extends Command{
 	}
 
 	protected void end() {
-		Subsystems.driveTrain.arcadeDrive(0, 0);
+		Subsystems.driveTrain.stop();
 	}
 
 	protected void interrupted() {

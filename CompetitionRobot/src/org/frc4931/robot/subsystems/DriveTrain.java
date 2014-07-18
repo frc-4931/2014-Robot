@@ -25,7 +25,7 @@ public class DriveTrain extends Subsystem{
 	private final RobotDrive drive;
 	
 	private double currentDrive = 0;
-	private double currentTurn = 0;
+	private double currentTurn = 0;	
 	
 	public DriveTrain(int leftFrontMotor, int leftRearMotor, int rightFrontMotor, int rightRearMotor, int controller){
 		this.leftFrontMotor = new Motor(leftFrontMotor,controller);
@@ -115,7 +115,21 @@ public class DriveTrain extends Subsystem{
 			double maxDriveSpeed = SmartDashboard.getNumber("MaxDriveSpeed");
 			double mappedSpeed = Transform.map(0,1,minDriveSpeed,maxDriveSpeed,Math.abs(currentDrive));
 			mappedSpeed = mappedSpeed*direction;
-			drive.arcadeDrive(mappedSpeed,currentTurn);
+			
+			int turnDirection =1;
+			if(currentTurn>SmartDashboard.getNumber("TurnDeadZone")){
+				turnDirection = 1;
+			}else if(currentTurn<SmartDashboard.getNumber("TurnDeadZone")*-1){
+				turnDirection = -1;
+			}else{
+				turnDirection = 0;
+			}
+			double minTurnSpeed = SmartDashboard.getNumber("MinTurnSpeed");
+			double maxTurnSpeed = SmartDashboard.getNumber("MaxTurnSpeed");
+			double mappedTurn = Transform.map(0,1,minTurnSpeed,maxTurnSpeed,Math.abs(currentTurn));
+			mappedTurn = mappedTurn*turnDirection;
+			
+			drive.arcadeDrive(mappedSpeed,mappedTurn);
 		}else{
 			drive.arcadeDrive(0,0);
 		}

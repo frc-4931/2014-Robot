@@ -18,7 +18,6 @@ public class CheckPressure extends Command{
 		if(Subsystems.compressor.testPressure()){
 			Scheduler.getInstance().add(new Pressurize());
 			done = true;
-//			Subsystems.compressor.activate();
 		}
 	}
 
@@ -30,6 +29,9 @@ public class CheckPressure extends Command{
 	}
 
 	protected boolean isFinished() {
+		if(Subsystems.robot.isDisabled()){
+			return true;
+		}
 		return done;
 	}
 

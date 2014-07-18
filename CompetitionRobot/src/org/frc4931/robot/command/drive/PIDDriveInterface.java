@@ -6,6 +6,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 
 public class PIDDriveInterface implements PIDOutput{	
 	public void pidWrite(double output) {
-		Subsystems.driveTrain.setDriveSpeed(output);
+		Subsystems.driveTrain.setDriveSpeed(-1*output);
 	}
 }

@@ -1,11 +1,9 @@
 package org.frc4931.robot.subsystems;
 
 import org.frc4931.robot.CompetitionRobot;
-import org.frc4931.robot.command.pneumatics.CheckPressure;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,19 +24,21 @@ public class Compressor extends Subsystem{
 	}
 	
 	public void init(){
-		Scheduler.getInstance().add(new CheckPressure());
+		//Scheduler.getInstance().add(new CheckPressure());
 	}
 	
 	public void activate(){
 		isOn = true;
 		if(CompetitionRobot.COMPRESSOR_ENABLED){
 			relay.set(Relay.Value.kForward);
+			System.out.println("enable Compressor");
 		}
 	}
 	
 	public void deactive(){
 		isOn = false;
 		relay.set(Relay.Value.kOff);
+		System.out.println("disable Compressor");
 	}
 	
 	/**
@@ -46,6 +46,7 @@ public class Compressor extends Subsystem{
 	 * @return
 	 */
 	public boolean testPressure(){
+		System.out.println(pressureSwitch.get());
 //		return (!pressureSwitch.get()&&(triggerCount>10));
 		if(CompetitionRobot.COMPRESSOR_ENABLED){
 			return !pressureSwitch.get();

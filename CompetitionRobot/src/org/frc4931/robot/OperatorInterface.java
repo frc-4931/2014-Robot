@@ -1,6 +1,5 @@
 package org.frc4931.robot;
 
-import org.frc4931.robot.command.drive.ChangeDriveMode;
 import org.frc4931.robot.command.groups.ToggleNetArms;
 import org.frc4931.robot.command.groups.ToggleRollerArm;
 import org.frc4931.robot.command.roller.RollIn;
@@ -45,10 +44,10 @@ public class OperatorInterface {
 //	}
 	
 	private static void initButtonCommands(){
-		joysticks[0].buttons[7].whenPressed(new ChangeDriveMode(0));
-		joysticks[0].buttons[8].whenPressed(new ChangeDriveMode(1));
-		joysticks[0].buttons[9].whenPressed(new ChangeDriveMode(2));
-		joysticks[0].buttons[11].whenPressed(new ChangeDriveMode(3));
+//		joysticks[0].buttons[7].whenPressed(new ChangeDriveMode(0));
+//		joysticks[0].buttons[8].whenPressed(new ChangeDriveMode(1));
+//		joysticks[0].buttons[9].whenPressed(new ChangeDriveMode(2));
+//		joysticks[0].buttons[11].whenPressed(new ChangeDriveMode(3));
 		
 		joysticks[0].buttons[3].whenPressed(new RollIn());
 		joysticks[0].buttons[3].whenReleased(new StopRoller());
@@ -56,7 +55,7 @@ public class OperatorInterface {
 		joysticks[0].buttons[5].whenPressed(new RollOut());
 		joysticks[0].buttons[5].whenReleased(new StopRoller());
 		
-		joysticks[0].buttons[4].whenPressed(new ToggleRollerArm());
+		joysticks[0].buttons[1].whenPressed(new ToggleRollerArm());
 		
 		joysticks[0].buttons[6].whenPressed(new ToggleNetArms());
 	}

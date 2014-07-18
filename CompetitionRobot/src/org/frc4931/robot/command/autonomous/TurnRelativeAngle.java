@@ -1,28 +1,30 @@
 package org.frc4931.robot.command.autonomous;
 
 import org.frc4931.robot.Subsystems;
-import org.frc4931.robot.command.drive.PIDTurnInterface;
 
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class TurnRelativeAngle extends Command{
+public class TurnRelativeAngle extends Command implements PIDSource{
 	private final PIDController pid;
-	private final double targetAngle;
+	private final double difference;
 	public TurnRelativeAngle(double angle) {
 		requires(Subsystems.driveTrain);
 		requires(Subsystems.imu);
-		targetAngle = Subsystems.imu.getAngle()+angle;
-		pid = new PIDController(1,0,0,Subsystems.imu.getGyro(),new PIDTurnInterface());
-		pid.setOutputRange(-0.25, 0.25);
+		difference = angle;
+//		pid = new PIDController(0.1,0,0,this,new PIDTurnInterface());
+		pid = Subsystems.turnPID;
+		pid.setOutputRange(-0.4, 0.4);
 		pid.setInputRange(0, 360);
-		pid.setPercentTolerance(5.0d);
-		pid.setContinuous();
-		SmartDashboard.putData("Turn PID",pid);
+		pid.setPercentTolerance(1.0d);
+		pid.setContinuous(true);
+//		SmartDashboard.putData("Turn PID",pid);
 	}
 
 	protected void end() {
+		pid.disable();
 		Subsystems.driveTrain.stop();
 	}
 
@@ -31,6 +33,12 @@ public class TurnRelativeAngle extends Command{
 	}
 
 	protected void initialize() {
+		double targetAngle = (Subsystems.imu.getAngle()+difference);
+		if(targetAngle<0){
+			targetAngle = targetAngle%360+360;
+		}else if(targetAngle>0){
+			targetAngle = targetAngle%360;
+		}
 		pid.setSetpoint(targetAngle);
 		pid.enable();
 	}
@@ -41,6 +49,10 @@ public class TurnRelativeAngle extends Command{
 
 	protected boolean isFinished() {
 		return pid.onTarget();
+	}
+
+	public double pidGet() {
+		return Subsystems.imu.getAngle()%360;
 	}
 
 }

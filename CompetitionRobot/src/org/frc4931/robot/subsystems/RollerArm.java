@@ -34,19 +34,19 @@ public class RollerArm extends Subsystem{
 	}
 	
 	public boolean isDown(){
-		if(CompetitionRobot.ARM_ENABLED){
-			return leftSolenoid.isExtended()&&rightSolenoid.isExtended();
-		}else{
+//		if(CompetitionRobot.ARM_ENABLED){
+//			return leftSolenoid.isExtended()&&rightSolenoid.isExtended();
+//		}else{
 			return dashboardPosition;
-		}
+//		}
 	}
 	
 	public boolean isUp(){
-		if(CompetitionRobot.ARM_ENABLED){
-			return leftSolenoid.isRetracted()&&rightSolenoid.isRetracted();
-		}else{
+//		if(CompetitionRobot.ARM_ENABLED){
+//			return leftSolenoid.isRetracted()&&rightSolenoid.isRetracted();
+//		}else{
 			return !dashboardPosition;
-		}
+//		}
 	}
 
 	protected void initDefaultCommand() {
