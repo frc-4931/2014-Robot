@@ -1,11 +1,16 @@
 package org.frc4931.robot.command.drive;
 
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.OneShotCommand;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class ChangeDriveMode extends Command{
+/**
+ * Changes the drive mode of CopetitionRobot.
+ *
+ * @author Zach Anderson
+ */
+public class ChangeDriveMode extends OneShotCommand{
 	private final int driveMode;
+	
 	public ChangeDriveMode(int mode) {
 		requires(Subsystems.driveTrain);
 		driveMode = mode;
@@ -14,19 +19,4 @@ public class ChangeDriveMode extends Command{
 	protected void execute() {
 		Subsystems.robot.driveMode = driveMode;
 	}
-	
-	protected void end() {
-	}
-
-	protected void initialize() {
-	}
-
-	protected void interrupted() {
-		end();
-	}
-
-	protected boolean isFinished() {
-		return true;
-	}
-
 }
