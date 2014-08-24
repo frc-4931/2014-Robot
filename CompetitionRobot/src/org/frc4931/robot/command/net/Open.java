@@ -1,16 +1,22 @@
 package org.frc4931.robot.command.net;
 
+import org.frc4931.robot.command.CommandBase;
 import org.frc4931.robot.subsystems.Net;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class Open extends Command{
+/**
+ * Opens a given net.
+ * @author Zach Anderson
+ *
+ */
+public class Open extends CommandBase{
 	private final Net net;
+	
+	/**
+	 * Constructs the command with the given net.
+	 * @param net The net to Open.
+	 */
 	public Open(Net net) {
 		this.net = net;
-	}
-
-	protected void initialize() {
 	}
 
 	protected void execute() {
@@ -21,12 +27,11 @@ public class Open extends Command{
 		return net.isOpen();
 	}
 
+	/**
+	 * Stops the net.
+	 */
 	protected void end() {
 		net.stop();
+		super.end();
 	}
-
-	protected void interrupted() {
-		end();
-	}
-
 }
