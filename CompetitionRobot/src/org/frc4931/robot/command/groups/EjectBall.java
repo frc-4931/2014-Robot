@@ -8,8 +8,16 @@ import org.frc4931.robot.command.roller.StopRoller;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
+/**
+ * Ejects the ball.
+ * @author Zach Anderson
+ *
+ */
 public class EjectBall extends CommandGroup{
 
+	/**
+	 * Constructs the command group.
+	 */
 	public EjectBall() {
 		CompetitionRobot.output("Ejecting ball.");
 		requires(Subsystems.roller);
