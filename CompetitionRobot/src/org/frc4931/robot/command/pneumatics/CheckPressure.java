@@ -1,17 +1,20 @@
 package org.frc4931.robot.command.pneumatics;
 
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.CommandBase;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-public class CheckPressure extends Command{
+/**
+ * Continuously checks the pressure and schedules a pressurize if it is low.
+ * @author Zach Anderson
+ *
+ */
+//TODO this should be a OneShotCommand that is created every iteration.
+public class CheckPressure extends CommandBase{
 	private boolean done = false;
 	public CheckPressure() {
 		requires(Subsystems.compressor);
-	}
-
-	protected void end() {
 	}
 
 	protected void execute() {
@@ -19,9 +22,6 @@ public class CheckPressure extends Command{
 			Scheduler.getInstance().add(new Pressurize());
 			done = true;
 		}
-	}
-
-	protected void initialize() {
 	}
 
 	protected void interrupted() {
