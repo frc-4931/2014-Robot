@@ -17,6 +17,7 @@ import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
 import org.frc4931.robot.subsystems.IMU;
 import org.frc4931.robot.subsystems.Net;
+import org.frc4931.robot.subsystems.Nets;
 import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
@@ -28,6 +29,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CompetitionRobot extends IterativeRobot{
+	public static final long START_TIME = System.currentTimeMillis();
 	public static final String[] AUTO_MODE_NAMES = new String[]{"Drive Straight and Score","Drop Ball, Turn Left, Drive Straight","Drop Ball, Turn Right, Drive Straight"};
 	/*
 	 * Constant Convention:
@@ -76,11 +78,14 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.imu = new IMU(GYRO_CHANNEL);
 		Subsystems.imu.reset();
 		
-		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
-//		Subsystems.driveTrain = new DriveTrain(1, 2, Motor.JAGUAR_SPEED_CONTROLLER);
+		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT
+				, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
+		
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
-		Subsystems.leftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, NET_PROX_LEFT);
-		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, NET_PROX_RIGHT);
+		
+		Subsystems.nets = new Nets(new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, NET_PROX_LEFT),
+				new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, NET_PROX_RIGHT));
+		
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
 		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
 		Subsystems.ranger = new Ranger(RANGER_CHANNEL);
@@ -216,11 +221,14 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	public static void output(String string){
 //		if(SmartDashboard.getBoolean("Verbose")){
-			System.out.println(string);
+			System.out.println(Math.round(getTime()/100.0d)/10.0d+":"+"\t"+string);
 //		}
 	}
 	
 	public static void printToUserConsole(String string){
-		
+	}
+	
+	public static long getTime(){
+		return System.currentTimeMillis()-START_TIME;
 	}
 }

@@ -1,59 +1,66 @@
 package org.frc4931.robot.subsystems;
 
-import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.zach.drive.Solenoid;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-public class RollerArm extends Subsystem{
+public class RollerArm extends ToggableSubsystem{
 	private final Solenoid leftSolenoid;
 	private final Solenoid rightSolenoid;
-	private boolean dashboardPosition;
-	public RollerArm(int leftSolenoidExtend, int leftSolenoidRetract, int rightSolenoidExtend, int rightSolenoidRetract) {
+	
+	private State logicalState = State.STATE_UNKNOWN;
+	public RollerArm(int leftSolenoidExtend, int leftSolenoidRetract
+			, int rightSolenoidExtend, int rightSolenoidRetract) {
+		//TODO Identify these constants.
 		leftSolenoid = new Solenoid(leftSolenoidExtend, leftSolenoidRetract, 5, 6);
 		rightSolenoid = new Solenoid(rightSolenoidExtend, rightSolenoidRetract);
+		raise();
+	}
+	
+	public void raise(){
 		leftSolenoid.retract();
 		rightSolenoid.retract();
 	}
 	
 	public void lower(){
-		if(CompetitionRobot.ARM_ENABLED){
-			leftSolenoid.extend();
-			rightSolenoid.extend();
-		}
-		dashboardPosition = true;
-	}
-	
-	public void raise(){
-		if(CompetitionRobot.ARM_ENABLED){
-			leftSolenoid.retract();
-			rightSolenoid.retract();
-		}
-		dashboardPosition = false;
+		leftSolenoid.extend();
+		rightSolenoid.extend();
 	}
 	
 	public boolean isDown(){
-//		if(CompetitionRobot.ARM_ENABLED){
-//			return leftSolenoid.isExtended()&&rightSolenoid.isExtended();
-//		}else{
-			return dashboardPosition;
-//		}
+		return leftSolenoid.isExtended()&&rightSolenoid.isExtended();
 	}
 	
 	public boolean isUp(){
-//		if(CompetitionRobot.ARM_ENABLED){
-//			return leftSolenoid.isRetracted()&&rightSolenoid.isRetracted();
-//		}else{
-			return !dashboardPosition;
-//		}
+		return leftSolenoid.isRetracted()&&rightSolenoid.isRetracted();
 	}
 
 	protected void initDefaultCommand() {
 	}
 	
 	public void putToDashboard(){
-		SmartDashboard.putBoolean("Arm Status", dashboardPosition);
+	}
+
+	public void setStateOne() {
+		raise();
+		logicalState = State.STATE_ONE;
+	}
+
+	public void setStateTwo() {
+		lower();
+		logicalState = State.STATE_TWO;
+	}
+
+	public State getPhysicalState() {
+		if(isUp()){
+			return State.STATE_ONE;
+		}else if(isDown()){
+			return State.STATE_TWO;
+		}else{
+			return State.STATE_UNKNOWN;
+		}
+	}
+
+	public State getLogicalState() {
+		return logicalState;
 	}
 
 }
