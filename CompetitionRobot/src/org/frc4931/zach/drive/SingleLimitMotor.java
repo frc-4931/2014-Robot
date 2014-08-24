@@ -1,5 +1,7 @@
 package org.frc4931.zach.drive;
 
+import org.frc4931.robot.CompetitionRobot;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class SingleLimitMotor extends Motor{
@@ -15,9 +17,9 @@ public class SingleLimitMotor extends Motor{
 	
 	public void toggle(){
 		if(!limit.get()){
-			System.out.println("Motor is lost, assuming motor is at "+currentPosition);
+			CompetitionRobot.output("Motor is lost, assuming motor is at "+currentPosition);
 		}
-		System.out.println("Motor is at "+currentPosition);
+		CompetitionRobot.output("Motor is at "+currentPosition);
 		moveDirection = currentPosition*-1;
 	}
 	

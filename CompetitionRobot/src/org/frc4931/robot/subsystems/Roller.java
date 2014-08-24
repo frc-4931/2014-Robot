@@ -39,7 +39,7 @@ public class Roller extends Subsystem{
 	}
 	
 	public void stop(){
-		System.out.println("Roller Stopped");
+		CompetitionRobot.output("Roller Stopped");
 		currentState = 0;
 		rollerMotor.stop();
 	}

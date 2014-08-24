@@ -27,7 +27,6 @@ public class Pressurize extends Command{
 	}
 
 	protected void interrupted() {
-		System.out.println("INtERUPptED");
 		Subsystems.compressor.deactive();
 	}
 
