@@ -1,15 +1,25 @@
 package org.frc4931.robot.command.autonomous;
 
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.CommandBase;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class TurnRelativeAngle extends Command implements PIDSource{
+/**
+ * Turns by a given angle using the robot's gyroscope and a PID loop.
+ * @author Zach Anderson
+ *
+ */
+public class TurnRelativeAngle extends CommandBase implements PIDSource{
 	private final PIDController pid;
 	private final double difference;
+	
+	/**
+	 * Constructs the command.
+	 * @param angle the angle to turn by.
+	 */
 	public TurnRelativeAngle(double angle) {
 		requires(Subsystems.driveTrain);
 		requires(Subsystems.imu);
@@ -22,16 +32,10 @@ public class TurnRelativeAngle extends Command implements PIDSource{
 		pid.setContinuous(true);
 //		SmartDashboard.putData("Turn PID",pid);
 	}
-
-	protected void end() {
-		pid.disable();
-		Subsystems.driveTrain.stop();
-	}
-
-	protected void execute() {
-		SmartDashboard.putNumber("Angle", Subsystems.imu.getAngle());
-	}
-
+	
+	/**
+	 * Sets up and starts the PID loop.
+	 */
 	protected void initialize() {
 		double targetAngle = (Subsystems.imu.getAngle()+difference);
 		if(targetAngle<0){
@@ -41,16 +45,29 @@ public class TurnRelativeAngle extends Command implements PIDSource{
 		}
 		pid.setSetpoint(targetAngle);
 		pid.enable();
+		super.initialize();
 	}
 
-	protected void interrupted() {
-		end();
+	/**
+	 * Closes the PID loop and stops the drive train.
+	 */
+	protected void end() {
+		pid.disable();
+		Subsystems.driveTrain.stop();
+		super.end();
 	}
 
+	protected void execute() {
+		SmartDashboard.putNumber("Angle", Subsystems.imu.getAngle());
+	}
+	
 	protected boolean isFinished() {
 		return pid.onTarget();
 	}
 
+	/**
+	 * Gets the current value of the gyroscope, in the range 0, 360
+	 */
 	public double pidGet() {
 		return Subsystems.imu.getAngle()%360;
 	}
