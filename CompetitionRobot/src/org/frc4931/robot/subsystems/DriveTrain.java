@@ -24,26 +24,43 @@ public class DriveTrain extends Subsystem{
 	private final Motor leftRearMotor;
 	private final RobotDrive drive;
 	
+	/**The current forward drive speed.*/
 	private double currentDrive = 0;
+	/**The current turn speed*/
 	private double currentTurn = 0;	
 	
-	public DriveTrain(int leftFrontMotor, int leftRearMotor, int rightFrontMotor, int rightRearMotor, int controller){
-		this.leftFrontMotor = new Motor(leftFrontMotor,controller);
-		this.leftRearMotor = new Motor(leftRearMotor,controller);
-		this.rightFrontMotor = new Motor(rightFrontMotor,controller);
-		this.rightRearMotor = new Motor(rightRearMotor,controller);
+	/**
+	 * Constructs a new drive train with the given values.
+	 * @param leftFrontMotor The channel of the left front motor.
+	 * @param leftRearMotor The channel of the left rear motor.
+	 * @param rightFrontMotor The channel of the right front motor.
+	 * @param rightRearMotor The channel of the right rear motor.
+	 * @param controller The type of speed controller.
+	 */
+	public DriveTrain(int leftFrontMotor, int leftRearMotor, int rightFrontMotor, int rightRearMotor, Motor.SpeedControllerType type){
+		this.leftFrontMotor = new Motor(leftFrontMotor,type);
+		this.leftRearMotor = new Motor(leftRearMotor,type);
+		this.rightFrontMotor = new Motor(rightFrontMotor,type);
+		this.rightRearMotor = new Motor(rightRearMotor,type);
 		drive = new RobotDrive(this.leftFrontMotor.getController(),this.leftRearMotor.getController(),this.rightFrontMotor.getController(),this.rightRearMotor.getController());
 	}
 	
-	public DriveTrain(int driveMotorLeft, int driveMotorRight, int controller) {
-		this.leftFrontMotor = new Motor(driveMotorLeft,controller);
-		this.rightFrontMotor = new Motor(driveMotorRight,controller);
+	/**
+	 * Constructs a new drive train with the given values.
+	 * @param driveMotorLeft The channel of the left motor.
+	 * @param driveMotorRight The channel of the right motor.
+	 * @param type The type of the speed controller.
+	 */
+	public DriveTrain(int driveMotorLeft, int driveMotorRight, Motor.SpeedControllerType type) {
+		this.leftFrontMotor = new Motor(driveMotorLeft,type);
+		this.rightFrontMotor = new Motor(driveMotorRight,type);
 		drive = new RobotDrive(this.leftFrontMotor.getController(),this.rightFrontMotor.getController());
 		this.leftRearMotor = null;
 		this.rightRearMotor = null;
 	}
 
 	/**
+	 * @deprecated Use setDriveSpeed() and setTurnSpeed() instead.  
 	 * Drive this drive train in tank mode.
 	 * @param leftSpeed the speed of the left motor from -1.0 to 1.0.
 	 * @param rightSpeed the speed of the right motor from -1.0 to 1.0.
@@ -70,6 +87,12 @@ public class DriveTrain extends Subsystem{
 		setTurnSpeed(turnSpeed);
 	}
 	
+	/**
+	 * Finds the maximum amount the drive speed of the robot can change in one iteration
+	 * given an initial speed.
+	 * @param speed The speed to find the max delta for
+	 * @return The maximum amount the speed can change in one iteration.
+	 */
 	private double getMaxDelta(double speed){
 		if(Math.abs(speed)<SmartDashboard.getNumber("Range 1")){
 			return SmartDashboard.getNumber("Max Delta 1");
@@ -101,7 +124,12 @@ public class DriveTrain extends Subsystem{
 		}
 //		update();
 	}
+	
+	/**
+	 * Updates the speed of the motors.
+	 */
 	public void update(){
+		//TODO Move joystick deadzones out of DriveTrain
 		if(CompetitionRobot.DRIVE_ENABLED==true){
 			int direction =1;
 			if(currentDrive>SmartDashboard.getNumber("DriveDeadZone")){
@@ -135,15 +163,34 @@ public class DriveTrain extends Subsystem{
 		}
 	}
 	
+	/**
+	 * Stops all of the motors.
+	 */
 	public void stop(){
 		drive.arcadeDrive(0,0);
+		currentDrive = 0.0;
+		currentTurn = 0.0;
 	}
 	
+	/**
+	 * Sets the forward speed. Actual speed of the motors does not change until update()
+	 * is called.
+	 * @param speed The new speed from -1.0 to 1.0
+	 */
 	public void setDriveSpeed(double speed){
+		speed = Math.max(speed, -1.0);
+		speed = Math.min(speed, 1.0);
 		currentDrive = speed;
 	}
 	
+	/**
+	 * Sets the turn speed. Actual speed of the motors does not change until update()
+	 * is called.
+	 * @param speed The new speed from -1.0 to 1.0
+	 */
 	public void setTurnSpeed(double speed){
+		speed = Math.max(speed, -1.0);
+		speed = Math.min(speed, 1.0);
 		currentTurn = speed;
 	}
 	
