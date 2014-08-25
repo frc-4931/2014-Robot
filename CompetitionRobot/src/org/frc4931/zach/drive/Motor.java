@@ -28,6 +28,23 @@ public class Motor implements Sendable{
 	 * It must contain the case insensitive string "talon", "jaguar", 
 	 * or "victor" depending on the type of the motor controller.
 	 */
+	public Motor(int channel, SpeedControllerType type){
+		this.type = ""+type;
+		this.channel = channel;
+		if(type.equals(SpeedControllerType.TALON)){
+			controller = new Talon(channel);
+		}else if(type.equals(SpeedControllerType.VICTOR)){
+			controller = new Victor(channel);
+		}else if(type.equals(SpeedControllerType.JAGUAR)){
+			controller = new Jaguar(channel);
+		}else{
+			controller = null;
+		}
+	}
+	
+	/**
+	 * @deprecated
+	 */
 	public Motor(int channel, int type){
 		this.type = ""+type;
 		this.channel = channel;
@@ -91,5 +108,20 @@ public class Motor implements Sendable{
 			 table.putNumber("Speed", getSpeed());
 			 table.putNumber("Channel", channel);
 		 }
+	}
+	public static class SpeedControllerType{
+		public static final SpeedControllerType TALON = new SpeedControllerType(0);
+		public static final SpeedControllerType VICTOR = new SpeedControllerType(1);
+		public static final SpeedControllerType JAGUAR = new SpeedControllerType(2);
+		
+		private final int value;
+		
+		private SpeedControllerType(int value){
+			this.value = value;
+		}
+		
+		public boolean equals(SpeedControllerType motor){
+			return this.value == motor.value;
+		}
 	}
 }
