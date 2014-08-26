@@ -10,7 +10,14 @@ import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
 
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
+/*TODO 
+ * This is a mess, there must be a better way to do it
+ * maybe a sensor package subsystem to hold groups of sensors?
+ * 
+ * 
+ */
 public class Subsystems {
 	public static CompetitionRobot robot;
 	
@@ -25,4 +32,7 @@ public class Subsystems {
 	public static IMU imu;
 	public static PIDController pid;
 	public static PIDController turnPID;
+	
+	public static Ultrasonic leftUltrasonicSensor;
+	public static Ultrasonic rightUltrasonicSensor;
 }

@@ -24,6 +24,7 @@ import org.frc4931.zach.drive.Motor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -69,6 +70,12 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int GYRO_CHANNEL = 1;
 	public static final int RANGER_CHANNEL = 2;
 	
+	public static final int ULTRASONIC_LEFT_PING = 4;
+	public static final int ULTRASONIC_LEFT_ECHO = 5;
+	
+	public static final int ULTRASONIC_RIGHT_PING = 9;
+	public static final int ULTRASONIC_RIGHT_EHCO = 10;
+	
 	public int autoMode = 0;
 	public int driveMode = 1;
 	public void robotInit(){
@@ -86,6 +93,9 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.ranger = new Ranger(RANGER_CHANNEL);
 		Subsystems.pid = new PIDController(0.5,0,0,Subsystems.ranger,new PIDDriveInterface());
 		Subsystems.turnPID = new PIDController(0.003,0,0.007,Subsystems.imu, new PIDTurnInterface());
+		
+		Subsystems.leftUltrasonicSensor = new Ultrasonic(ULTRASONIC_LEFT_PING, ULTRASONIC_LEFT_ECHO, Ultrasonic.Unit.kInches);
+		Subsystems.rightUltrasonicSensor = new Ultrasonic(ULTRASONIC_RIGHT_PING, ULTRASONIC_RIGHT_EHCO, Ultrasonic.Unit.kInches);
 		
 		//Subsystems.compressor.init();
 		OperatorInterface.init();
@@ -155,6 +165,8 @@ public class CompetitionRobot extends IterativeRobot{
 	public void updateSmartDashboard(){
 		SmartDashboard.putString("Current Autonomous Mode", AUTO_MODE_NAMES[autoMode]);
 		/*Put Sensor Values*/
+		SmartDashboard.putNumber("Left Range",Subsystems.leftUltrasonicSensor.getRangeInches());
+		SmartDashboard.putNumber("Right Range",Subsystems.rightUltrasonicSensor.getRangeInches());
 		
 		/*Put Subsystems*/
 		Subsystems.driveTrain.putToDashboard();

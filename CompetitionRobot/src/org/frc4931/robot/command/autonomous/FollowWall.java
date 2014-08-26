@@ -2,11 +2,14 @@ package org.frc4931.robot.command.autonomous;
 
 import org.frc4931.robot.Subsystems;
 
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class FollowWall extends Command{
 	private final static double TOLERANCE=0.01;
 	private final double targetDistance;
+	
+	private Ultrasonic ultrasonicSensor;
 	
 	public FollowWall(double targetDistance) {
 		this.targetDistance = targetDistance;
@@ -18,8 +21,7 @@ public class FollowWall extends Command{
 	}
 	
 	private double getCurrentDistance(){
-		//TODO Implement this method
-		return 0.0;
+		return ultrasonicSensor.getRangeInches();
 	}
 
 	protected void end() {
@@ -39,7 +41,14 @@ public class FollowWall extends Command{
 		}
 	}
 
-	protected void initialize() {	
+	protected void initialize() {
+		double leftDistance = Subsystems.leftUltrasonicSensor.getRangeInches();
+		double rightDistance = Subsystems.rightUltrasonicSensor.getRangeInches();
+		if(leftDistance<rightDistance){
+			ultrasonicSensor = Subsystems.leftUltrasonicSensor;
+		}else{
+			ultrasonicSensor = Subsystems.rightUltrasonicSensor;
+		}
 	}
 
 	protected void interrupted() {
