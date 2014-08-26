@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 /**
  * Continuously checks the pressure and schedules a pressurize if it is low.
  * @author Zach Anderson
- *
+ * @deprecated
  */
 //TODO this should be a OneShotCommand that is created every iteration.
 public class CheckPressure extends CommandBase{
