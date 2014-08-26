@@ -15,7 +15,9 @@ public class Subsystems {
 	public static CompetitionRobot robot;
 	public static DriveTrain driveTrain;
 	public static Compressor compressor;
+	/**@deprecated**/
 	public static Net leftNet;
+	/**@deprecated**/
 	public static Net rightNet;
 	public static Nets nets;
 	public static RollerArm arm;

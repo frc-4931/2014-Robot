@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * @author Zach Anderson
  *
  */
+
 public class CloseNets extends CommandGroup{
 	/**
 	 * Constructs the command group.

@@ -9,6 +9,10 @@ public class Toggle extends CommandBase{
 	private ToggableSubsystem.State initialState;
 	private ToggableSubsystem.State targetState;
 	
+	/**
+	 * Toggles a ToggableSubsystem from one state to the other.
+	 * @param subsystem The ToggableSubsystem to toggle.
+	 */
 	public Toggle(ToggableSubsystem subsystem){
 		requires(subsystem);
 		
