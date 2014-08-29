@@ -1,7 +1,7 @@
 package org.frc4931.robot.subsystems;
 
 import org.frc4931.robot.CompetitionRobot;
-import org.frc4931.zach.drive.Motor;
+import org.frc4931.zach.drive.ContinuousMotor;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,10 +14,10 @@ public class Roller extends Subsystem{
 	
 	public double currentState = 0;
 	
-	private final Motor rollerMotor;
+	private final ContinuousMotor rollerMotor;
 
-	public Roller(int rollerMotor, int motorType) {
-		this.rollerMotor = new Motor(rollerMotor, motorType);
+	public Roller(int rollerMotor, ContinuousMotor.SpeedControllerType type) {
+		this.rollerMotor = new ContinuousMotor(rollerMotor, type);
 	}
 	
 	public void rollIn(){

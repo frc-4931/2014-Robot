@@ -6,31 +6,17 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.tables.ITable;
 /**
- * A class that represents a physical motor and its associated speed controller
+ * An abstract motor class
  * @author zach
  *
  */
-//TODO Change this class to ContinousMotor and create a super class AbstractMotor.
-public class Motor implements Sendable{
-	public static final int TALON_SPEED_CONTROLLER = 1;
-	public static final int VICTOR_SPEED_CONTROLLER = 2;
-	public static final int JAGUAR_SPEED_CONTROLLER = 3;
-	
+public abstract class AbstractMotor implements Sendable{
 	protected final SpeedController controller;
 	private final int channel;
 	
-	private final String type;
 	private ITable table;
 	
-	/**
-	 * Creates a motor class of the specified type on the given channel.
-	 * @param channel the PWM output that the motor controller is connected to.
-	 * @param type the name displayed in the SmartDashboard.  
-	 * It must contain the case insensitive string "talon", "jaguar", 
-	 * or "victor" depending on the type of the motor controller.
-	 */
-	public Motor(int channel, SpeedControllerType type){
-		this.type = ""+type;
+	public AbstractMotor(int channel, SpeedControllerType type){
 		this.channel = channel;
 		if(type.equals(SpeedControllerType.TALON)){
 			controller = new Talon(channel);
@@ -40,41 +26,12 @@ public class Motor implements Sendable{
 			controller = new Jaguar(channel);
 		}else{
 			controller = null;
+			throw new NullPointerException("Motor type is null");
 		}
 	}
 	
 	/**
-	 * @deprecated
-	 */
-	public Motor(int channel, int type){
-		this.type = ""+type;
-		this.channel = channel;
-		switch(type){
-			case TALON_SPEED_CONTROLLER:
-				controller = new Talon(channel);
-				break;
-			case VICTOR_SPEED_CONTROLLER:
-				controller = new Victor(channel);
-				break;
-			case JAGUAR_SPEED_CONTROLLER:
-				controller = new Jaguar(channel);
-				break;
-			default:
-				controller = null;
-				break;
-		}
-	}
-	
-	/**Set the speed of the motor as a double between -1.0 and 1.0.
-	 * 
-	 * @param speed the speed to set the motor to, between -1.0 and 1.0.
-	 */
-	public void setSpeed(double speed){
-		controller.set(speed);
-	}
-	
-	/**
-	 * Returns the current speed of the motor as a double from -1.0 to 1.0.
+	 * Gets the current speed of the motor.
 	 * @return the speed of the motor from -1.0 to 1.0.
 	 */
 	public double getSpeed(){
@@ -82,27 +39,29 @@ public class Motor implements Sendable{
 	}
 	
 	/**
-	 * Returns the class that represents the physical motor controller.
-	 * @return the SpeedController that is attached to the motor.
+	 * Gets the SpeedController of this motor.
+	 * @return The SpeedController of this motor.
 	 */
 	public SpeedController getController(){
 		return controller;
 	}
 	
-	public void stop(){
-		setSpeed(0);
+	/**
+	 * Stops this motor.
+	 */
+	public final void stop(){
+		controller.set(0.0);
 	}
 	
 	/*SmartDashboard Information*/
-	//@Override
 	public String getSmartDashboardType() {
-		return type;
+		return "Motor";
 	}
-	//@Override
+
 	public ITable getTable() {
 		return table;
 	}
-	//@Override
+
 	public void initTable(ITable table) {
 		 this.table = table;
 		 if (table != null) {
@@ -110,6 +69,7 @@ public class Motor implements Sendable{
 			 table.putNumber("Channel", channel);
 		 }
 	}
+	
 	public static class SpeedControllerType{
 		public static final SpeedControllerType TALON = new SpeedControllerType(0);
 		public static final SpeedControllerType VICTOR = new SpeedControllerType(1);

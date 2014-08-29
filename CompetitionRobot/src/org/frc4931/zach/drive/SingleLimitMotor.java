@@ -4,13 +4,13 @@ import org.frc4931.robot.CompetitionRobot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public class SingleLimitMotor extends Motor{
+public class SingleLimitMotor extends AbstractMotor{
 	public final DigitalInput limit;
 	public int currentPosition = -1;
 	public int moveDirection = 0;
 	public boolean waitingForSwitch=false;
 	
-	public SingleLimitMotor(int channel, int type, int limit){
+	public SingleLimitMotor(int channel, AbstractMotor.SpeedControllerType type, int limit){
 		super(channel, type);
 		this.limit = new DigitalInput(limit);
 	}

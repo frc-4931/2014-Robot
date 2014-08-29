@@ -2,7 +2,7 @@ package org.frc4931.zach.drive;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public class LimitedMotor extends Motor{
+public class LimitedMotor extends AbstractMotor{
 	private final DigitalInput highLimit;
 	private final DigitalInput lowLimit;
 	
@@ -13,7 +13,7 @@ public class LimitedMotor extends Motor{
 	 * @param lowLimit the digital input channel of the low limit switch.
 	 * @param highLimit the digital input channel of the high limit switch.
 	 */
-	public LimitedMotor(int channel, Motor.SpeedControllerType type, int lowLimit, int highLimit) {
+	public LimitedMotor(int channel, AbstractMotor.SpeedControllerType type, int lowLimit, int highLimit) {
 		super(channel, type);
 		this.highLimit = new DigitalInput(highLimit);
 		this.lowLimit = new DigitalInput(lowLimit);

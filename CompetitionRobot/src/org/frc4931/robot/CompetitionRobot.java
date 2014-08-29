@@ -21,8 +21,8 @@ import org.frc4931.robot.subsystems.Nets;
 import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
+import org.frc4931.zach.drive.ContinuousMotor;
 import org.frc4931.zach.drive.LimitedMotor;
-import org.frc4931.zach.drive.Motor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PIDController;
@@ -80,19 +80,19 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.imu.reset();
 		
 		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT
-				, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.SpeedControllerType.TALON);
+				, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, ContinuousMotor.SpeedControllerType.TALON);
 		
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
 		
 		Subsystems.nets = new Nets
-				( new LimitedMotor(NET_MOTOR_LEFT, Motor.SpeedControllerType.VICTOR, NET_SWITCH_LEFT, NET_PROX_LEFT)
-				, new LimitedMotor(NET_MOTOR_RIGHT, Motor.SpeedControllerType.VICTOR, NET_SWITCH_RIGHT, NET_PROX_RIGHT));
+				( new LimitedMotor(NET_MOTOR_LEFT, LimitedMotor.SpeedControllerType.VICTOR, NET_SWITCH_LEFT, NET_PROX_LEFT)
+				, new LimitedMotor(NET_MOTOR_RIGHT, LimitedMotor.SpeedControllerType.VICTOR, NET_SWITCH_RIGHT, NET_PROX_RIGHT));
 		
 		Subsystems.leftNet = new Net(Subsystems.nets.leftMotor);
 		Subsystems.rightNet = new Net(Subsystems.nets.rightMotor);
 		
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
-		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
+		Subsystems.roller = new Roller(ROLLER_MOTOR, ContinuousMotor.SpeedControllerType.VICTOR);
 		Subsystems.ranger = new Ranger(RANGER_CHANNEL);
 		Subsystems.pid = new PIDController(0.5,0,0,Subsystems.ranger,new PIDDriveInterface());
 		Subsystems.turnPID = new PIDController(0.003,0,0.007,Subsystems.imu, new PIDTurnInterface());

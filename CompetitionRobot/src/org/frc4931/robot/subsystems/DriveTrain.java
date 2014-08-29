@@ -5,7 +5,7 @@ import org.frc4931.robot.command.drive.ArcadeDriveWithJoystick;
 import org.frc4931.robot.command.drive.ModifiedDriveWithJoystick;
 import org.frc4931.robot.command.drive.StrafeDriveWithJoystick;
 import org.frc4931.robot.command.drive.TankDriveWithJoysticks;
-import org.frc4931.zach.drive.Motor;
+import org.frc4931.zach.drive.ContinuousMotor;
 import org.frc4931.zach.utils.Transform;
 
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author zach
  */
 public class DriveTrain extends Subsystem{
-	private final Motor rightFrontMotor;
-	private final Motor leftFrontMotor;
-	private final Motor rightRearMotor;
-	private final Motor leftRearMotor;
+	private final ContinuousMotor rightFrontMotor;
+	private final ContinuousMotor leftFrontMotor;
+	private final ContinuousMotor rightRearMotor;
+	private final ContinuousMotor leftRearMotor;
 	private final RobotDrive drive;
 	
 	/**The current forward drive speed.*/
@@ -37,11 +37,11 @@ public class DriveTrain extends Subsystem{
 	 * @param rightRearMotor The channel of the right rear motor.
 	 * @param controller The type of speed controller.
 	 */
-	public DriveTrain(int leftFrontMotor, int leftRearMotor, int rightFrontMotor, int rightRearMotor, Motor.SpeedControllerType type){
-		this.leftFrontMotor = new Motor(leftFrontMotor,type);
-		this.leftRearMotor = new Motor(leftRearMotor,type);
-		this.rightFrontMotor = new Motor(rightFrontMotor,type);
-		this.rightRearMotor = new Motor(rightRearMotor,type);
+	public DriveTrain(int leftFrontMotor, int leftRearMotor, int rightFrontMotor, int rightRearMotor, ContinuousMotor.SpeedControllerType type){
+		this.leftFrontMotor = new ContinuousMotor(leftFrontMotor,type);
+		this.leftRearMotor = new ContinuousMotor(leftRearMotor,type);
+		this.rightFrontMotor = new ContinuousMotor(rightFrontMotor,type);
+		this.rightRearMotor = new ContinuousMotor(rightRearMotor,type);
 		drive = new RobotDrive(this.leftFrontMotor.getController(),this.leftRearMotor.getController(),this.rightFrontMotor.getController(),this.rightRearMotor.getController());
 	}
 	
@@ -51,9 +51,9 @@ public class DriveTrain extends Subsystem{
 	 * @param driveMotorRight The channel of the right motor.
 	 * @param type The type of the speed controller.
 	 */
-	public DriveTrain(int driveMotorLeft, int driveMotorRight, Motor.SpeedControllerType type) {
-		this.leftFrontMotor = new Motor(driveMotorLeft,type);
-		this.rightFrontMotor = new Motor(driveMotorRight,type);
+	public DriveTrain(int driveMotorLeft, int driveMotorRight, ContinuousMotor.SpeedControllerType type) {
+		this.leftFrontMotor = new ContinuousMotor(driveMotorLeft,type);
+		this.rightFrontMotor = new ContinuousMotor(driveMotorRight,type);
 		drive = new RobotDrive(this.leftFrontMotor.getController(),this.rightFrontMotor.getController());
 		this.leftRearMotor = null;
 		this.rightRearMotor = null;
@@ -194,19 +194,19 @@ public class DriveTrain extends Subsystem{
 		currentTurn = speed;
 	}
 	
-	public Motor getLeftMotor(){
+	public ContinuousMotor getLeftMotor(){
 		return leftFrontMotor;
 	}
 	
-	public Motor getLeftRearMotor(){
+	public ContinuousMotor getLeftRearMotor(){
 		return leftRearMotor;
 	}
 	
-	public Motor getRightMotor(){
+	public ContinuousMotor getRightMotor(){
 		return rightFrontMotor;
 	}
 	
-	public Motor getRightRearMotor(){
+	public ContinuousMotor getRightRearMotor(){
 		return rightRearMotor;
 	}
 	
