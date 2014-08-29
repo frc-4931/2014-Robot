@@ -5,6 +5,7 @@ import org.frc4931.zach.drive.LimitedMotor;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+/**@deprecated*/
 public class Net extends Subsystem{
 	public static final double DELAY = 0.75;
 	public static final double CLOSE_SPEED = 0.4;
@@ -13,10 +14,6 @@ public class Net extends Subsystem{
 	private final LimitedMotor motor;
 	public Net(LimitedMotor motor) {
 		this.motor = motor;
-	}
-	
-	public Net(int motorChannel, int motorType, int lowChannel, int highChannel) {
-		this.motor = new LimitedMotor(motorChannel, motorType, lowChannel, highChannel);
 	}
 	
 	public void reset(){
