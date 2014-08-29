@@ -21,6 +21,7 @@ import org.frc4931.robot.subsystems.Nets;
 import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
+import org.frc4931.zach.drive.LimitedMotor;
 import org.frc4931.zach.drive.Motor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -83,8 +84,12 @@ public class CompetitionRobot extends IterativeRobot{
 		
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
 		
-		Subsystems.nets = new Nets(new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, NET_PROX_LEFT),
-				new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, NET_PROX_RIGHT));
+		Subsystems.nets = new Nets
+				( new LimitedMotor(NET_MOTOR_LEFT, Motor.SpeedControllerType.VICTOR, NET_SWITCH_LEFT, NET_PROX_LEFT)
+				, new LimitedMotor(NET_MOTOR_RIGHT, Motor.SpeedControllerType.VICTOR, NET_SWITCH_RIGHT, NET_PROX_RIGHT));
+		
+		Subsystems.leftNet = new Net(Subsystems.nets.leftMotor);
+		Subsystems.rightNet = new Net(Subsystems.nets.rightMotor);
 		
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
 		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
