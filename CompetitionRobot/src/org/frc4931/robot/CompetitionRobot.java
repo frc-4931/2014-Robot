@@ -97,6 +97,9 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.leftUltrasonicSensor = new Ultrasonic(ULTRASONIC_LEFT_PING, ULTRASONIC_LEFT_ECHO, Ultrasonic.Unit.kInches);
 		Subsystems.rightUltrasonicSensor = new Ultrasonic(ULTRASONIC_RIGHT_PING, ULTRASONIC_RIGHT_EHCO, Ultrasonic.Unit.kInches);
 		
+		Subsystems.leftUltrasonicSensor.setAutomaticMode(true);
+		Subsystems.rightUltrasonicSensor.setAutomaticMode(true);
+		
 		//Subsystems.compressor.init();
 		OperatorInterface.init();
 		
@@ -165,6 +168,7 @@ public class CompetitionRobot extends IterativeRobot{
 	public void updateSmartDashboard(){
 		SmartDashboard.putString("Current Autonomous Mode", AUTO_MODE_NAMES[autoMode]);
 		/*Put Sensor Values*/
+		output(""+Subsystems.leftUltrasonicSensor.getRangeInches());
 		SmartDashboard.putNumber("Left Range",Subsystems.leftUltrasonicSensor.getRangeInches());
 		SmartDashboard.putNumber("Right Range",Subsystems.rightUltrasonicSensor.getRangeInches());
 		
