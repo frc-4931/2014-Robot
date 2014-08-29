@@ -121,6 +121,8 @@ public class Motor implements Sendable{
 		}
 		
 		public boolean equals(SpeedControllerType motor){
+			if(this == motor) return true;
+			if(motor == null) return false;
 			return this.value == motor.value;
 		}
 	}

@@ -29,7 +29,9 @@ public abstract class ToggableSubsystem extends Subsystem{
 		}
 		
 		public boolean equals(State state){
-			return (value == state.value);
+			if(this==state) return true;
+			if(state==null) return false;
+			return (this.value == state.value);
 		}
 	}
 }
