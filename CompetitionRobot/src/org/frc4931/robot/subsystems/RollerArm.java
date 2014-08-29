@@ -10,7 +10,7 @@ public class RollerArm extends ToggableSubsystem{
 	public RollerArm(int leftSolenoidExtend, int leftSolenoidRetract
 			, int rightSolenoidExtend, int rightSolenoidRetract) {
 		//TODO Identify these constants.
-		leftSolenoid = new Solenoid(leftSolenoidExtend, leftSolenoidRetract, 5, 6);
+		leftSolenoid = new Solenoid(leftSolenoidExtend, leftSolenoidRetract);
 		rightSolenoid = new Solenoid(rightSolenoidExtend, rightSolenoidRetract);
 		raise();
 	}
@@ -18,11 +18,13 @@ public class RollerArm extends ToggableSubsystem{
 	public void raise(){
 		leftSolenoid.retract();
 		rightSolenoid.retract();
+		logicalState = State.STATE_ONE;
 	}
 	
 	public void lower(){
 		leftSolenoid.extend();
 		rightSolenoid.extend();
+		logicalState = State.STATE_TWO;
 	}
 	
 	public boolean isDown(){
@@ -41,12 +43,10 @@ public class RollerArm extends ToggableSubsystem{
 
 	public void setStateOne() {
 		raise();
-		logicalState = State.STATE_ONE;
 	}
 
 	public void setStateTwo() {
 		lower();
-		logicalState = State.STATE_TWO;
 	}
 
 	public State getPhysicalState() {

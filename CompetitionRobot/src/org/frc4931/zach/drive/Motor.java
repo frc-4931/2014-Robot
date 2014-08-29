@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
  * @author zach
  *
  */
+//TODO Change this class to ContinousMotor and create a super class AbstractMotor.
 public class Motor implements Sendable{
 	public static final int TALON_SPEED_CONTROLLER = 1;
 	public static final int VICTOR_SPEED_CONTROLLER = 2;

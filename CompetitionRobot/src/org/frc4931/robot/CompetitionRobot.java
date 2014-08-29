@@ -226,7 +226,7 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	public static void output(String string){
 //		if(SmartDashboard.getBoolean("Verbose")){
-			System.out.println(Math.round(getTime()/100.0d)/10.0d+":"+"\t"+string);
+			System.out.println(Math.floor(getTime()/100.0d)/10.0d+":"+"\t"+string);
 //		}
 	}
 	
