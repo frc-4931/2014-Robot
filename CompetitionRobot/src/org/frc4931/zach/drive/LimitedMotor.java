@@ -1,11 +1,14 @@
 package org.frc4931.zach.drive;
 
+import org.frc4931.robot.command.TwoState;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 
-public class LimitedMotor extends AbstractMotor{
+public class LimitedMotor extends AbstractMotor implements TwoState{
 	private final DigitalInput highLimit;
 	private final DigitalInput lowLimit;
 	
+	private TwoState.State logicalState = State.UNKNOWN;
 	/**
 	 * Constructs a new LimitedMotor with the on the using the specified channels and motor controller.
 	 * @param channel the pwm channel the motor controller is attached to. 
@@ -43,6 +46,7 @@ public class LimitedMotor extends AbstractMotor{
 	public void setHigh(double speed){
 		if(!isHigh()){
 			setSpeed(speed);
+			logicalState = State.HIGH;
 		}else{
 			stop();
 		}
@@ -56,6 +60,7 @@ public class LimitedMotor extends AbstractMotor{
 	public void setLow(double speed){
 		if(!isLow()){
 			setSpeed(speed);
+			logicalState = State.LOW;
 		}else{
 			stop();
 		}	
@@ -66,6 +71,36 @@ public class LimitedMotor extends AbstractMotor{
 	 */
 	public void setSpeed(double speed){
 		controller.set(speed);
+	}
+
+	public State getPhysicalState() {
+		if(isLow()){
+			return State.ONE;
+		}else if(isHigh()){
+			return State.TWO;
+		}else{
+			return State.UNKNOWN;
+		}
+	}
+
+	public State getLogicalState() {
+		return logicalState;
+	}
+
+	public void setStateOne(double speed) {
+		setLow(speed);
+	}
+
+	public void setStateTwo(double speed) {
+		setHigh(speed);
+	}
+
+	public String getName() {
+		return "Limited Motor";
+	}
+
+	public boolean isContinous() {
+		return true;
 	}
 
 }

@@ -175,8 +175,8 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.imu.putToDashboard();
 		
 		/*Put Subsystem Values*/
-		SmartDashboard.putBoolean("Left Net Status", Subsystems.leftNet.dashboardOpen);
-		SmartDashboard.putBoolean("Right Net Status", Subsystems.rightNet.dashboardOpen);
+		SmartDashboard.putBoolean("Left Net Status", Subsystems.leftNet.isOpen());
+		SmartDashboard.putBoolean("Right Net Status", Subsystems.rightNet.isOpen());
 	}
 	
 	public void robotPeriodic(){

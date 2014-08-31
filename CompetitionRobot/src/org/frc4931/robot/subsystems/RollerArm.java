@@ -1,15 +1,15 @@
 package org.frc4931.robot.subsystems;
 
+import org.frc4931.robot.command.TwoState;
 import org.frc4931.zach.drive.Solenoid;
 
-public class RollerArm extends ToggableSubsystem{
+public class RollerArm implements TwoState{
 	private final Solenoid leftSolenoid;
 	private final Solenoid rightSolenoid;
 	
-	private State logicalState = State.STATE_UNKNOWN;
+	private State logicalState = State.UNKNOWN;
 	public RollerArm(int leftSolenoidExtend, int leftSolenoidRetract
 			, int rightSolenoidExtend, int rightSolenoidRetract) {
-		//TODO Identify these constants.
 		leftSolenoid = new Solenoid(leftSolenoidExtend, leftSolenoidRetract);
 		rightSolenoid = new Solenoid(rightSolenoidExtend, rightSolenoidRetract);
 		raise();
@@ -18,13 +18,13 @@ public class RollerArm extends ToggableSubsystem{
 	public void raise(){
 		leftSolenoid.retract();
 		rightSolenoid.retract();
-		logicalState = State.STATE_ONE;
+		logicalState = State.ONE;
 	}
 	
 	public void lower(){
 		leftSolenoid.extend();
 		rightSolenoid.extend();
-		logicalState = State.STATE_TWO;
+		logicalState = State.TWO;
 	}
 	
 	public boolean isDown(){
@@ -41,26 +41,34 @@ public class RollerArm extends ToggableSubsystem{
 	public void putToDashboard(){
 	}
 
-	public void setStateOne() {
+	public void setStateOne(double speed) {
 		raise();
 	}
 
-	public void setStateTwo() {
+	public void setStateTwo(double speed) {
 		lower();
 	}
 
 	public State getPhysicalState() {
 		if(isUp()){
-			return State.STATE_ONE;
+			return State.ONE;
 		}else if(isDown()){
-			return State.STATE_TWO;
+			return State.TWO;
 		}else{
-			return State.STATE_UNKNOWN;
+			return State.UNKNOWN;
 		}
 	}
 
 	public State getLogicalState() {
 		return logicalState;
+	}
+
+	public String getName() {
+		return "Roller Arm";
+	}
+
+	public boolean isContinous() {
+		return false;
 	}
 
 }
