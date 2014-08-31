@@ -5,8 +5,14 @@ import org.frc4931.robot.CompetitionRobot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public abstract class CommandBase extends Command{
+	private final boolean isContinuous;
+	private boolean hasExecuted = false;
+	
 	protected CommandBase(){
-		CompetitionRobot.output("Command <"+getName()+"> created.");
+		this(true);
+	}
+	protected CommandBase(boolean isContinuous){
+		this.isContinuous=isContinuous;
 	}
 	
 	protected void initialize(){
@@ -14,7 +20,13 @@ public abstract class CommandBase extends Command{
 	}
 	
 	protected void execute(){
-		CompetitionRobot.output("Command <"+getName()+"> executed.");
+		if(isContinuous||(!hasExecuted)){
+			doExecute();
+			hasExecuted = true;
+		}
+	}
+	protected void doExecute(){
+		
 	}
 	
 	protected void interrupted() {

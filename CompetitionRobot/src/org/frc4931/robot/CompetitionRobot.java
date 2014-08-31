@@ -1,15 +1,13 @@
 package org.frc4931.robot;
 
+import org.frc4931.robot.command.SetState;
+import org.frc4931.robot.command.TwoState.State;
 import org.frc4931.robot.command.drive.PIDDriveInterface;
 import org.frc4931.robot.command.drive.PIDTurnInterface;
 import org.frc4931.robot.command.groups.DriveAndScore;
 import org.frc4931.robot.command.groups.DropTurnLeftDrive;
 import org.frc4931.robot.command.groups.DropTurnRightDrive;
-import org.frc4931.robot.command.net.Close;
-import org.frc4931.robot.command.net.Open;
-import org.frc4931.robot.command.pneumatics.LowerArm;
 import org.frc4931.robot.command.pneumatics.Pressurize;
-import org.frc4931.robot.command.pneumatics.RaiseArm;
 import org.frc4931.robot.command.roller.RollIn;
 import org.frc4931.robot.command.roller.RollOut;
 import org.frc4931.robot.command.roller.StopRoller;
@@ -118,8 +116,8 @@ public class CompetitionRobot extends IterativeRobot{
 		SmartDashboard.putNumber("Max Delta 1", 1.0);
 		SmartDashboard.putNumber("Max Delta 2", 0.1);
 		SmartDashboard.putNumber("Max Delta 3", 0.01);
-		Scheduler.getInstance().add(new Close(Subsystems.leftNet));
-		Scheduler.getInstance().add(new Close(Subsystems.rightNet));
+		Scheduler.getInstance().add(new SetState(Subsystems.nets.leftNet, State.CLOSED));
+		Scheduler.getInstance().add(new SetState(Subsystems.nets.rightNet, State.CLOSED));
 	}
 	
 	public void smartDashboardInit(){
@@ -143,14 +141,14 @@ public class CompetitionRobot extends IterativeRobot{
 		SmartDashboard.putData("Turn PID", Subsystems.turnPID);
 		
 		/*Net Override Commands*/
-		SmartDashboard.putData("Close Left Net",new Close(Subsystems.leftNet));
-		SmartDashboard.putData("Close Right Net",new Close(Subsystems.rightNet));
-		SmartDashboard.putData("Open Left Net",new Open(Subsystems.leftNet));
-		SmartDashboard.putData("Open Right Net",new Open(Subsystems.rightNet));
+		SmartDashboard.putData("Close Left Net",new SetState(Subsystems.nets.leftNet, State.CLOSED));
+		SmartDashboard.putData("Close Right Net",new SetState(Subsystems.nets.rightNet, State.CLOSED));
+		SmartDashboard.putData("Open Left Net",new SetState(Subsystems.nets.leftNet, State.OPEN));
+		SmartDashboard.putData("Open Right Net",new SetState(Subsystems.nets.rightNet, State.OPEN));
 
 		/*Roller Arm Override Commands*/
-		SmartDashboard.putData("Lower Roller Arm", new LowerArm());
-		SmartDashboard.putData("Raise Roller Arm", new RaiseArm());
+		SmartDashboard.putData("Lower Roller Arm", new SetState(Subsystems.arm, State.DOWN));
+		SmartDashboard.putData("Raise Roller Arm", new SetState(Subsystems.arm, State.UP));
 	
 		/*Roller Override Commands*/
 		SmartDashboard.putData("Roll Arm In", new RollIn());

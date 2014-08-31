@@ -1,53 +1,85 @@
 package org.frc4931.robot.command;
 
 import org.frc4931.robot.CompetitionRobot;
+import org.frc4931.robot.command.TwoState.State;
 import org.frc4931.robot.subsystems.ToggableSubsystem;
-import org.frc4931.robot.subsystems.ToggableSubsystem.State;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+/**
+ * Toggles a specified ToggableSubsystem from one state to the other.
+ * <p>
+ * If continuous is false, <code>susbsytem.setState()</code> will only be called 
+ * once, the first time this command is executed.  If it is true, 
+ * <code>subsystem.setState()</code> will be called every time this command is executed.  
+ * Regardless, this command not end until <code>subsystem</code> reports it is in the
+ * correct state.
+ * </p>
+ * @author Zach Anderson
+ *
+ */
 public class Toggle extends CommandBase{
-	private final ToggableSubsystem subsystem;
-	private ToggableSubsystem.State initialState;
-	private ToggableSubsystem.State targetState;
+	private final TwoState object;
+	private final double speed;
+
+	private TwoState.State initialState;
+	private TwoState.State targetState;
 	
+	public Toggle(TwoState object){
+		this(object, 0, object.isContinous());
+	}
+	
+	public Toggle(TwoState object, double speed){
+		this(object, speed, true);
+	}
 	/**
-	 * Toggles a ToggableSubsystem from one state to the other.
-	 * @param subsystem The ToggableSubsystem to toggle.
+	 * Constructs a new command to toggle the specified {@link ToggableSubsystem}
+	 * @param subsystem the subsystem to toggle.
+	 * @param continuous the desired operation of this command as described above.
+	 * @see Toggle
 	 */
-	public Toggle(ToggableSubsystem subsystem){
-		requires(subsystem);
+	public Toggle(TwoState object, boolean continuous){
+		this(object, 0, continuous);
+	}
+	
+	public Toggle(TwoState object, double speed, boolean continuous){
+		super(continuous);
+		this.object = object;
+		this.speed = speed;
 		
-		this.subsystem = subsystem;
-		
-		this.setInterruptible(true);
+		if(object instanceof Subsystem){
+			requires((Subsystem)object);
+		}
 	}
 	
 	protected void initialize(){
-		super.initialize();
+		initialState = object.getPhysicalState();
 		
-		initialState = subsystem.getPhysicalState();
-		
-		if(initialState.equals(State.STATE_UNKNOWN)){
-			initialState = subsystem.getLogicalState();
+		if(initialState.equals(State.UNKNOWN)){
+			initialState = object.getLogicalState();
 		}
 		
-		if(initialState.equals(State.STATE_ONE)){
-			targetState = State.STATE_TWO;
-		}else if(initialState.equals(State.STATE_TWO)){
-			targetState = State.STATE_ONE;
+		if(initialState.equals(State.ONE)){
+			targetState = State.TWO;
+		}else if(initialState.equals(State.TWO)){
+			targetState = State.ONE;
 		}else{
-			CompetitionRobot.output("<"+subsystem.getName()+"> state is unknown.");
+			CompetitionRobot.output("<"+object.getName()+"> state is unknown.");
 			cancel();
 		}
 	}
-
-	protected void execute() {
-		super.execute();
-		if(!subsystem.getPhysicalState().equals(targetState)){
-			subsystem.setState(targetState);
+	
+	protected void doExecute() {
+		if(!object.getPhysicalState().equals(targetState)){
+			if(targetState.equals(State.ONE)){
+				object.setStateOne(speed);
+			}else if(targetState.equals(State.TWO)){
+				object.setStateTwo(speed);
+			}
 		}
 	}
 
 	protected boolean isFinished(){
-		return subsystem.getPhysicalState().equals(targetState);
+		return object.getPhysicalState().equals(targetState);
 	}
 }
