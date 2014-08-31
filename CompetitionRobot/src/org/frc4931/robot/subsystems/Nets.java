@@ -1,88 +1,106 @@
 package org.frc4931.robot.subsystems;
 
+import org.frc4931.robot.command.SetState;
+import org.frc4931.robot.command.Toggle;
+import org.frc4931.robot.command.TwoState;
+import org.frc4931.robot.command.net.AddCommandAfterDelay;
 import org.frc4931.zach.drive.LimitedMotor;
 
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
 /**
- * The Nets class provides coordination for both of the net segments on the robot.
+ * Provides coordination for both of the net segments on the robot.
  * @author Zach Anderson
  *
  */
-public class Nets extends ToggableSubsystem{
-	private ToggableSubsystem.State logicalState = State.STATE_UNKNOWN;
+public class Nets extends Subsystem implements TwoState{
+	public static final double DELAY = 0.5;
+	public static final double OPEN_SPEED = 0.4;
+	public static final double CLOSE_SPEED = 0.4;
+
+	private TwoState.State logicalState = State.UNKNOWN;
 	
-	//TODO Make these private
-	public final LimitedMotor leftMotor;
-	public final LimitedMotor rightMotor;
+	public final Net leftNet;
+	public final Net rightNet;
 	
 	/**
-	 * Constructs a new Nets using the specified motors.
+	 * Constructs a new {@link Nets} using the specified motors.
 	 * @param leftMotor the motor connected to the left net segment.
 	 * @param rightMotor the motor connected to the right net segment.
 	 */
 	public Nets(LimitedMotor leftMotor, LimitedMotor rightMotor){
-		this.leftMotor = leftMotor;
-		this.rightMotor = rightMotor;
+		leftNet = new Net(leftMotor);
+		rightNet = new Net(rightMotor);
 	}
 
 	/**
-	 * Opens this Nets.
+	 * Opens this {@link Nets}.
 	 */
-	//TODO Implement net open using a delay.
-	private void open(){
-		leftMotor.setHigh(0.4);
-		rightMotor.setHigh(0.3);
-		logicalState  = State.STATE_ONE;
+	public void setOpen(){
+		Scheduler.getInstance().add(new SetState(leftNet, State.OPEN, OPEN_SPEED));
+		Scheduler.getInstance().add(new AddCommandAfterDelay(new SetState
+				(rightNet, State.OPEN, OPEN_SPEED), DELAY));
+		logicalState = State.OPEN;
 	}
 	
 	/**
-	 * Closes this Nets.
+	 * Closes this {@link Nets}.
 	 */
-	//TODO Implement net close using a delay.
-	private void close(){
-		leftMotor.setLow(0.4);
-		rightMotor.setLow(0.3);
-		logicalState = State.STATE_TWO;
+	public void setClosed(){
+		Scheduler.getInstance().add(new SetState(rightNet, State.CLOSED, CLOSE_SPEED));
+		Scheduler.getInstance().add(new AddCommandAfterDelay(new SetState
+				(leftNet, State.CLOSED, CLOSE_SPEED), DELAY));
+		logicalState = State.CLOSED;
+	}
+	
+	public void toggle(){
+		Scheduler.getInstance().add(new Toggle(this));
 	}
 	
 	/**
-	 * Tests if this Nets is open.
+	 * Tests if this {@link Nets} is open.
 	 * @return true if both net segments are open; false otherwise.
 	 */
-	private boolean isOpen(){
-		return leftMotor.isHigh()&&rightMotor.isHigh();
+	public boolean isOpen(){
+		return leftNet.isOpen()&&rightNet.isOpen();
 	}
 	
 	/**
-	 * Tests if this Nets is closed.
+	 * Tests if this {@link Nets} is closed.
 	 * @return true if both net segments are closed; false otherwise.
 	 */
-	private boolean isClosed(){
-		return leftMotor.isLow()&&rightMotor.isLow();
+	public boolean isClosed(){
+		return leftNet.isClosed()&&rightNet.isClosed();
 	}
 	
 	protected void initDefaultCommand() {
 	}
 
-	protected void setStateOne() {
-		open();
+	public void setStateOne(double speed) {
+		setOpen();
 	}
 
-	protected void setStateTwo() {
-		close();
+	public void setStateTwo(double speed) {
+		setClosed();
 	}
 
 	public State getPhysicalState() {
 		if(isOpen()){
-			return State.STATE_ONE;
+			return State.OPEN;
 		}else if(isClosed()){
-			return State.STATE_TWO;
+			return State.CLOSED;
 		}else{
-			return State.STATE_UNKNOWN;
+			return State.UNKNOWN;
 		}
 	}
 
 	public State getLogicalState() {
 		return logicalState;
+	}
+
+	public boolean isContinous() {
+		return false;
 	}
 
 }

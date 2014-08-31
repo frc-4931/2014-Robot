@@ -14,7 +14,6 @@ import org.frc4931.robot.command.roller.StopRoller;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
 import org.frc4931.robot.subsystems.IMU;
-import org.frc4931.robot.subsystems.Net;
 import org.frc4931.robot.subsystems.Nets;
 import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
@@ -85,9 +84,6 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.nets = new Nets
 				( new LimitedMotor(NET_MOTOR_LEFT, LimitedMotor.SpeedControllerType.VICTOR, NET_SWITCH_LEFT, NET_PROX_LEFT)
 				, new LimitedMotor(NET_MOTOR_RIGHT, LimitedMotor.SpeedControllerType.VICTOR, NET_SWITCH_RIGHT, NET_PROX_RIGHT));
-		
-		Subsystems.leftNet = new Net(Subsystems.nets.leftMotor);
-		Subsystems.rightNet = new Net(Subsystems.nets.rightMotor);
 		
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
 		Subsystems.roller = new Roller(ROLLER_MOTOR, ContinuousMotor.SpeedControllerType.VICTOR);
@@ -173,8 +169,8 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.imu.putToDashboard();
 		
 		/*Put Subsystem Values*/
-		SmartDashboard.putBoolean("Left Net Status", Subsystems.leftNet.isOpen());
-		SmartDashboard.putBoolean("Right Net Status", Subsystems.rightNet.isOpen());
+		SmartDashboard.putBoolean("Left Net Status", Subsystems.nets.leftNet.isOpen());
+		SmartDashboard.putBoolean("Right Net Status", Subsystems.nets.rightNet.isOpen());
 	}
 	
 	public void robotPeriodic(){

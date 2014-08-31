@@ -3,7 +3,6 @@ package org.frc4931.robot;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
 import org.frc4931.robot.subsystems.IMU;
-import org.frc4931.robot.subsystems.Net;
 import org.frc4931.robot.subsystems.Nets;
 import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
@@ -15,10 +14,6 @@ public class Subsystems {
 	public static CompetitionRobot robot;
 	public static DriveTrain driveTrain;
 	public static Compressor compressor;
-	/**@deprecated**/
-	public static Net leftNet;
-	/**@deprecated**/
-	public static Net rightNet;
 	public static Nets nets;
 	public static RollerArm arm;
 	public static Roller roller;

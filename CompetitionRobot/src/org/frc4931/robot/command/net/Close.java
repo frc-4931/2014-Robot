@@ -1,12 +1,14 @@
 package org.frc4931.robot.command.net;
 
 import org.frc4931.robot.command.CommandBase;
+import org.frc4931.robot.command.SetState;
 import org.frc4931.robot.subsystems.Net;
+import org.frc4931.robot.subsystems.Nets;
 
 /**
  * Closes a given Net.
  * @author Zach Anderson
- *
+ * @deprecated Use {@link SetState}
  */
 public class Close extends CommandBase{
 	private final Net net;
@@ -20,7 +22,7 @@ public class Close extends CommandBase{
 	}
 
 	protected void execute() {
-		net.setSpeed(Net.CLOSE_SPEED);
+		net.close((Nets.CLOSE_SPEED));
 	}
 
 	protected boolean isFinished() {
