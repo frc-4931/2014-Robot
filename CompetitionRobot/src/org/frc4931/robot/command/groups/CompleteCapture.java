@@ -1,6 +1,8 @@
 package org.frc4931.robot.command.groups;
 
-import org.frc4931.robot.command.pneumatics.RaiseArm;
+import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.SetState;
+import org.frc4931.robot.command.TwoState.State;
 import org.frc4931.robot.command.roller.StopRoller;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -15,7 +17,7 @@ public class CompleteCapture extends CommandGroup{
 	 */
 	public CompleteCapture() {
 //		addParallel(new RollIn());
-		addSequential(new RaiseArm());
+		addSequential(new SetState(Subsystems.arm, State.UP));
 		addSequential(new StopRoller());
 	}
 }
