@@ -19,7 +19,7 @@ public class RaiseArm extends CommandBase{
 		CompetitionRobot.output("Arm Raised");
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.arm.raise();
 	}
 

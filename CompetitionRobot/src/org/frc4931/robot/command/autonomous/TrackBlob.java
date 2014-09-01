@@ -33,6 +33,10 @@ public class TrackBlob extends CommandBase{
 		pid.enable();
 		super.initialize();
 	}
+	
+	protected void doExecute(){
+		
+	}
 
 	protected boolean isFinished() {
 		return pid.onTarget();

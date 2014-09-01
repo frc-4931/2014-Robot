@@ -20,7 +20,7 @@ public class LowerArm extends CommandBase{
 		CompetitionRobot.output("Arm Lowered");
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.arm.lower();
 	}
 

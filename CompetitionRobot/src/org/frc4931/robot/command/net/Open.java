@@ -21,7 +21,7 @@ public class Open extends CommandBase{
 		this.net = net;
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		net.open(Nets.OPEN_SPEED);
 	}
 

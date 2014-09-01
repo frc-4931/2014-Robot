@@ -16,7 +16,7 @@ public class ChangeDriveMode extends OneShotCommand{
 		driveMode = mode;
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.robot.driveMode = driveMode;
 	}
 }

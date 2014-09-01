@@ -21,7 +21,7 @@ public class Close extends CommandBase{
 		this.net = net;
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		net.close((Nets.CLOSE_SPEED));
 	}
 

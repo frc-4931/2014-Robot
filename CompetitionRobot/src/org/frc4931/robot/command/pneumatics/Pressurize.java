@@ -17,7 +17,7 @@ public class Pressurize extends CommandBase{
 		this.setInterruptible(false);
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.compressor.activate();
 	}
 

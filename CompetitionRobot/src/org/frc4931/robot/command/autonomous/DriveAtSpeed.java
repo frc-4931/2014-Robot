@@ -20,7 +20,7 @@ public class DriveAtSpeed extends CommandBase{
 		this.speed = speed;
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.driveTrain.arcadeDrive(speed, 0);
 	}
 

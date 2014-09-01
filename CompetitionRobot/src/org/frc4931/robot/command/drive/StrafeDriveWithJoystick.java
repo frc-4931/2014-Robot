@@ -16,7 +16,7 @@ public class StrafeDriveWithJoystick extends OneShotCommand{
 		requires(Subsystems.driveTrain);
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		double rawDriveSpeed = OperatorInterface.joysticks[0].getRoll()*-1;
 		double rawTurnSpeed = OperatorInterface.joysticks[0].getYaw()*-1;
 		double scaledDriveSpeed = rawDriveSpeed*OperatorInterface.joysticks[0].getNormalThrottle();

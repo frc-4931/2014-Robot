@@ -16,7 +16,7 @@ public class ArcadeDriveWithJoystick extends OneShotCommand{
 		requires(Subsystems.driveTrain);
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		double rawDriveSpeed = OperatorInterface.joysticks[0].getPitch();
 		double rawTurnSpeed = OperatorInterface.joysticks[0].getRoll()*-1;
 		double scaledDriveSpeed = rawDriveSpeed*OperatorInterface.joysticks[0].getNormalThrottle();

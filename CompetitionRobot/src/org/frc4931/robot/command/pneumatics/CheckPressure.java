@@ -17,7 +17,7 @@ public class CheckPressure extends CommandBase{
 		requires(Subsystems.compressor);
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		if(Subsystems.compressor.testPressure()){
 			Scheduler.getInstance().add(new Pressurize());
 			done = true;

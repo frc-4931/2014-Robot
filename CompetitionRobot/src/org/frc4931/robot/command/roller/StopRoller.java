@@ -14,7 +14,7 @@ public class StopRoller extends OneShotCommand{
 		requires(Subsystems.roller);
 	}
 	
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.roller.stop();
 	}
 }

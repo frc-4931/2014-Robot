@@ -19,15 +19,13 @@ public abstract class CommandBase extends Command{
 		CompetitionRobot.output("Command <"+getName()+"> initialized.");
 	}
 	
-	protected void execute(){
+	protected final void execute(){
 		if(isContinuous||(!hasExecuted)){
 			doExecute();
 			hasExecuted = true;
 		}
 	}
-	protected void doExecute(){
-		
-	}
+	protected abstract void doExecute();
 	
 	protected void interrupted() {
 		CompetitionRobot.output("Command <"+getName()+"> canceled.");

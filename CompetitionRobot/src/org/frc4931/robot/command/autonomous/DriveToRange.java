@@ -52,6 +52,10 @@ public class DriveToRange extends CommandBase{
 		stablizer.enable();
 		super.initialize();
 	}
+	
+	protected void doExecute(){
+		
+	}
 
 	protected boolean isFinished() {
 		return pid.onTarget();

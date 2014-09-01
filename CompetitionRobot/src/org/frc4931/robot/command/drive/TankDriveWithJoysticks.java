@@ -16,7 +16,7 @@ public class TankDriveWithJoysticks extends OneShotCommand{
 		requires(Subsystems.driveTrain);
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		double scaledRightSpeed = OperatorInterface.joysticks[0].getPitch()*OperatorInterface.joysticks[0].getNormalThrottle();
 		double scaledLeftSpeed = OperatorInterface.joysticks[1].getPitch()*OperatorInterface.joysticks[0].getNormalThrottle();
 		Subsystems.driveTrain.tankDrive(scaledLeftSpeed, scaledRightSpeed);
