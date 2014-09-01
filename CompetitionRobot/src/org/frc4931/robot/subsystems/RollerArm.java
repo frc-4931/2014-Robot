@@ -3,7 +3,9 @@ package org.frc4931.robot.subsystems;
 import org.frc4931.robot.command.TwoState;
 import org.frc4931.zach.drive.Solenoid;
 
-public class RollerArm implements TwoState{
+import edu.wpi.first.wpilibj.command.Subsystem;
+
+public class RollerArm extends Subsystem implements TwoState{
 	private final Solenoid leftSolenoid;
 	private final Solenoid rightSolenoid;
 	
