@@ -5,12 +5,21 @@ import org.frc4931.robot.command.autonomous.DriveAtSpeed;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+/**
+ * Drives straight forward and ejects the ball.
+ * @author Zach Anderson
+ *
+ */
 public class DriveAndScore extends CommandGroup{
 
+	/**
+	 * Constructs the command group.
+	 **/
 	public DriveAndScore() {
 		requires(Subsystems.driveTrain);
 		requires(Subsystems.ranger);
 		requires(Subsystems.roller);
+		//TODO Identify magic number.
 		addSequential(new DriveAtSpeed(0.5),3.0d);
 		addSequential(new DriveAtSpeed(0.0),2.0d);
 //		addSequential(new DriveToRange(Subsystems.ranger, 0.3d));

@@ -1,8 +1,9 @@
 package org.frc4931.robot.test;
 
-import org.frc4931.robot.command.pneumatics.LowerArm;
+import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.SetState;
+import org.frc4931.robot.command.TwoState.State;
 import org.frc4931.robot.command.pneumatics.Pressurize;
-import org.frc4931.robot.command.pneumatics.RaiseArm;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -13,14 +14,14 @@ public class TestPneumatics extends CommandGroup{
 		addSequential(new Output("Starting Pneumatics Test"));
 		addSequential(new Pressurize());
 		addSequential(new WaitCommand(3.0d));
-		addSequential(new LowerArm());
+		addSequential(new SetState(Subsystems.arm, State.DOWN));
 		addSequential(new WaitCommand(3.0d));
-		addSequential(new RaiseArm());
+		addSequential(new SetState(Subsystems.arm, State.UP));
 		addSequential(new WaitCommand(3.0d));
 		addSequential(new Pressurize());
 		addSequential(new WaitCommand(1.0d));
 		addSequential(new TestReliefValve(),10.0d);
-		addSequential(new Output("Pneumatis Test Complete"));
+		addSequential(new Output("Pneumatics Test Complete"));
 	}
 
 }

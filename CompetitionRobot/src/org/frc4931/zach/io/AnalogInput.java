@@ -1,5 +1,6 @@
 package org.frc4931.zach.io;
 
+import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.zach.utils.Countdown;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
@@ -48,14 +49,14 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 	 */
 	public void calibrate(){
 		//TODO Use a button to control calibration.
-		System.out.println("Minimize Sensor");
+		CompetitionRobot.output("Minimize Sensor");
 		Countdown.count(5);
 		int rawMin = getValue();
-		System.out.println("Value Saved");
-		System.out.println("Maximize Sensor");
+		CompetitionRobot.output("Value Saved");
+		CompetitionRobot.output("Maximize Sensor");
 		Countdown.count(5);
 		int rawMax = getValue();
-		System.out.println("Value Saved");
+		CompetitionRobot.output("Value Saved");
 		offset = 0-rawMin;
 		offsetMax = rawMax+offset;
 		calibrated = true;
@@ -71,7 +72,7 @@ public class AnalogInput extends AnalogChannel implements Sendable{
 			float value = offsetRaw/offsetMax;
 			return value;
 		}else{
-			System.out.println("Sensor not calibrated, cannot normalize value");
+			CompetitionRobot.output("Sensor not calibrated, cannot normalize value");
 			return 0;
 		}
 	}

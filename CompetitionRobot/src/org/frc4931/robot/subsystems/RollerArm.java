@@ -1,59 +1,79 @@
 package org.frc4931.robot.subsystems;
 
-import org.frc4931.robot.CompetitionRobot;
+import org.frc4931.robot.command.TwoState;
 import org.frc4931.zach.drive.Solenoid;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class RollerArm extends Subsystem{
+public class RollerArm extends Subsystem implements TwoState{
 	private final Solenoid leftSolenoid;
 	private final Solenoid rightSolenoid;
-	private boolean dashboardPosition;
-	public RollerArm(int leftSolenoidExtend, int leftSolenoidRetract, int rightSolenoidExtend, int rightSolenoidRetract) {
-		leftSolenoid = new Solenoid(leftSolenoidExtend, leftSolenoidRetract, 5, 6);
-		rightSolenoid = new Solenoid(rightSolenoidExtend, rightSolenoidRetract);
-		leftSolenoid.retract();
-		rightSolenoid.retract();
-	}
 	
-	public void lower(){
-		if(CompetitionRobot.ARM_ENABLED){
-			leftSolenoid.extend();
-			rightSolenoid.extend();
-		}
-		dashboardPosition = true;
+	private State logicalState = State.UNKNOWN;
+	public RollerArm(int leftSolenoidExtend, int leftSolenoidRetract
+			, int rightSolenoidExtend, int rightSolenoidRetract) {
+		leftSolenoid = new Solenoid(leftSolenoidExtend, leftSolenoidRetract);
+		rightSolenoid = new Solenoid(rightSolenoidExtend, rightSolenoidRetract);
+		raise();
 	}
 	
 	public void raise(){
-		if(CompetitionRobot.ARM_ENABLED){
-			leftSolenoid.retract();
-			rightSolenoid.retract();
-		}
-		dashboardPosition = false;
+		leftSolenoid.retract();
+		rightSolenoid.retract();
+		logicalState = State.ONE;
+	}
+	
+	public void lower(){
+		leftSolenoid.extend();
+		rightSolenoid.extend();
+		logicalState = State.TWO;
 	}
 	
 	public boolean isDown(){
-//		if(CompetitionRobot.ARM_ENABLED){
-//			return leftSolenoid.isExtended()&&rightSolenoid.isExtended();
-//		}else{
-			return dashboardPosition;
-//		}
+		return leftSolenoid.isExtended();//&&rightSolenoid.isExtended();
 	}
 	
 	public boolean isUp(){
-//		if(CompetitionRobot.ARM_ENABLED){
-//			return leftSolenoid.isRetracted()&&rightSolenoid.isRetracted();
-//		}else{
-			return !dashboardPosition;
-//		}
+		return leftSolenoid.isRetracted();//&&rightSolenoid.isRetracted();
 	}
 
 	protected void initDefaultCommand() {
 	}
 	
 	public void putToDashboard(){
-		SmartDashboard.putBoolean("Arm Status", dashboardPosition);
+	}
+
+	public void setStateOne(double speed) {
+		raise();
+	}
+
+	public void setStateTwo(double speed) {
+		lower();
+	}
+
+	public State getPhysicalState() {
+		if(isUp()){
+			return State.ONE;
+		}else if(isDown()){
+			return State.TWO;
+		}else{
+			return State.UNKNOWN;
+		}
+	}
+
+	public State getLogicalState() {
+		return logicalState;
+	}
+
+	public String getName() {
+		return "Roller Arm";
+	}
+
+	public boolean isContinous() {
+		return false;
+	}
+
+	public void stop() {
 	}
 
 }

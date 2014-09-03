@@ -1,71 +1,58 @@
 package org.frc4931.robot.subsystems;
 
 import org.frc4931.robot.CompetitionRobot;
+import org.frc4931.robot.command.TwoState;
 import org.frc4931.zach.drive.LimitedMotor;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-
-public class Net extends Subsystem{
-	public static final double DELAY = 0.75;
-	public static final double CLOSE_SPEED = 0.4;
-	public static final double OPEN_SPEED = 0.4;
-	public boolean dashboardOpen = false;
+public class Net implements TwoState{
 	private final LimitedMotor motor;
 	public Net(LimitedMotor motor) {
 		this.motor = motor;
 	}
 	
-	public Net(int motorChannel, int motorType, int lowChannel, int highChannel) {
-		this.motor = new LimitedMotor(motorChannel, motorType, lowChannel, highChannel);
-	}
-	
-	public void reset(){
-		while(isOpen()){
-			motor.setSpeed(-0.25);
-		}
-		motor.setSpeed(0);
-	}
-	
 	public boolean isOpen(){
-		if(CompetitionRobot.NETS_ENABLED){
-			if(motor.isLow()){
-				dashboardOpen = true;
-			}
-			return motor.isLow();
-		}else{
-			return dashboardOpen;
-		}
+		return motor.isLow();
 	}
 	
 	public boolean isClosed(){
-		if(CompetitionRobot.NETS_ENABLED){
-			if(motor.isHigh()){
-				dashboardOpen = false;
-			}
-			return motor.isHigh();
-		}else{
-			return !dashboardOpen;
-		}
+		return motor.isHigh();
 	}
 	
-	public void setSpeed(double speed){
-		if(CompetitionRobot.NETS_ENABLED){
-			speed = Math.min(1, speed);
-			speed = Math.max(-1, speed);
-			motor.setSpeed(speed);
-		}else{
-			if(speed>0){
-				dashboardOpen = false;
-			}else if(speed<0){
-				dashboardOpen = true;
-			}
-		}
+	public void open(double speed){
+		CompetitionRobot.output("Opening net");
+		motor.setLow(speed);
+	}
+	
+	public void close(double speed){
+		CompetitionRobot.output("CLOSING NET");
+		motor.setHigh(speed);
 	}
 	
 	public void stop(){
 		motor.stop();
 	}
-	
-	protected void initDefaultCommand() {
+
+	public void setStateOne(double speed) {
+		open(speed);
+	}
+
+	public void setStateTwo(double speed) {
+		close(speed);
+	}
+
+	public State getPhysicalState() {
+		return motor.getPhysicalState();
+	}
+
+	public State getLogicalState() {
+		return motor.getLogicalState();
+	}
+
+	public String getName() {
+		return "Net Segment";
+	}
+
+	public boolean isContinous() {
+		return true;
 	}
 }
