@@ -30,11 +30,11 @@ public class RollerArm extends Subsystem implements TwoState{
 	}
 	
 	public boolean isDown(){
-		return leftSolenoid.isExtended()&&rightSolenoid.isExtended();
+		return leftSolenoid.isExtended();//&&rightSolenoid.isExtended();
 	}
 	
 	public boolean isUp(){
-		return leftSolenoid.isRetracted()&&rightSolenoid.isRetracted();
+		return leftSolenoid.isRetracted();//&&rightSolenoid.isRetracted();
 	}
 
 	protected void initDefaultCommand() {
@@ -71,6 +71,9 @@ public class RollerArm extends Subsystem implements TwoState{
 
 	public boolean isContinous() {
 		return false;
+	}
+
+	public void stop() {
 	}
 
 }

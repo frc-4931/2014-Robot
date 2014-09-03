@@ -55,6 +55,7 @@ public class Toggle extends CommandBase{
 	protected void initialize(){
 		initialState = object.getPhysicalState();
 		
+		CompetitionRobot.output("Initial state is "+initialState.toString());
 		if(initialState.equals(State.UNKNOWN)){
 			initialState = object.getLogicalState();
 		}
@@ -67,19 +68,29 @@ public class Toggle extends CommandBase{
 			CompetitionRobot.output("<"+object.getName()+"> state is unknown.");
 			cancel();
 		}
+		CompetitionRobot.output(initialState.toString()+"Target state for "+object.getName()+" is "+targetState.toString());
+		super.initialize();
 	}
 	
 	protected void doExecute() {
 		if(!object.getPhysicalState().equals(targetState)){
 			if(targetState.equals(State.ONE)){
+				CompetitionRobot.output("Setting state of "+object.getName() + "to one");
 				object.setStateOne(speed);
 			}else if(targetState.equals(State.TWO)){
 				object.setStateTwo(speed);
+				CompetitionRobot.output("Setting state of "+object.getName() + "to two");
 			}
 		}
 	}
 
 	protected boolean isFinished(){
+		CompetitionRobot.output("Toggle Finished? "+object.getPhysicalState().toString()+", "+object.getPhysicalState().equals(targetState));
 		return object.getPhysicalState().equals(targetState);
+	}
+	
+	protected void end(){
+		object.stop();
+		super.end();
 	}
 }

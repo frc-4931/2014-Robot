@@ -1,7 +1,5 @@
 package org.frc4931.robot.command;
 
-import org.frc4931.robot.CompetitionRobot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 public abstract class CommandBase extends Command{
@@ -16,7 +14,8 @@ public abstract class CommandBase extends Command{
 	}
 	
 	protected void initialize(){
-		CompetitionRobot.output("Command <"+getName()+"> initialized.");
+		hasExecuted=false;
+		//CompetitionRobot.output("Command <"+getName()+"> initialized.");
 	}
 	
 	protected final void execute(){
@@ -28,11 +27,12 @@ public abstract class CommandBase extends Command{
 	protected abstract void doExecute();
 	
 	protected void interrupted() {
-		CompetitionRobot.output("Command <"+getName()+"> canceled.");
+		//CompetitionRobot.output("Command <"+getName()+"> canceled.");
 		end();
 	}
 	
 	protected void end() {
-		CompetitionRobot.output("Command <"+getName()+"> has ended.");
+		hasExecuted=false;
+		//CompetitionRobot.output("Command <"+getName()+"> has ended.");
 	}
 }

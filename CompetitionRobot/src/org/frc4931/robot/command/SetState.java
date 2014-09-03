@@ -1,10 +1,11 @@
 package org.frc4931.robot.command;
 
+import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.robot.command.TwoState.State;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class SetState extends CommandBase{
+public final class SetState extends CommandBase{
 	private final TwoState object;
 	
 	private final TwoState.State targetState;
@@ -35,6 +36,7 @@ public class SetState extends CommandBase{
 	}
 	
 	protected void doExecute() {
+		CompetitionRobot.output("Executing SetState on "+object.getName());
 		if(targetState.equals(State.ONE)){
 			object.setStateOne(speed);
 		}else if(targetState.equals(State.TWO)){
@@ -43,6 +45,12 @@ public class SetState extends CommandBase{
 	}
 
 	protected boolean isFinished() {
+		CompetitionRobot.output(""+object.getPhysicalState().toString()+" "+object.getPhysicalState().equals(targetState));
 		return object.getPhysicalState().equals(targetState);
+	}
+	
+	protected void end(){
+		object.stop();
+		super.end();
 	}
 }

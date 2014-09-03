@@ -59,7 +59,7 @@ public class LimitedMotor extends AbstractMotor implements TwoState{
 	 */
 	public void setLow(double speed){
 		if(!isLow()){
-			setSpeed(speed);
+			setSpeed(-speed);
 			logicalState = State.LOW;
 		}else{
 			stop();

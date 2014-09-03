@@ -1,5 +1,6 @@
 package org.frc4931.robot.subsystems;
 
+import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.robot.command.TwoState;
 import org.frc4931.zach.drive.LimitedMotor;
 
@@ -18,11 +19,13 @@ public class Net implements TwoState{
 	}
 	
 	public void open(double speed){
-		motor.setHigh(speed);
+		CompetitionRobot.output("Opening net");
+		motor.setLow(speed);
 	}
 	
 	public void close(double speed){
-		motor.setLow(speed);
+		CompetitionRobot.output("CLOSING NET");
+		motor.setHigh(speed);
 	}
 	
 	public void stop(){
@@ -30,11 +33,11 @@ public class Net implements TwoState{
 	}
 
 	public void setStateOne(double speed) {
-		close(speed);
+		open(speed);
 	}
 
 	public void setStateTwo(double speed) {
-		open(speed);
+		close(speed);
 	}
 
 	public State getPhysicalState() {

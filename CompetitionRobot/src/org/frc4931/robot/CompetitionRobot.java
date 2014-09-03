@@ -7,6 +7,7 @@ import org.frc4931.robot.command.drive.PIDTurnInterface;
 import org.frc4931.robot.command.groups.DriveAndScore;
 import org.frc4931.robot.command.groups.DropTurnLeftDrive;
 import org.frc4931.robot.command.groups.DropTurnRightDrive;
+import org.frc4931.robot.command.net.AddCommandAfterDelay;
 import org.frc4931.robot.command.pneumatics.Pressurize;
 import org.frc4931.robot.command.roller.RollIn;
 import org.frc4931.robot.command.roller.RollOut;
@@ -112,8 +113,10 @@ public class CompetitionRobot extends IterativeRobot{
 		SmartDashboard.putNumber("Max Delta 1", 1.0);
 		SmartDashboard.putNumber("Max Delta 2", 0.1);
 		SmartDashboard.putNumber("Max Delta 3", 0.01);
-		Scheduler.getInstance().add(new SetState(Subsystems.nets.leftNet, State.CLOSED));
-		Scheduler.getInstance().add(new SetState(Subsystems.nets.rightNet, State.CLOSED));
+		Scheduler.getInstance().add(new SetState(Subsystems.nets.leftNet, State.CLOSED, Nets.CLOSE_SPEED));
+		
+		Scheduler.getInstance().add(new AddCommandAfterDelay
+				(new SetState(Subsystems.nets.rightNet, State.CLOSED, Nets.OPEN_SPEED),0.5));
 	}
 	
 	public void smartDashboardInit(){

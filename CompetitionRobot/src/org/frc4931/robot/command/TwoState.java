@@ -3,6 +3,7 @@ package org.frc4931.robot.command;
 public interface TwoState {
 	public void setStateOne(double speed);
 	public void setStateTwo(double speed);
+	public void stop();
 	
 	public State getPhysicalState();
 	public State getLogicalState();
@@ -36,6 +37,10 @@ public interface TwoState {
 			if(s==null) return false;
 			if(s==this) return true;
 			return (this.value==s.value);
+		}
+		
+		public String toString(){
+			return ""+value;
 		}
 	}
 }

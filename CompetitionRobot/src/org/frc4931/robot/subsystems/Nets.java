@@ -103,4 +103,9 @@ public class Nets extends Subsystem implements TwoState{
 		return false;
 	}
 
+	public void stop() {
+		leftNet.stop();
+		rightNet.stop();
+	}
+
 }
