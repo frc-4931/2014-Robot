@@ -1,12 +1,13 @@
 package org.frc4931.robot.command.autonomous;
 
+import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.CommandBase;
 
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.command.Command;
 
-public class FollowWall extends Command{
-	private final static double TOLERANCE=0.01;
+public class FollowWall extends CommandBase{
+	private final static double TOLERANCE=1.0;
 	private final double targetDistance;
 	
 	private Ultrasonic ultrasonicSensor;
@@ -28,16 +29,20 @@ public class FollowWall extends Command{
 		Subsystems.driveTrain.stop();
 	}
 
-	protected void execute() {
-		Subsystems.driveTrain.setDriveSpeed(0.0);
+	protected void doExecute() {
+		Subsystems.driveTrain.setDriveSpeed(-0.2);
 		Subsystems.driveTrain.setTurnSpeed(0.0);
-		
-		if(getCurrentDistance()<getTargetDistance()-(getTargetDistance()*TOLERANCE)){
-			Subsystems.driveTrain.setTurnSpeed(0.1);
-		}else if(getCurrentDistance()>getTargetDistance()+(getTargetDistance()*TOLERANCE)){
-			Subsystems.driveTrain.setTurnSpeed(-0.1);
+		double difference = getTargetDistance()-getCurrentDistance();
+		double speed = Math.abs(difference/20.0);
+		speed=Math.min(0.3,speed);
+		speed=Math.max(0, speed);
+		CompetitionRobot.output(""+speed);
+		if(getCurrentDistance()<getTargetDistance()-TOLERANCE){
+			Subsystems.driveTrain.setTurnSpeed(speed);
+		}else if(getCurrentDistance()>getTargetDistance()+TOLERANCE){
+			Subsystems.driveTrain.setTurnSpeed(-speed);
 		}else{
-			Subsystems.driveTrain.setDriveSpeed(0.1);
+			//Subsystems.driveTrain.setDriveSpeed(0.35);
 		}
 	}
 
@@ -49,10 +54,6 @@ public class FollowWall extends Command{
 		}else{
 			ultrasonicSensor = Subsystems.rightUltrasonicSensor;
 		}
-	}
-
-	protected void interrupted() {
-		end();
 	}
 
 	protected boolean isFinished() {
