@@ -46,7 +46,7 @@ public class Compressor extends Subsystem{
 	 * @return
 	 */
 	public boolean testPressure(){
-		CompetitionRobot.output("Pressure switch status: "+pressureSwitch.get());
+//		CompetitionRobot.output("Pressure switch status: "+pressureSwitch.get());
 //		return (!pressureSwitch.get()&&(triggerCount>10));
 		if(CompetitionRobot.COMPRESSOR_ENABLED){
 			return !pressureSwitch.get();

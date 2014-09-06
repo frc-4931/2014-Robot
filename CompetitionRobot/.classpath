@@ -3,7 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/sunspotfrcsdk/lib/squawk.jar"/>
-	<classpathentry kind="lib" path="/sunspotfrcsdk/lib/wpilibj.jar"/>
+	<classpathentry kind="lib" path="/sunspotfrcsdk/lib/wpilibj.jar" sourcepath="/sunspotfrcsdk/lib/wpilibj.src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/zach/FRC/Documentation/WPIDocs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="/sunspotfrcsdk/lib/networktables-crio.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

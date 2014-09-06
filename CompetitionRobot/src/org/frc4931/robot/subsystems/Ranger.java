@@ -16,18 +16,18 @@ public class Ranger extends Subsystem implements PIDSource{
 	}
 	
 	public double getRange(){
-		return sensor.getVoltage();
+		return (sensor.getVoltage()*1000)/9.8;
 	}
 
 	protected void initDefaultCommand() {
 	}
 
 	public void putToDashboard() {
-		SmartDashboard.putNumber("Rangefinder",sensor.getVoltage());
+		SmartDashboard.putNumber("Rangefinder",getRange());
 	}
 
 	public double pidGet() {
-		return sensor.getVoltage();
+		return getRange();
 	}
 
 }

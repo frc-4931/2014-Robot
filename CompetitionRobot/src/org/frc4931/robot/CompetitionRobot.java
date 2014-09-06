@@ -2,12 +2,9 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.command.SetState;
 import org.frc4931.robot.command.TwoState.State;
+import org.frc4931.robot.command.autonomous.FollowWall;
 import org.frc4931.robot.command.drive.PIDDriveInterface;
 import org.frc4931.robot.command.drive.PIDTurnInterface;
-import org.frc4931.robot.command.groups.DriveAndScore;
-import org.frc4931.robot.command.groups.DropTurnLeftDrive;
-import org.frc4931.robot.command.groups.DropTurnRightDrive;
-import org.frc4931.robot.command.net.AddCommandAfterDelay;
 import org.frc4931.robot.command.pneumatics.Pressurize;
 import org.frc4931.robot.command.roller.RollIn;
 import org.frc4931.robot.command.roller.RollOut;
@@ -71,8 +68,8 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int GYRO_CHANNEL = 1;
 	public static final int RANGER_CHANNEL = 2;
 	
-	public static final int ULTRASONIC_LEFT_PING = 4;
-	public static final int ULTRASONIC_LEFT_ECHO = 5;
+	public static final int ULTRASONIC_LEFT_PING = 11;
+	public static final int ULTRASONIC_LEFT_ECHO = 12;
 	
 	public static final int ULTRASONIC_RIGHT_PING = 9;
 	public static final int ULTRASONIC_RIGHT_EHCO = 10;
@@ -127,10 +124,10 @@ public class CompetitionRobot extends IterativeRobot{
 		SmartDashboard.putNumber("Max Delta 1", 1.0);
 		SmartDashboard.putNumber("Max Delta 2", 0.1);
 		SmartDashboard.putNumber("Max Delta 3", 0.01);
-		Scheduler.getInstance().add(new SetState(Subsystems.nets.leftNet, State.CLOSED, Nets.CLOSE_SPEED));
+//		Scheduler.getInstance().add(new SetState(Subsystems.nets.leftNet, State.CLOSED, Nets.CLOSE_SPEED));
 		
-		Scheduler.getInstance().add(new AddCommandAfterDelay
-				(new SetState(Subsystems.nets.rightNet, State.CLOSED, Nets.OPEN_SPEED),0.5));
+//		Scheduler.getInstance().add(new AddCommandAfterDelay
+//				(new SetState(Subsystems.nets.rightNet, State.CLOSED, Nets.OPEN_SPEED),0.5));
 	}
 	
 	public void smartDashboardInit(){
@@ -174,9 +171,10 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public void updateSmartDashboard(){
-		SmartDashboard.putString("Current Autonomous Mode", AUTO_MODE_NAMES[autoMode]);
-		/*Put Sensor Values*/
-		output(""+Subsystems.leftUltrasonicSensor.getRangeInches());
+//		SmartDashboard.putString("Current Autonomous Mode", AUTO_MODE_NAMES[autoMode]);
+//		/*Put Sensor Values*/
+//		//output(""+Subsystems.leftUltrasonicSensor.getRangeInches());
+//		output(""+Subsystems.rightUltrasonicSensor.getRangeInches());
 		SmartDashboard.putNumber("Left Range",Subsystems.leftUltrasonicSensor.getRangeInches());
 		SmartDashboard.putNumber("Right Range",Subsystems.rightUltrasonicSensor.getRangeInches());
 		
@@ -218,7 +216,8 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public void autonomousInit(){
-		switch(autoMode){
+		Scheduler.getInstance().add(new FollowWall(18));
+		/*switch(autoMode){
 			case 0:
 				Scheduler.getInstance().add(new DriveAndScore());
 				break;
@@ -228,7 +227,7 @@ public class CompetitionRobot extends IterativeRobot{
 			case 2:
 				Scheduler.getInstance().add(new DropTurnRightDrive());
 				break;
-		}
+		}*/
 	}
 	
 	public void autonomousPeriodic(){
