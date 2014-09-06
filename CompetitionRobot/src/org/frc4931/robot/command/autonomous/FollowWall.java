@@ -42,7 +42,7 @@ public class FollowWall extends CommandBase{
 		}else if(getCurrentDistance()>getTargetDistance()+TOLERANCE){
 			Subsystems.driveTrain.setTurnSpeed(-speed);
 		}else{
-			//Subsystems.driveTrain.setDriveSpeed(0.35);
+			Subsystems.driveTrain.setDriveSpeed(0.4);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class FollowWall extends CommandBase{
 	}
 
 	protected boolean isFinished() {
-		return false;
+		return Subsystems.ranger.getRange()<0.5;
 	}
 
 }

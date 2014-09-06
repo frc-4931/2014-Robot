@@ -14,6 +14,10 @@ public class Ranger extends Subsystem implements PIDSource{
 	public AnalogChannel getSensor(){
 		return sensor;
 	}
+	
+	public double getRange(){
+		return sensor.getVoltage();
+	}
 
 	protected void initDefaultCommand() {
 	}

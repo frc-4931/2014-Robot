@@ -2,9 +2,11 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.command.SetState;
 import org.frc4931.robot.command.TwoState.State;
-import org.frc4931.robot.command.autonomous.FollowWall;
 import org.frc4931.robot.command.drive.PIDDriveInterface;
 import org.frc4931.robot.command.drive.PIDTurnInterface;
+import org.frc4931.robot.command.groups.DriveAndScore;
+import org.frc4931.robot.command.groups.DropTurnLeftDrive;
+import org.frc4931.robot.command.groups.DropTurnRightDrive;
 import org.frc4931.robot.command.net.AddCommandAfterDelay;
 import org.frc4931.robot.command.pneumatics.Pressurize;
 import org.frc4931.robot.command.roller.RollIn;
@@ -216,8 +218,7 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public void autonomousInit(){
-		Scheduler.getInstance().add(new FollowWall(12));
-		/*switch(autoMode){
+		switch(autoMode){
 			case 0:
 				Scheduler.getInstance().add(new DriveAndScore());
 				break;
@@ -227,7 +228,7 @@ public class CompetitionRobot extends IterativeRobot{
 			case 2:
 				Scheduler.getInstance().add(new DropTurnRightDrive());
 				break;
-		}*/
+		}
 	}
 	
 	public void autonomousPeriodic(){
