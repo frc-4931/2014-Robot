@@ -2,40 +2,25 @@ package org.frc4931.robot.command.drive;
 
 import org.frc4931.robot.OperatorInterface;
 import org.frc4931.robot.Subsystems;
-
-import edu.wpi.first.wpilibj.command.Command;
+import org.frc4931.robot.command.OneShotCommand;
 
 /**
- * Drives the robot in arcade mode using pitch for speed and yaw for turn.
- * @author zach
- *
+ * Updates Subsystems.driveTrain with the current joystick values, using pitch for speed and
+ * yaw for turn.
+ * 
+ * @author Zach Anderson
  */
-public class ModifiedDriveWithJoystick extends Command{
+public class ModifiedDriveWithJoystick extends OneShotCommand{
 	
 	public ModifiedDriveWithJoystick(){
 		requires(Subsystems.driveTrain);
 	}
 
-	protected void initialize() {
-	}
-
-	protected void execute() {
+	protected void doExecute() {
 		double rawDriveSpeed = OperatorInterface.joysticks[0].getPitch();
 		double rawTurnSpeed = OperatorInterface.joysticks[0].getYaw()*-1;
 		double scaledDriveSpeed = rawDriveSpeed*OperatorInterface.joysticks[0].getNormalThrottle();
 		double scaledTurnSpeed = rawTurnSpeed*OperatorInterface.joysticks[0].getNormalThrottle();
 		Subsystems.driveTrain.arcadeDrive(scaledDriveSpeed,scaledTurnSpeed);
 	}
-
-	protected boolean isFinished() {
-		return true;
-	}
-
-	protected void end() {
-	}
-
-	protected void interrupted() {
-		end();
-	}
-
 }

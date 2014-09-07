@@ -7,8 +7,16 @@ import org.frc4931.robot.command.autonomous.TurnRelativeAngle;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
+/**
+ * Ejects the ball, turns left 90 degrees, and drives forward.
+ * @author Zach Anderson
+ *
+ */
 public class DropTurnLeftDrive extends CommandGroup{
 
+	/** 
+	 * Constructs the command group.
+	 */
 	public DropTurnLeftDrive() {
 		requires(Subsystems.driveTrain);
 		requires(Subsystems.roller);
@@ -17,6 +25,7 @@ public class DropTurnLeftDrive extends CommandGroup{
 		addSequential(new WaitCommand(0.5));
 		addSequential(new TurnRelativeAngle(-90));
 		addSequential(new WaitCommand(0.5));
+		//TODO Identify magic number.
 		addSequential(new DriveToRange(Subsystems.ranger, 0.5d));
 	}
 

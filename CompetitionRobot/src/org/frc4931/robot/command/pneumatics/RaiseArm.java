@@ -1,27 +1,26 @@
 package org.frc4931.robot.command.pneumatics;
 
+import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.CommandBase;
+import org.frc4931.robot.command.SetState;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class RaiseArm extends Command{
+/**
+ * Raises the roller arm.
+ * @author Zach Anderson
+ * @deprecated Use {@link SetState} instead.
+ */
+public class RaiseArm extends CommandBase{
 	public RaiseArm() {
 		requires(Subsystems.arm);
 	}
 
 	protected void end() {
-		System.out.println("Arm Raised");
+		CompetitionRobot.output("Arm Raised");
 	}
 
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.arm.raise();
-	}
-
-	protected void initialize() {
-	}
-
-	protected void interrupted() {
-		end();
 	}
 
 	protected boolean isFinished() {

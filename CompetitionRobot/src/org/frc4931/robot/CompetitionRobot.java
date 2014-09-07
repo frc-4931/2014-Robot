@@ -1,33 +1,32 @@
 package org.frc4931.robot;
 
+import org.frc4931.robot.command.SetState;
+import org.frc4931.robot.command.TwoState.State;
+import org.frc4931.robot.command.autonomous.FollowWall;
 import org.frc4931.robot.command.drive.PIDDriveInterface;
 import org.frc4931.robot.command.drive.PIDTurnInterface;
-import org.frc4931.robot.command.groups.DriveAndScore;
-import org.frc4931.robot.command.groups.DropTurnLeftDrive;
-import org.frc4931.robot.command.groups.DropTurnRightDrive;
-import org.frc4931.robot.command.net.Close;
-import org.frc4931.robot.command.net.Open;
-import org.frc4931.robot.command.pneumatics.LowerArm;
 import org.frc4931.robot.command.pneumatics.Pressurize;
-import org.frc4931.robot.command.pneumatics.RaiseArm;
 import org.frc4931.robot.command.roller.RollIn;
 import org.frc4931.robot.command.roller.RollOut;
 import org.frc4931.robot.command.roller.StopRoller;
 import org.frc4931.robot.subsystems.Compressor;
 import org.frc4931.robot.subsystems.DriveTrain;
 import org.frc4931.robot.subsystems.IMU;
-import org.frc4931.robot.subsystems.Net;
+import org.frc4931.robot.subsystems.Nets;
 import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.robot.subsystems.Roller;
 import org.frc4931.robot.subsystems.RollerArm;
-import org.frc4931.zach.drive.Motor;
+import org.frc4931.zach.drive.ContinuousMotor;
+import org.frc4931.zach.drive.LimitedMotor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CompetitionRobot extends IterativeRobot{
+	public static final long START_TIME = System.currentTimeMillis();
 	public static final String[] AUTO_MODE_NAMES = new String[]{"Drive Straight and Score","Drop Ball, Turn Left, Drive Straight","Drop Ball, Turn Right, Drive Straight"};
 	/*
 	 * Constant Convention:
@@ -69,6 +68,12 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int GYRO_CHANNEL = 1;
 	public static final int RANGER_CHANNEL = 2;
 	
+	public static final int ULTRASONIC_LEFT_PING = 11;
+	public static final int ULTRASONIC_LEFT_ECHO = 12;
+	
+	public static final int ULTRASONIC_RIGHT_PING = 9;
+	public static final int ULTRASONIC_RIGHT_EHCO = 10;
+	
 	public int autoMode = 0;
 	public int driveMode = 1;
 	public void robotInit(){
@@ -76,16 +81,27 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.imu = new IMU(GYRO_CHANNEL);
 		Subsystems.imu.reset();
 		
-		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, Motor.TALON_SPEED_CONTROLLER);
-//		Subsystems.driveTrain = new DriveTrain(1, 2, Motor.JAGUAR_SPEED_CONTROLLER);
+		Subsystems.driveTrain = new DriveTrain(DRIVE_MOTOR_FRONTLEFT, DRIVE_MOTOR_BACKLEFT
+				, DRIVE_MOTOR_FRONTRIGHT, DRIVE_MOTOR_BACKRIGHT, ContinuousMotor.SpeedControllerType.TALON);
+//		Subsystems.driveTrain = new DriveTrain(1,2,ContinuousMotor.SpeedControllerType.JAGUAR);
+		
 		Subsystems.compressor = new Compressor(COMPRESSOR_RELAY, COMPRESSOR_PRESSURESWITCH);
-		Subsystems.leftNet = new Net(NET_MOTOR_LEFT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_LEFT, NET_PROX_LEFT);
-		Subsystems.rightNet = new Net(NET_MOTOR_RIGHT, Motor.VICTOR_SPEED_CONTROLLER, NET_SWITCH_RIGHT, NET_PROX_RIGHT);
+		
+		Subsystems.nets = new Nets
+				( new LimitedMotor(NET_MOTOR_LEFT, LimitedMotor.SpeedControllerType.VICTOR, NET_SWITCH_LEFT, NET_PROX_LEFT)
+				, new LimitedMotor(NET_MOTOR_RIGHT, LimitedMotor.SpeedControllerType.VICTOR, NET_SWITCH_RIGHT, NET_PROX_RIGHT));
+		
 		Subsystems.arm = new RollerArm(SOLENOID_LEFT_EXTEND,SOLENOID_LEFT_RETRACT,SOLENOID_RIGHT_EXTEND,SOLENOID_RIGHT_RETRACT);
-		Subsystems.roller = new Roller(ROLLER_MOTOR, Motor.VICTOR_SPEED_CONTROLLER);
+		Subsystems.roller = new Roller(ROLLER_MOTOR, ContinuousMotor.SpeedControllerType.VICTOR);
 		Subsystems.ranger = new Ranger(RANGER_CHANNEL);
 		Subsystems.pid = new PIDController(0.5,0,0,Subsystems.ranger,new PIDDriveInterface());
 		Subsystems.turnPID = new PIDController(0.003,0,0.007,Subsystems.imu, new PIDTurnInterface());
+		
+		Subsystems.leftUltrasonicSensor = new Ultrasonic(ULTRASONIC_LEFT_PING, ULTRASONIC_LEFT_ECHO, Ultrasonic.Unit.kInches);
+		Subsystems.rightUltrasonicSensor = new Ultrasonic(ULTRASONIC_RIGHT_PING, ULTRASONIC_RIGHT_EHCO, Ultrasonic.Unit.kInches);
+		
+		Subsystems.leftUltrasonicSensor.setAutomaticMode(true);
+		Subsystems.rightUltrasonicSensor.setAutomaticMode(true);
 		
 		//Subsystems.compressor.init();
 		OperatorInterface.init();
@@ -108,8 +124,10 @@ public class CompetitionRobot extends IterativeRobot{
 		SmartDashboard.putNumber("Max Delta 1", 1.0);
 		SmartDashboard.putNumber("Max Delta 2", 0.1);
 		SmartDashboard.putNumber("Max Delta 3", 0.01);
-		Scheduler.getInstance().add(new Close(Subsystems.leftNet));
-		Scheduler.getInstance().add(new Close(Subsystems.rightNet));
+//		Scheduler.getInstance().add(new SetState(Subsystems.nets.leftNet, State.CLOSED, Nets.CLOSE_SPEED));
+		
+//		Scheduler.getInstance().add(new AddCommandAfterDelay
+//				(new SetState(Subsystems.nets.rightNet, State.CLOSED, Nets.OPEN_SPEED),0.5));
 	}
 	
 	public void smartDashboardInit(){
@@ -133,14 +151,14 @@ public class CompetitionRobot extends IterativeRobot{
 		SmartDashboard.putData("Turn PID", Subsystems.turnPID);
 		
 		/*Net Override Commands*/
-		SmartDashboard.putData("Close Left Net",new Close(Subsystems.leftNet));
-		SmartDashboard.putData("Close Right Net",new Close(Subsystems.rightNet));
-		SmartDashboard.putData("Open Left Net",new Open(Subsystems.leftNet));
-		SmartDashboard.putData("Open Right Net",new Open(Subsystems.rightNet));
+		SmartDashboard.putData("Close Left Net",new SetState(Subsystems.nets.leftNet, State.CLOSED));
+		SmartDashboard.putData("Close Right Net",new SetState(Subsystems.nets.rightNet, State.CLOSED));
+		SmartDashboard.putData("Open Left Net",new SetState(Subsystems.nets.leftNet, State.OPEN));
+		SmartDashboard.putData("Open Right Net",new SetState(Subsystems.nets.rightNet, State.OPEN));
 
 		/*Roller Arm Override Commands*/
-		SmartDashboard.putData("Lower Roller Arm", new LowerArm());
-		SmartDashboard.putData("Raise Roller Arm", new RaiseArm());
+		SmartDashboard.putData("Lower Roller Arm", new SetState(Subsystems.arm, State.DOWN));
+		SmartDashboard.putData("Raise Roller Arm", new SetState(Subsystems.arm, State.UP));
 	
 		/*Roller Override Commands*/
 		SmartDashboard.putData("Roll Arm In", new RollIn());
@@ -153,8 +171,12 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public void updateSmartDashboard(){
-		SmartDashboard.putString("Current Autonomous Mode", AUTO_MODE_NAMES[autoMode]);
-		/*Put Sensor Values*/
+//		SmartDashboard.putString("Current Autonomous Mode", AUTO_MODE_NAMES[autoMode]);
+//		/*Put Sensor Values*/
+//		//output(""+Subsystems.leftUltrasonicSensor.getRangeInches());
+//		output(""+Subsystems.rightUltrasonicSensor.getRangeInches());
+		SmartDashboard.putNumber("Left Range",Subsystems.leftUltrasonicSensor.getRangeInches());
+		SmartDashboard.putNumber("Right Range",Subsystems.rightUltrasonicSensor.getRangeInches());
 		
 		/*Put Subsystems*/
 		Subsystems.driveTrain.putToDashboard();
@@ -165,8 +187,8 @@ public class CompetitionRobot extends IterativeRobot{
 		Subsystems.imu.putToDashboard();
 		
 		/*Put Subsystem Values*/
-		SmartDashboard.putBoolean("Left Net Status", Subsystems.leftNet.dashboardOpen);
-		SmartDashboard.putBoolean("Right Net Status", Subsystems.rightNet.dashboardOpen);
+		SmartDashboard.putBoolean("Left Net Status", Subsystems.nets.leftNet.isOpen());
+		SmartDashboard.putBoolean("Right Net Status", Subsystems.nets.rightNet.isOpen());
 	}
 	
 	public void robotPeriodic(){
@@ -194,7 +216,8 @@ public class CompetitionRobot extends IterativeRobot{
 	}
 	
 	public void autonomousInit(){
-		switch(autoMode){
+		Scheduler.getInstance().add(new FollowWall(18));
+		/*switch(autoMode){
 			case 0:
 				Scheduler.getInstance().add(new DriveAndScore());
 				break;
@@ -204,7 +227,7 @@ public class CompetitionRobot extends IterativeRobot{
 			case 2:
 				Scheduler.getInstance().add(new DropTurnRightDrive());
 				break;
-		}
+		}*/
 	}
 	
 	public void autonomousPeriodic(){
@@ -216,11 +239,14 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	public static void output(String string){
 //		if(SmartDashboard.getBoolean("Verbose")){
-			System.out.println(string);
+			System.out.println(Math.floor(getTime()/100.0d)/10.0d+":"+"\t"+string);
 //		}
 	}
 	
 	public static void printToUserConsole(String string){
-		
+	}
+	
+	public static long getTime(){
+		return System.currentTimeMillis()-START_TIME;
 	}
 }

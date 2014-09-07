@@ -31,14 +31,14 @@ public class Compressor extends Subsystem{
 		isOn = true;
 		if(CompetitionRobot.COMPRESSOR_ENABLED){
 			relay.set(Relay.Value.kForward);
-			System.out.println("enable Compressor");
+			CompetitionRobot.output("enable Compressor");
 		}
 	}
 	
 	public void deactive(){
 		isOn = false;
 		relay.set(Relay.Value.kOff);
-		System.out.println("disable Compressor");
+		CompetitionRobot.output("disable Compressor");
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class Compressor extends Subsystem{
 	 * @return
 	 */
 	public boolean testPressure(){
-		System.out.println(pressureSwitch.get());
+//		CompetitionRobot.output("Pressure switch status: "+pressureSwitch.get());
 //		return (!pressureSwitch.get()&&(triggerCount>10));
 		if(CompetitionRobot.COMPRESSOR_ENABLED){
 			return !pressureSwitch.get();

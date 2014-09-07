@@ -1,5 +1,7 @@
 package org.frc4931.robot.test;
 
+import org.frc4931.robot.CompetitionRobot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class Output extends Command{
@@ -12,7 +14,7 @@ public class Output extends Command{
 	}
 
 	protected void execute() {
-		System.out.println(text);
+		CompetitionRobot.output(text);
 	}
 
 	protected boolean isFinished() {

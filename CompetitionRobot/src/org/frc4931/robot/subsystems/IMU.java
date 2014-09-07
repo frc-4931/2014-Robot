@@ -51,6 +51,7 @@ public class IMU extends Subsystem implements PIDSource{
 	
 	public void putToDashboard(){
 		SmartDashboard.putData("Gyroscope",gyro);
+		SmartDashboard.putNumber("Angle", getAngle());
 		SmartDashboard.putNumber("Accelerometer X", accel.getAcceleration(Accel.X));
 		SmartDashboard.putNumber("Accelerometer Y", accel.getAcceleration(Accel.Y));
 		SmartDashboard.putNumber("Accelerometer Z", accel.getAcceleration(Accel.Z));

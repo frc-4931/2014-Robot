@@ -1,20 +1,23 @@
 package org.frc4931.robot.command.pneumatics;
 
 import org.frc4931.robot.Subsystems;
+import org.frc4931.robot.command.CommandBase;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class Pressurize extends Command{
-
+/**
+ * Pressurizes the pneumatic system.
+ * @author Zach Anderson
+ *
+ */
+public class Pressurize extends CommandBase{
+	/**
+	 * Constructs the command.
+	 */
 	public Pressurize() {
 		requires(Subsystems.compressor);
 		this.setInterruptible(false);
 	}
 
-	protected void initialize() {
-	}
-
-	protected void execute() {
+	protected void doExecute() {
 		Subsystems.compressor.activate();
 	}
 
@@ -25,10 +28,4 @@ public class Pressurize extends Command{
 	protected void end() {
 		Subsystems.compressor.deactive();
 	}
-
-	protected void interrupted() {
-		System.out.println("INtERUPptED");
-		Subsystems.compressor.deactive();
-	}
-
 }

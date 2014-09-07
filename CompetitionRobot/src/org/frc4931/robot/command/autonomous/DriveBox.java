@@ -5,6 +5,11 @@ import org.frc4931.robot.Subsystems;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
+/**
+ * Drives in a box at a speed of 0.3 for 1 second on each side.
+ * @author Zach Anderson
+ *
+ */
 public class DriveBox extends CommandGroup{
 
 	public DriveBox() {
