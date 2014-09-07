@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.frc4931.robot.command.autonomous;
 
+import org.frc4931.robot.CompetitionRobot;
 import org.frc4931.robot.Subsystems;
 import org.frc4931.robot.command.CommandBase;
 import org.frc4931.robot.subsystems.IMU;
@@ -287,7 +288,7 @@ public class AngularFollowWall extends CommandBase {
         // Before the robot has moved, we want to reset the gyro so that the current angle of rotation is 0.
         Subsystems.imu.resetGyro();
         imu = Subsystems.imu;
-        startingRobotAngleOfRotation = imu.getAngle();
+        startingRobotAngleOfRotation = imu.getOrientationAngle(); // > -180 and <= 180
 
         // We don't know ahead of time whether the robot is closer to the left wall or right wall, so use both sensors
         // to figure this out ...
@@ -368,6 +369,17 @@ public class AngularFollowWall extends CommandBase {
         // Set the drive speed and turn speed ...
         Subsystems.driveTrain.setDriveSpeed(driveSpeed);
         Subsystems.driveTrain.setTurnSpeed(turnSpeed);
+
+        debugMessage(rotationInDegrees, distanceError, actualRange, turnSpeed);
+    }
+
+    private void debugMessage( double rotation,
+                               double distanceError,
+                               double range,
+                               double turnSpeed ) {
+        String message = String.format("AngularFollowWall: %1$+3.1f deg; %2$+2.1f in; %3$3.0f in; %4$+1.2f", new Object[] {
+            new Double(rotation), new Double(distanceError), new Double(range), new Double(turnSpeed)});
+        CompetitionRobot.output(message);
     }
 
     /**
