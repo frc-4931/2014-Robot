@@ -20,6 +20,34 @@ public class IMU extends Subsystem implements PIDSource{
 		return gyro.getAngle();
 	}
 	
+    /**
+     * Get the orientation of the robot relative to the last time the gyro was {@link #reset() reset}. This resulting value is
+     * always greater than -180 degrees and less than or equal to 180 degrees.
+     *
+     * @return the orientation angle; always > -180 and <= 180.
+     */
+    public double getOrientationAngle() {
+        return getOrientationAngle(0.0d);
+    }
+
+    /**
+     * Get the orientation of the robot relative to the given angle. This resulting value is always greater than -180 degrees and
+     * less than or equal to 180 degrees.
+     *
+     * @param relativeToAngle the angle relative to which the orientation should be computed; can be negative or positive
+     * @return the orientation angle; always > -180 and <= 180.
+     */
+    public double getOrientationAngle( double relativeToAngle ) {
+        double currentAngle = getAngle() + relativeToAngle;
+        while (currentAngle < -180.0) {
+            currentAngle += 360.0;
+        }
+        while (currentAngle > 180.0) {
+            currentAngle -= 360.0;
+        }
+        return currentAngle;
+    }
+
 	public double getAcceleration(Axes axis){
 		return accel.getAcceleration(axis);
 	}

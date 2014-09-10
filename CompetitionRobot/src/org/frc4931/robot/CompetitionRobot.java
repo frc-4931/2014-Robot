@@ -2,6 +2,7 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.command.SetState;
 import org.frc4931.robot.command.TwoState.State;
+import org.frc4931.robot.command.autonomous.AngularFollowWall;
 import org.frc4931.robot.command.autonomous.FollowWall;
 import org.frc4931.robot.command.drive.PIDDriveInterface;
 import org.frc4931.robot.command.drive.PIDTurnInterface;
@@ -74,7 +75,17 @@ public class CompetitionRobot extends IterativeRobot{
 	public static final int ULTRASONIC_RIGHT_PING = 9;
 	public static final int ULTRASONIC_RIGHT_EHCO = 10;
 	
-	public int autoMode = 0;
+    // Wall following constants
+    public static final double ROBOT_FRAME_LENGTH_IN_INCHES = 28.0;
+    public static final double ROBOT_FRAME_WIDTH_IN_INCHES = 28.0;
+    public static final double MINIMUM_RANGE_TO_GOAL_WALL_IN_INCHES = 36.0;
+    public static final double TARGET_DISTANCE_FROM_ROBOT_TO_WALL_IN_INCHES = 12.0;
+    public static final double TARGET_DISTANCE_FROM_CENTER_OF_ROBOT_TO_WALL_IN_INCHES = TARGET_DISTANCE_FROM_ROBOT_TO_WALL_IN_INCHES
+                                                                                        + 0.5 * ROBOT_FRAME_WIDTH_IN_INCHES;
+    public static final double TURN_SPEED_SCALE_FACTOR = 3.0;
+    public static final double CORRECTION_RANGE_FACTOR = 0.6;
+
+    public int autoMode = 0;
 	public int driveMode = 1;
 	public void robotInit(){
 		Subsystems.robot = this;
@@ -215,8 +226,12 @@ public class CompetitionRobot extends IterativeRobot{
 		Scheduler.getInstance().run();
 	}
 	
-	public void autonomousInit(){
-		Scheduler.getInstance().add(new FollowWall(18));
+	public void autonomousInit(){  
+	    //Scheduler.getInstance().add(new FollowWall(18));
+        Scheduler.getInstance().add(new AngularFollowWall(TARGET_DISTANCE_FROM_CENTER_OF_ROBOT_TO_WALL_IN_INCHES,
+                                                          MINIMUM_RANGE_TO_GOAL_WALL_IN_INCHES, ROBOT_FRAME_WIDTH_IN_INCHES,
+                                                          ROBOT_FRAME_LENGTH_IN_INCHES, CORRECTION_RANGE_FACTOR,
+                                                          TURN_SPEED_SCALE_FACTOR));
 		/*switch(autoMode){
 			case 0:
 				Scheduler.getInstance().add(new DriveAndScore());
