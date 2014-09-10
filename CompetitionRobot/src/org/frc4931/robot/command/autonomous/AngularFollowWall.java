@@ -12,6 +12,7 @@ import org.frc4931.robot.command.CommandBase;
 import org.frc4931.robot.subsystems.IMU;
 import org.frc4931.robot.subsystems.Ranger;
 import org.frc4931.zach.utils.Transform;
+import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 /**
@@ -112,7 +113,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
  * orientation to the correction ange, and this difference in rotation is:
  *
  * <pre>
- * turnAngle = rotationAngle - correctionAngle
+ * turnAngle = -(rotationAngle - correctionAngle)
  * </pre>
  * <p>
  * If the <code>turnAngle</code> is positive then the robot must turn away from the wall; if the <code>turnAngle</code> is
@@ -237,6 +238,7 @@ public class AngularFollowWall extends CommandBase {
     private Ultrasonic distanceSensor;
     private Ranger rangeSensor;
     private IMU imu;
+    private Averager angleAverager = new Averager(10);
 
     /**
      * Create a new command.
@@ -276,6 +278,7 @@ public class AngularFollowWall extends CommandBase {
                               double lengthOfRobot,
                               double correctionRangeScale,
                               double turnScaleFactor ) {
+        super(true); // continuous
         this.targetDistanceFromWall = targetDistanceFromWall;
         this.widthOfRobot = widthOfRobot;
         this.lengthOfRobot = lengthOfRobot;
@@ -286,7 +289,7 @@ public class AngularFollowWall extends CommandBase {
 
     protected void initialize() {
         // Before the robot has moved, we want to reset the gyro so that the current angle of rotation is 0.
-        Subsystems.imu.resetGyro();
+        // Subsystems.imu.resetGyro();
         imu = Subsystems.imu;
         startingRobotAngleOfRotation = imu.getOrientationAngle(); // > -180 and <= 180
 
@@ -294,6 +297,8 @@ public class AngularFollowWall extends CommandBase {
         // to figure this out ...
         double leftDistance = Subsystems.leftUltrasonicSensor.getRangeInches();
         double rightDistance = Subsystems.rightUltrasonicSensor.getRangeInches();
+        leftDistance = Transform.clamp(0, 40, leftDistance);
+        rightDistance = Transform.clamp(0, 40, rightDistance);
         if (leftDistance < rightDistance) {
             distanceSensor = Subsystems.leftUltrasonicSensor;
             wallOnLeft = true;
@@ -301,15 +306,33 @@ public class AngularFollowWall extends CommandBase {
             distanceSensor = Subsystems.rightUltrasonicSensor;
             wallOnLeft = false;
         }
+
+        // Hack ...
+        wallOnLeft = true;
+        distanceSensor = Subsystems.leftUltrasonicSensor;
+
         rangeSensor = Subsystems.ranger;
     }
 
     protected void doExecute() {
+        if (!Subsystems.robot.isAutonomous()) {
+            CompetitionRobot.output("Command Cancelled");
+            this.cancel();
+            return;
+        }
         // We need to measure the range, distance to wall, and robot angle ...
         double range = rangeSensor.getRange(); // in inches
         double distance = distanceSensor.getRangeInches();
-        double rotationInDegrees = imu.getAngle() - startingRobotAngleOfRotation; // positive or negative
-        double rotationInRadians = Math.toDegrees(rotationInDegrees);
+        // Negative is left ...
+        double rotationInDegrees = imu.getOrientationAngle(startingRobotAngleOfRotation); // positive or negative
+        if (wallOnLeft) {
+            // The wall is on the right, so we have to reverse the sign of the angle
+            rotationInDegrees *= -1.0;
+        }
+        // // HACK:
+        // rotationInDegrees = angleAverager.getValue(rotationInDegrees);
+
+        double rotationInRadians = Math.toRadians(rotationInDegrees);
 
         // We want to reduce the drive speed as we approach the goal wall (e.g., as range approaches 0) ...
         double driveSpeed = Transform.clamp(0, 0.4, range / 100);
@@ -320,66 +343,74 @@ public class AngularFollowWall extends CommandBase {
         // Compute how far away we actually are from our ideal distance to the wall. This will be negative when we are
         // CLOSER to the wall than the ideal distance ...
         double distanceError = actualDistance - targetDistanceFromWall;
+        if (Math.abs(distanceError) > 50.0) {
+            CompetitionRobot.output("Distance error too great (" + Math.abs(distanceError)
+                                    + " inches); cancelling autonomous command");
+            this.cancel();
+            return;
+        }
 
         // Determine the actual range to the goal wall, based upon the current rotation and the range measurement ...
         double actualRange = (range + 0.5 * lengthOfRobot) * Math.cos(rotationInRadians);
 
         // Determine the range at which we want to eliminate the distance error ...
         double correctionRange = actualRange * correctionRangeRatio;
+        correctionRange = Transform.clamp(30, 250, correctionRange);
 
         // Determine the correction angle at which the robot can drive forward for some correction range at which point the
-        // distance error will be 0 ...
-        double correctionAngleInRadians = Math.atan(distanceError / correctionRange);
+        // distance error will be 0. Note that Java ME does not have 'atan', but com.sun.sqawk does...
+        double correctionAngleInRadians = MathUtils.atan(distanceError / correctionRange);
         double correctionAngleInDegress = Math.toDegrees(correctionAngleInRadians);
 
         // How much must we (ideally) rotate the robot to get to this angle? A positive value means we turn away from
         // the wall; a negative value means we turn towards the wall ...
-        double turnAngle = rotationInDegrees - correctionAngleInDegress;
+        double turnAngleInDegrees = -1 * (rotationInDegrees - correctionAngleInDegress);
 
         // Compute the turn speed, which we assume to be a function of the turn angle ...
-        double turnSpeed = Math.abs(turnAngle) * turnScaleFactor * RATIO_OF_TURN_SPEED_TO_TURN_ANGLE_IN_DEGREES;
+        double turnSpeed = turnAngleInDegrees * turnScaleFactor * RATIO_OF_TURN_SPEED_TO_TURN_ANGLE_IN_DEGREES;
 
         // Limit the turn speed to positive or negative MAX_TURN_SPEED ...
         turnSpeed = Transform.clamp(-MAX_TURN_SPEED, MAX_TURN_SPEED, turnSpeed);
 
         // Figure out which way we should turn ...
-        if (turnAngle < ROTATION_ANGLE_TOLERANCE_IN_DEGREES) {
+        if (turnAngleInDegrees > 0) {
             // We are turning towards the wall ...
             if (wallOnLeft) {
-                // wall is on the left, and we want to turn towards it (to the left), so the turn speed must be negative ...
-                turnSpeed = -Math.abs(turnSpeed);
-            } else {
-                // wall is on the right, and we want to turn towards it (to the right), so the turn speed must be positive ...
+                // wall is on the left, and we want to turn towards it (to the left), so the turn speed must be positive ...
                 turnSpeed = Math.abs(turnSpeed);
+            } else {
+                // wall is on the right, and we want to turn towards it (to the right), so the turn speed must be negative ...
+                turnSpeed = -Math.abs(turnSpeed);
             }
-        } else if (turnAngle > ROTATION_ANGLE_TOLERANCE_IN_DEGREES) {
+        } else if (turnAngleInDegrees < 0) {
             // We are turning away from the wall ...
             if (wallOnLeft) {
-                // wall is on the left, and we want to turn away from it (to the right), so the turn speed must be positive ...
-                turnSpeed = Math.abs(turnSpeed);
-            } else {
-                // wall is on the right, and we want to turn away from it (to the left), so the turn speed must be negative ...
+                // wall is on the left, and we want to turn away from it (to the right), so the turn speed must be negative ...
                 turnSpeed = -Math.abs(turnSpeed);
+            } else {
+                // wall is on the right, and we want to turn away from it (to the left), so the turn speed must be positive ...
+                turnSpeed = Math.abs(turnSpeed);
             }
         } else {
             // We're orientated correctly (or close enough), so don't turn ...
             turnSpeed = 0.0;
         }
 
+        debugMessage(rotationInDegrees, distanceError, actualDistance, actualRange, turnAngleInDegrees, turnSpeed);
+
         // Set the drive speed and turn speed ...
         Subsystems.driveTrain.setDriveSpeed(driveSpeed);
         Subsystems.driveTrain.setTurnSpeed(turnSpeed);
-
-        debugMessage(rotationInDegrees, distanceError, actualRange, turnSpeed);
     }
 
     private void debugMessage( double rotation,
                                double distanceError,
+                               double actualDistance,
                                double range,
+                               double turnAngle,
                                double turnSpeed ) {
-        String message = String.format("AngularFollowWall: %1$+3.1f deg; %2$+2.1f in; %3$3.0f in; %4$+1.2f", new Object[] {
-            new Double(rotation), new Double(distanceError), new Double(range), new Double(turnSpeed)});
-        CompetitionRobot.output(message);
+//        CompetitionRobot.output("AngularFollowWall: aR=" + rotation + " deg; dE=" + distanceError + " in; dM=" + actualDistance
+//                                + "; rS=" + turnAngle + " in; rR=" + range + " in; vT=" + turnSpeed);
     }
 
     /**
@@ -389,7 +420,7 @@ public class AngularFollowWall extends CommandBase {
      */
     protected boolean isFinished() {
         try {
-            return Subsystems.ranger.getRange() < minRange;
+            return rangeSensor.getRange() < minRange;
         } catch (RuntimeException e) {
             // If any error occurs, stop immediately ...
             this.end();
@@ -405,6 +436,33 @@ public class AngularFollowWall extends CommandBase {
             super.end();
         } finally {
             Subsystems.driveTrain.stop();
+        }
+    }
+
+    public static class Averager {
+        private final double[] values;
+        private final int size;
+        private int index = 0;
+        private int numValues;
+
+        public Averager( int num ) {
+            this.size = num;
+            this.values = new double[num];
+        }
+
+        public double getValue( double newValue ) {
+            if (index >= size) {
+                index = 0;
+            } else if (numValues < size) {
+                ++numValues;
+            }
+            values[index] = newValue;
+            // Compute the average ...
+            double average = 0.0d;
+            for (int i = 0; i != numValues; ++i) {
+                average += values[i];
+            }
+            return average / numValues;
         }
     }
 

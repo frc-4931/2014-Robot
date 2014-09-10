@@ -79,13 +79,13 @@ public class CompetitionRobot extends IterativeRobot{
     public static final double ROBOT_FRAME_LENGTH_IN_INCHES = 28.0;
     public static final double ROBOT_FRAME_WIDTH_IN_INCHES = 28.0;
     public static final double MINIMUM_RANGE_TO_GOAL_WALL_IN_INCHES = 36.0;
-    public static final double TARGET_DISTANCE_FROM_ROBOT_TO_WALL_IN_INCHES = 18.0;
+    public static final double TARGET_DISTANCE_FROM_ROBOT_TO_WALL_IN_INCHES = 12.0;
     public static final double TARGET_DISTANCE_FROM_CENTER_OF_ROBOT_TO_WALL_IN_INCHES = TARGET_DISTANCE_FROM_ROBOT_TO_WALL_IN_INCHES
                                                                                         + 0.5 * ROBOT_FRAME_WIDTH_IN_INCHES;
-    public static final double TURN_SPEED_SCALE_FACTOR = 1.0;
-    public static final double CORRECTION_RANGE_FACTOR = 0.5;
+    public static final double TURN_SPEED_SCALE_FACTOR = 3.0;
+    public static final double CORRECTION_RANGE_FACTOR = 0.6;
 
-	public int autoMode = 0;
+    public int autoMode = 0;
 	public int driveMode = 1;
 	public void robotInit(){
 		Subsystems.robot = this;
