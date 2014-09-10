@@ -2,10 +2,9 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.command.SetState;
 import org.frc4931.robot.command.TwoState.State;
-import org.frc4931.robot.command.autonomous.AngularFollowWall;
-import org.frc4931.robot.command.autonomous.FollowWall;
 import org.frc4931.robot.command.drive.PIDDriveInterface;
 import org.frc4931.robot.command.drive.PIDTurnInterface;
+import org.frc4931.robot.command.groups.DriveAndScore;
 import org.frc4931.robot.command.pneumatics.Pressurize;
 import org.frc4931.robot.command.roller.RollIn;
 import org.frc4931.robot.command.roller.RollOut;
@@ -228,10 +227,7 @@ public class CompetitionRobot extends IterativeRobot{
 	
 	public void autonomousInit(){  
 	    //Scheduler.getInstance().add(new FollowWall(18));
-        Scheduler.getInstance().add(new AngularFollowWall(TARGET_DISTANCE_FROM_CENTER_OF_ROBOT_TO_WALL_IN_INCHES,
-                                                          MINIMUM_RANGE_TO_GOAL_WALL_IN_INCHES, ROBOT_FRAME_WIDTH_IN_INCHES,
-                                                          ROBOT_FRAME_LENGTH_IN_INCHES, CORRECTION_RANGE_FACTOR,
-                                                          TURN_SPEED_SCALE_FACTOR));
+        Scheduler.getInstance().add(new DriveAndScore());
 		/*switch(autoMode){
 			case 0:
 				Scheduler.getInstance().add(new DriveAndScore());
